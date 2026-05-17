@@ -1,0 +1,53 @@
+{
+  "name": "panelica-mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing the Panelica hosting panel External API to AI assistants. Manage accounts, domains, databases, email, DNS, SSL, FTP, security, and server resources through natural language.",
+  "type": "module",
+  "bin": {
+    "panelica-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "tools/tools.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "rebuild-tools": "node tools/build-tools.mjs",
+    "prepare": "npm run build",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "panelica",
+    "hosting",
+    "control-panel",
+    "sysadmin",
+    "devops",
+    "automation",
+    "ai"
+  ],
+  "author": "Panelica <info@panelica.com> (https://panelica.com)",
+  "license": "MIT",
+  "homepage": "https://github.com/Panelica/panelica-mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Panelica/panelica-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Panelica/panelica-mcp/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.6.3"
+  }
+}

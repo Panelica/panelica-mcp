@@ -1,0 +1,4565 @@
+[
+  {
+    "name": "panelica_api_keys_get_v1_api_keys_key_id",
+    "description": "Returns details of a specific API key.\n\nHTTP: GET /v1/api-keys/:key_id\nCategory: API Keys",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "description": "Path parameter: key_id"
+        }
+      },
+      "required": [
+        "key_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/api-keys/:key_id",
+      "category": "API Keys",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_api_keys_patch_v1_api_keys_key_id",
+    "description": "Updates an existing API key.\n\nHTTP: PATCH /v1/api-keys/:key_id\nCategory: API Keys",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "description": "Path parameter: key_id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": ""
+            },
+            "description": {
+              "type": "string",
+              "description": ""
+            },
+            "scopes": {
+              "type": "string",
+              "description": ""
+            },
+            "rate_limit_tier": {
+              "type": "string",
+              "description": ""
+            },
+            "ip_whitelist": {
+              "type": "string",
+              "description": ""
+            },
+            "expires_in": {
+              "type": "string",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "key_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/api-keys/:key_id",
+      "category": "API Keys",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_api_keys_delete_v1_api_keys_key_id",
+    "description": "Revokes (deletes) an API key.\n\nHTTP: DELETE /v1/api-keys/:key_id\nCategory: API Keys",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "description": "Path parameter: key_id"
+        }
+      },
+      "required": [
+        "key_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/api-keys/:key_id",
+      "category": "API Keys",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_api_keys_post_v1_api_keys_key_id_regenerate",
+    "description": "Regenerates the secret for an API key.\n\nHTTP: POST /v1/api-keys/:key_id/regenerate\nCategory: API Keys",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "description": "Path parameter: key_id"
+        }
+      },
+      "required": [
+        "key_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/api-keys/:key_id/regenerate",
+      "category": "API Keys",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_get_v1_accounts_id",
+    "description": "Returns details of a specific account.\n\nHTTP: GET /v1/accounts/:id\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/accounts/:id",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_patch_v1_accounts_id",
+    "description": "Updates an existing account.\n\nHTTP: PATCH /v1/accounts/:id\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": ""
+            },
+            "full_name": {
+              "type": "string",
+              "description": ""
+            },
+            "role": {
+              "type": "string",
+              "description": "NEW: Allow role updates (with RBAC checks)"
+            },
+            "status": {
+              "type": "string",
+              "description": ""
+            },
+            "password": {
+              "type": "string",
+              "description": "Optional: Update password if provided"
+            },
+            "plan_id": {
+              "type": "string",
+              "description": ""
+            },
+            "ip_address_ids": {
+              "type": "string",
+              "description": "IP addresses to assign to user"
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/accounts/:id",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_delete_v1_accounts_id",
+    "description": "Deletes an account and all associated resources.\n\nHTTP: DELETE /v1/accounts/:id\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/accounts/:id",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_post_v1_accounts_id_suspend",
+    "description": "Suspends an account, disabling access.\n\nHTTP: POST /v1/accounts/:id/suspend\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/accounts/:id/suspend",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_post_v1_accounts_id_unsuspend",
+    "description": "Reactivates a suspended account.\n\nHTTP: POST /v1/accounts/:id/unsuspend\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/accounts/:id/unsuspend",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_post_v1_accounts_id_change_password",
+    "description": "Changes the password for an account.\n\nHTTP: POST /v1/accounts/:id/change-password\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/accounts/:id/change-password",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id",
+    "description": "Returns details of a specific domain.\n\nHTTP: GET /v1/domains/:id\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_patch_v1_domains_id",
+    "description": "Updates domain configuration including server settings, SSL, and PHP resource limits.\n\nHTTP: PATCH /v1/domains/:id\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/domains/:id",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_delete_v1_domains_id",
+    "description": "Deletes a domain and all associated resources.\n\nHTTP: DELETE /v1/domains/:id\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/domains/:id",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_post_v1_domains_id_suspend",
+    "description": "Suspends a domain, disabling access.\n\nHTTP: POST /v1/domains/:id/suspend\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/suspend",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_post_v1_domains_id_unsuspend",
+    "description": "Reactivates a suspended domain.\n\nHTTP: POST /v1/domains/:id/unsuspend\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/unsuspend",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_databases_get_v1_databases_id",
+    "description": "Returns details of a specific database.\n\nHTTP: GET /v1/databases/:id\nCategory: Databases",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/databases/:id",
+      "category": "Databases",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_databases_delete_v1_databases_id",
+    "description": "Deletes a MySQL database.\n\nHTTP: DELETE /v1/databases/:id\nCategory: Databases",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/databases/:id",
+      "category": "Databases",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ftp_get_v1_ftp_accounts_id",
+    "description": "GetFTPAccount gets a specific FTP account\n\nHTTP: GET /v1/ftp-accounts/:id\nCategory: FTP",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/ftp-accounts/:id",
+      "category": "FTP",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ftp_patch_v1_ftp_accounts_id",
+    "description": "UpdateFTPAccount updates an FTP account\n\nHTTP: PATCH /v1/ftp-accounts/:id\nCategory: FTP",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/ftp-accounts/:id",
+      "category": "FTP",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ftp_delete_v1_ftp_accounts_id",
+    "description": "DeleteFTPAccount deletes an FTP account\n\nHTTP: DELETE /v1/ftp-accounts/:id\nCategory: FTP",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/ftp-accounts/:id",
+      "category": "FTP",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_get_v1_email_accounts_id",
+    "description": "GetEmailAccount gets a specific email account\n\nHTTP: GET /v1/email-accounts/:id\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/email-accounts/:id",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_patch_v1_email_accounts_id",
+    "description": "UpdateEmailAccount updates an email account\n\nHTTP: PATCH /v1/email-accounts/:id\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/email-accounts/:id",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_delete_v1_email_accounts_id",
+    "description": "DeleteEmailAccount deletes an email account\n\nHTTP: DELETE /v1/email-accounts/:id\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/email-accounts/:id",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dns_get_v1_dns_zones_domain_id",
+    "description": "=========================== DNS Management =========================== GetDNSZone gets DNS zone information GET /api/external/v1/dns/zones/:domain_id\n\nHTTP: GET /v1/dns/zones/:domain_id\nCategory: DNS",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "description": "Path parameter: domain_id"
+        }
+      },
+      "required": [
+        "domain_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/dns/zones/:domain_id",
+      "category": "DNS",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dns_get_v1_dns_zones_domain_id_records",
+    "description": "ListDNSRecords lists DNS records for a domain GET /api/external/v1/dns/zones/:domain_id/records\n\nHTTP: GET /v1/dns/zones/:domain_id/records\nCategory: DNS",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "description": "Path parameter: domain_id"
+        }
+      },
+      "required": [
+        "domain_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/dns/zones/:domain_id/records",
+      "category": "DNS",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dns_post_v1_dns_zones_domain_id_records",
+    "description": "CreateDNSRecord creates a DNS record POST /api/external/v1/dns/zones/:domain_id/records\n\nHTTP: POST /v1/dns/zones/:domain_id/records\nCategory: DNS",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "description": "Path parameter: domain_id"
+        }
+      },
+      "required": [
+        "domain_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/dns/zones/:domain_id/records",
+      "category": "DNS",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dns_patch_v1_dns_records_id",
+    "description": "UpdateDNSRecord updates a DNS record PATCH /api/external/v1/dns/records/:id\n\nHTTP: PATCH /v1/dns/records/:id\nCategory: DNS",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/dns/records/:id",
+      "category": "DNS",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dns_delete_v1_dns_records_id",
+    "description": "DeleteDNSRecord deletes a DNS record DELETE /api/external/v1/dns/records/:id\n\nHTTP: DELETE /v1/dns/records/:id\nCategory: DNS",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/dns/records/:id",
+      "category": "DNS",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssl_get_v1_ssl_domains_domain_id",
+    "description": "=========================== SSL Management =========================== GetSSLInfo gets SSL certificate information GET /api/external/v1/ssl/domains/:domain_id\n\nHTTP: GET /v1/ssl/domains/:domain_id\nCategory: SSL",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "description": "Path parameter: domain_id"
+        }
+      },
+      "required": [
+        "domain_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/ssl/domains/:domain_id",
+      "category": "SSL",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssl_post_v1_ssl_domains_domain_id_issue",
+    "description": "Issues a Let's Encrypt SSL certificate for a domain.\n\nHTTP: POST /v1/ssl/domains/:domain_id/issue\nCategory: SSL",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "description": "Path parameter: domain_id"
+        }
+      },
+      "required": [
+        "domain_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ssl/domains/:domain_id/issue",
+      "category": "SSL",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssl_post_v1_ssl_domains_domain_id_renew",
+    "description": "RenewSSL renews an SSL certificate POST /api/external/v1/ssl/domains/:domain_id/renew\n\nHTTP: POST /v1/ssl/domains/:domain_id/renew\nCategory: SSL",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "description": "Path parameter: domain_id"
+        }
+      },
+      "required": [
+        "domain_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ssl/domains/:domain_id/renew",
+      "category": "SSL",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssl_post_v1_ssl_domains_domain_id_upload",
+    "description": "Uploads a custom SSL certificate and key.\n\nHTTP: POST /v1/ssl/domains/:domain_id/upload\nCategory: SSL",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "description": "Path parameter: domain_id"
+        }
+      },
+      "required": [
+        "domain_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ssl/domains/:domain_id/upload",
+      "category": "SSL",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_backups_get_v1_backups_filename",
+    "description": "GetBackup gets a specific server backup by filename GET /api/external/v1/backups/:filename\n\nHTTP: GET /v1/backups/:filename\nCategory: Backups",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "type": "string",
+          "description": "Path parameter: filename"
+        }
+      },
+      "required": [
+        "filename"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/backups/:filename",
+      "category": "Backups",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_backups_post_v1_backups_filename_restore",
+    "description": "RestoreBackup restores a server backup POST /api/external/v1/backups/:filename/restore\n\nHTTP: POST /v1/backups/:filename/restore\nCategory: Backups",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "type": "string",
+          "description": "Path parameter: filename"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "domain_names": {
+              "type": "array",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "filename",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/backups/:filename/restore",
+      "category": "Backups",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_backups_delete_v1_backups_filename",
+    "description": "DeleteBackup deletes a server backup DELETE /api/external/v1/backups/:filename\n\nHTTP: DELETE /v1/backups/:filename\nCategory: Backups",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "type": "string",
+          "description": "Path parameter: filename"
+        }
+      },
+      "required": [
+        "filename"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/backups/:filename",
+      "category": "Backups",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_snapshots_get_v1_snapshots_id",
+    "description": "GetSnapshot gets a specific domain snapshot GET /api/external/v1/snapshots/:id\n\nHTTP: GET /v1/snapshots/:id\nCategory: Snapshots",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/snapshots/:id",
+      "category": "Snapshots",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_snapshots_post_v1_snapshots_id_restore",
+    "description": "RestoreSnapshot restores a domain snapshot POST /api/external/v1/snapshots/:id/restore\n\nHTTP: POST /v1/snapshots/:id/restore\nCategory: Snapshots",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/snapshots/:id/restore",
+      "category": "Snapshots",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_snapshots_delete_v1_snapshots_id",
+    "description": "DeleteSnapshot deletes a domain snapshot DELETE /api/external/v1/snapshots/:id\n\nHTTP: DELETE /v1/snapshots/:id\nCategory: Snapshots",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/snapshots/:id",
+      "category": "Snapshots",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_bandwidth_get_v1_bandwidth_accounts_id",
+    "description": "=========================== Bandwidth Monitoring =========================== GetAccountBandwidth gets bandwidth usage for an account GET /api/external/v1/bandwidth/account/:id\n\nHTTP: GET /v1/bandwidth/accounts/:id\nCategory: Bandwidth",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/bandwidth/accounts/:id",
+      "category": "Bandwidth",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_bandwidth_get_v1_bandwidth_domains_id",
+    "description": "GetDomainBandwidth gets bandwidth usage for a domain GET /api/external/v1/bandwidth/domain/:id\n\nHTTP: GET /v1/bandwidth/domains/:id\nCategory: Bandwidth",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/bandwidth/domains/:id",
+      "category": "Bandwidth",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_bandwidth_get_v1_bandwidth_summary",
+    "description": "GetBandwidthSummary gets bandwidth usage summary GET /api/external/v1/bandwidth/summary\n\nHTTP: GET /v1/bandwidth/summary\nCategory: Bandwidth",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/bandwidth/summary",
+      "category": "Bandwidth",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_plans_get_v1_plans_id",
+    "description": "GetPlan gets a specific plan\n\nHTTP: GET /v1/plans/:id\nCategory: Plans",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/plans/:id",
+      "category": "Plans",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_plans_patch_v1_plans_id",
+    "description": "Update plan\n\nHTTP: PATCH /v1/plans/:id\nCategory: Plans",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/plans/:id",
+      "category": "Plans",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_plans_delete_v1_plans_id",
+    "description": "Delete plan\n\nHTTP: DELETE /v1/plans/:id\nCategory: Plans",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/plans/:id",
+      "category": "Plans",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_subdomains_id",
+    "description": "Returns details of a specific subdomain.\n\nHTTP: GET /v1/subdomains/:id\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/subdomains/:id",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_patch_v1_subdomains_id",
+    "description": "Updates a subdomain configuration including document root, SSL, and redirect settings.\n\nHTTP: PATCH /v1/subdomains/:id\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/subdomains/:id",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_delete_v1_subdomains_id",
+    "description": "Deletes a subdomain.\n\nHTTP: DELETE /v1/subdomains/:id\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/subdomains/:id",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_subdomains",
+    "description": "Returns all subdomains for a domain.\n\nHTTP: GET /v1/domains/:id/subdomains\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/subdomains",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_post_v1_domains_id_subdomains",
+    "description": "Creates a new subdomain with optional SSL and redirect configuration.\n\nHTTP: POST /v1/domains/:id/subdomains\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/subdomains",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_stats",
+    "description": "Returns usage statistics for a domain.\n\nHTTP: GET /v1/domains/:id/stats\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/stats",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ip_addresses_get_v1_ip_addresses_primary",
+    "description": "Get primary IP\n\nHTTP: GET /v1/ip-addresses/primary\nCategory: IP Addresses",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/ip-addresses/primary",
+      "category": "IP Addresses",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ip_addresses_get_v1_ip_addresses_available",
+    "description": "Get available IPs\n\nHTTP: GET /v1/ip-addresses/available\nCategory: IP Addresses",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/ip-addresses/available",
+      "category": "IP Addresses",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ip_addresses_post_v1_ip_addresses_detect",
+    "description": "Detect IP addresses\n\nHTTP: POST /v1/ip-addresses/detect\nCategory: IP Addresses",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ip-addresses/detect",
+      "category": "IP Addresses",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ip_addresses_get_v1_ip_addresses_id",
+    "description": "Get IP address\n\nHTTP: GET /v1/ip-addresses/:id\nCategory: IP Addresses",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/ip-addresses/:id",
+      "category": "IP Addresses",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ip_addresses_patch_v1_ip_addresses_id",
+    "description": "Update IP address\n\nHTTP: PATCH /v1/ip-addresses/:id\nCategory: IP Addresses",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/ip-addresses/:id",
+      "category": "IP Addresses",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ip_addresses_delete_v1_ip_addresses_id",
+    "description": "Delete IP address\n\nHTTP: DELETE /v1/ip-addresses/:id\nCategory: IP Addresses",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/ip-addresses/:id",
+      "category": "IP Addresses",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ip_addresses_post_v1_ip_addresses_id_set_primary",
+    "description": "Set primary IP\n\nHTTP: POST /v1/ip-addresses/:id/set-primary\nCategory: IP Addresses",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ip-addresses/:id/set-primary",
+      "category": "IP Addresses",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssh_users_get_v1_ssh_users_id",
+    "description": "Get SSH user\n\nHTTP: GET /v1/ssh-users/:id\nCategory: SSH Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/ssh-users/:id",
+      "category": "SSH Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssh_users_patch_v1_ssh_users_id",
+    "description": "Update SSH user\n\nHTTP: PATCH /v1/ssh-users/:id\nCategory: SSH Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/ssh-users/:id",
+      "category": "SSH Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssh_users_delete_v1_ssh_users_id",
+    "description": "Delete SSH user\n\nHTTP: DELETE /v1/ssh-users/:id\nCategory: SSH Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/ssh-users/:id",
+      "category": "SSH Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssh_users_post_v1_ssh_users_id_suspend",
+    "description": "Suspend SSH user\n\nHTTP: POST /v1/ssh-users/:id/suspend\nCategory: SSH Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ssh-users/:id/suspend",
+      "category": "SSH Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ssh_users_post_v1_ssh_users_id_unsuspend",
+    "description": "Unsuspend SSH user\n\nHTTP: POST /v1/ssh-users/:id/unsuspend\nCategory: SSH Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ssh-users/:id/unsuspend",
+      "category": "SSH Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_mysql_users_get_v1_mysql_users_id",
+    "description": "Get MySQL user\n\nHTTP: GET /v1/mysql-users/:id\nCategory: MySQL Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/mysql-users/:id",
+      "category": "MySQL Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_mysql_users_patch_v1_mysql_users_id",
+    "description": "Update MySQL user\n\nHTTP: PATCH /v1/mysql-users/:id\nCategory: MySQL Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/mysql-users/:id",
+      "category": "MySQL Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_mysql_users_delete_v1_mysql_users_id",
+    "description": "Delete MySQL user\n\nHTTP: DELETE /v1/mysql-users/:id\nCategory: MySQL Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/mysql-users/:id",
+      "category": "MySQL Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_mysql_users_post_v1_mysql_users_id_change_password",
+    "description": "Change MySQL password\n\nHTTP: POST /v1/mysql-users/:id/change-password\nCategory: MySQL Users",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/mysql-users/:id/change-password",
+      "category": "MySQL Users",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cron_jobs_get_v1_cron_jobs_id",
+    "description": "Get cron job\n\nHTTP: GET /v1/cron-jobs/:id\nCategory: Cron Jobs",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/cron-jobs/:id",
+      "category": "Cron Jobs",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cron_jobs_patch_v1_cron_jobs_id",
+    "description": "Update cron job\n\nHTTP: PATCH /v1/cron-jobs/:id\nCategory: Cron Jobs",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/cron-jobs/:id",
+      "category": "Cron Jobs",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cron_jobs_delete_v1_cron_jobs_id",
+    "description": "Delete cron job\n\nHTTP: DELETE /v1/cron-jobs/:id\nCategory: Cron Jobs",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/cron-jobs/:id",
+      "category": "Cron Jobs",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cron_jobs_post_v1_cron_jobs_id_toggle",
+    "description": "Toggle cron job\n\nHTTP: POST /v1/cron-jobs/:id/toggle\nCategory: Cron Jobs",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cron-jobs/:id/toggle",
+      "category": "Cron Jobs",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cron_jobs_post_v1_cron_jobs_id_run",
+    "description": "Run cron job now\n\nHTTP: POST /v1/cron-jobs/:id/run\nCategory: Cron Jobs",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cron-jobs/:id/run",
+      "category": "Cron Jobs",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cron_jobs_get_v1_cron_jobs_id_logs",
+    "description": "Get cron job logs\n\nHTTP: GET /v1/cron-jobs/:id/logs\nCategory: Cron Jobs",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "limit": {
+          "type": "string",
+          "description": "Query parameter: limit"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/cron-jobs/:id/logs",
+      "category": "Cron Jobs",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_php_get_v1_php_versions",
+    "description": "List PHP versions\n\nHTTP: GET /v1/php/versions\nCategory: PHP",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/php/versions",
+      "category": "PHP",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_php",
+    "description": "Returns PHP configuration for a domain.\n\nHTTP: GET /v1/domains/:id/php\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/php",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_patch_v1_domains_id_php",
+    "description": "Updates PHP version and settings for a domain.\n\nHTTP: PATCH /v1/domains/:id/php\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/domains/:id/php",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_webserver",
+    "description": "Returns current web server mode (nginx_apache or nginx_only) and available options.\n\nHTTP: GET /v1/domains/:id/webserver\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/webserver",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_patch_v1_domains_id_webserver",
+    "description": "Changes web server mode between nginx_apache (Nginx + Apache) and nginx_only (Pure Nginx with PHP-FPM). Regenerates all configs automatically.\n\nHTTP: PATCH /v1/domains/:id/webserver\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/domains/:id/webserver",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_delete_v1_email_forwarders_id",
+    "description": "Delete email forwarder\n\nHTTP: DELETE /v1/email-forwarders/:id\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/email-forwarders/:id",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_get_v1_domains_id_email_forwarders",
+    "description": "Returns all email forwarders for a domain.\n\nHTTP: GET /v1/domains/:id/email-forwarders\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/email-forwarders",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_post_v1_domains_id_email_forwarders",
+    "description": "Creates a new email forwarder.\n\nHTTP: POST /v1/domains/:id/email-forwarders\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "destination_emails": {
+              "type": "array",
+              "description": ""
+            },
+            "destinations": {
+              "type": "array",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/email-forwarders",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_delete_v1_email_autoresponders_id",
+    "description": "Delete autoresponder\n\nHTTP: DELETE /v1/email-autoresponders/:id\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/email-autoresponders/:id",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_get_v1_domains_id_email_autoresponders",
+    "description": "Returns all autoresponders for a domain.\n\nHTTP: GET /v1/domains/:id/email-autoresponders\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/email-autoresponders",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_post_v1_domains_id_email_autoresponders",
+    "description": "Creates a new email autoresponder.\n\nHTTP: POST /v1/domains/:id/email-autoresponders\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/email-autoresponders",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_security_blocked_ips",
+    "description": "List blocked IPs\n\nHTTP: GET /v1/security/blocked-ips\nCategory: Security",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/security/blocked-ips",
+      "category": "Security",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_security_post_v1_security_blocked_ips",
+    "description": "Block IP\n\nHTTP: POST /v1/security/blocked-ips\nCategory: Security",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/security/blocked-ips",
+      "category": "Security",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_security_delete_v1_security_blocked_ips_id",
+    "description": "Unblock IP\n\nHTTP: DELETE /v1/security/blocked-ips/:id\nCategory: Security",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/security/blocked-ips/:id",
+      "category": "Security",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_security_firewall_rules",
+    "description": "List firewall rules\n\nHTTP: GET /v1/security/firewall-rules\nCategory: Security",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/security/firewall-rules",
+      "category": "Security",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_security_post_v1_security_firewall_rules",
+    "description": "Create firewall rule\n\nHTTP: POST /v1/security/firewall-rules\nCategory: Security",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/security/firewall-rules",
+      "category": "Security",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_security_delete_v1_security_firewall_rules_id",
+    "description": "Delete firewall rule\n\nHTTP: DELETE /v1/security/firewall-rules/:id\nCategory: Security",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/security/firewall-rules/:id",
+      "category": "Security",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_security_login_history",
+    "description": "Get login history\n\nHTTP: GET /v1/security/login-history\nCategory: Security",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/security/login-history",
+      "category": "Security",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_sessions_delete_v1_sessions_id",
+    "description": "Revoke session\n\nHTTP: DELETE /v1/sessions/:id\nCategory: Sessions",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/sessions/:id",
+      "category": "Sessions",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_sessions_post_v1_sessions_revoke_all",
+    "description": "Revoke all sessions\n\nHTTP: POST /v1/sessions/revoke-all\nCategory: Sessions",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/sessions/revoke-all",
+      "category": "Sessions",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_2fa_get_v1_2fa_status",
+    "description": "Get 2FA status\n\nHTTP: GET /v1/2fa/status\nCategory: 2FA",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/2fa/status",
+      "category": "2FA",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_2fa_post_v1_2fa_enable",
+    "description": "Enable 2FA\n\nHTTP: POST /v1/2fa/enable\nCategory: 2FA",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/2fa/enable",
+      "category": "2FA",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_2fa_post_v1_2fa_verify",
+    "description": "Verify 2FA\n\nHTTP: POST /v1/2fa/verify\nCategory: 2FA",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/2fa/verify",
+      "category": "2FA",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_2fa_post_v1_2fa_disable",
+    "description": "Disable 2FA\n\nHTTP: POST /v1/2fa/disable\nCategory: 2FA",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/2fa/disable",
+      "category": "2FA",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_config_locks_get_v1_config_locks_type_id",
+    "description": "Get config lock status\n\nHTTP: GET /v1/config-locks/:type/:id\nCategory: Config Locks",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Path parameter: type"
+        },
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/config-locks/:type/:id",
+      "category": "Config Locks",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_patch_v1_files_rename",
+    "description": "Rename file or folder\n\nHTTP: PATCH /v1/files/rename\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/files/rename",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_post_v1_files_copy",
+    "description": "Copy files\n\nHTTP: POST /v1/files/copy\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "source_paths": {
+              "type": "array",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/files/copy",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_post_v1_files_move",
+    "description": "Move files\n\nHTTP: POST /v1/files/move\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "source_paths": {
+              "type": "array",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/files/move",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_get_v1_files_content",
+    "description": "Read file content\n\nHTTP: GET /v1/files/content\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "Query parameter: user_id"
+        },
+        "path": {
+          "type": "string",
+          "description": "Query parameter: path"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/files/content",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_put_v1_files_content",
+    "description": "Write file content\n\nHTTP: PUT /v1/files/content\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/files/content",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_get_v1_files_accessible_directories",
+    "description": "Get accessible directories\n\nHTTP: GET /v1/files/accessible-directories\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "Query parameter: user_id"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/files/accessible-directories",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_get_v1_files_download",
+    "description": "Download file\n\nHTTP: GET /v1/files/download\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Query parameter: path"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/files/download",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_post_v1_files_compress",
+    "description": "Compress files\n\nHTTP: POST /v1/files/compress\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "source_paths": {
+              "type": "array",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/files/compress",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_post_v1_files_extract",
+    "description": "Extract archive\n\nHTTP: POST /v1/files/extract\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/files/extract",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_get_v1_files_archive_info",
+    "description": "Get archive info\n\nHTTP: GET /v1/files/archive/info\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "Query parameter: user_id"
+        },
+        "path": {
+          "type": "string",
+          "description": "Query parameter: path"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/files/archive/info",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_get_v1_files_trash",
+    "description": "List trash items\n\nHTTP: GET /v1/files/trash\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "Query parameter: user_id"
+        },
+        "page": {
+          "type": "string",
+          "description": "Query parameter: page"
+        },
+        "limit": {
+          "type": "string",
+          "description": "Query parameter: limit"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/files/trash",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_get_v1_files_trash_stats",
+    "description": "Get trash statistics\n\nHTTP: GET /v1/files/trash/stats\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/files/trash/stats",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_post_v1_files_trash_id_restore",
+    "description": "Restore from trash\n\nHTTP: POST /v1/files/trash/:id/restore\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/files/trash/:id/restore",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_delete_v1_files_trash_id",
+    "description": "Permanent delete from trash\n\nHTTP: DELETE /v1/files/trash/:id\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/files/trash/:id",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_post_v1_files_trash_empty",
+    "description": "Empty trash\n\nHTTP: POST /v1/files/trash/empty\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/files/trash/empty",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_get_v1_files_permissions",
+    "description": "Get file permissions\n\nHTTP: GET /v1/files/permissions\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Query parameter: path"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/files/permissions",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_patch_v1_files_permissions",
+    "description": "Change file permissions\n\nHTTP: PATCH /v1/files/permissions\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": ""
+            },
+            "permissions": {
+              "type": "string",
+              "description": "Octal format: \"755\", \"644\""
+            },
+            "owner": {
+              "type": "string",
+              "description": "Username"
+            },
+            "group": {
+              "type": "string",
+              "description": "Group name"
+            },
+            "recursive": {
+              "type": "string",
+              "description": "Apply recursively"
+            }
+          },
+          "required": [
+            "path"
+          ]
+        }
+      },
+      "required": [
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/files/permissions",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_patch_v1_files_ownership",
+    "description": "Change file ownership\n\nHTTP: PATCH /v1/files/ownership\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": ""
+            },
+            "permissions": {
+              "type": "string",
+              "description": "Octal format: \"755\", \"644\""
+            },
+            "owner": {
+              "type": "string",
+              "description": "Username"
+            },
+            "group": {
+              "type": "string",
+              "description": "Group name"
+            },
+            "recursive": {
+              "type": "string",
+              "description": "Apply recursively"
+            }
+          },
+          "required": [
+            "path"
+          ]
+        }
+      },
+      "required": [
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/files/ownership",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_file_manager_get_v1_files_permissions_presets",
+    "description": "Get permission presets\n\nHTTP: GET /v1/files/permissions/presets\nCategory: File Manager",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/files/permissions/presets",
+      "category": "File Manager",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_modsecurity",
+    "description": "Returns ModSecurity WAF configuration for a domain.\n\nHTTP: GET /v1/domains/:id/modsecurity\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/modsecurity",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_patch_v1_domains_id_modsecurity",
+    "description": "Updates ModSecurity WAF configuration for a domain.\n\nHTTP: PATCH /v1/domains/:id/modsecurity\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/domains/:id/modsecurity",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_get_v1_accounts_id_stats",
+    "description": "Returns usage statistics for an account.\n\nHTTP: GET /v1/accounts/:id/stats\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/accounts/:id/stats",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_get_v1_accounts_id_domains",
+    "description": "Returns all domains for an account.\n\nHTTP: GET /v1/accounts/:id/domains\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/accounts/:id/domains",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_get_v1_accounts_id_emails",
+    "description": "Returns all email accounts for an account.\n\nHTTP: GET /v1/accounts/:id/emails\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/accounts/:id/emails",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_get_v1_accounts_id_disk_usage",
+    "description": "Returns disk usage breakdown for an account.\n\nHTTP: GET /v1/accounts/:id/disk-usage\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/accounts/:id/disk-usage",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_post_v1_accounts_id_impersonate",
+    "description": "Starts impersonation session for an account.\n\nHTTP: POST /v1/accounts/:id/impersonate\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/accounts/:id/impersonate",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_accounts_post_v1_accounts_stop_impersonation",
+    "description": "Ends the current impersonation session.\n\nHTTP: POST /v1/accounts/stop-impersonation\nCategory: Accounts",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/accounts/stop-impersonation",
+      "category": "Accounts",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_redirects_delete_v1_redirects_id",
+    "description": "Delete redirect\n\nHTTP: DELETE /v1/redirects/:id\nCategory: Redirects",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/redirects/:id",
+      "category": "Redirects",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_redirects_get_v1_domains_id_redirects",
+    "description": "Returns all URL redirects for a domain.\n\nHTTP: GET /v1/domains/:id/redirects\nCategory: Redirects",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/redirects",
+      "category": "Redirects",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_redirects_post_v1_domains_id_redirects",
+    "description": "Creates a new URL redirect.\n\nHTTP: POST /v1/domains/:id/redirects\nCategory: Redirects",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/redirects",
+      "category": "Redirects",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_backup_schedules_patch_v1_backup_schedules_id",
+    "description": "Update backup schedule\n\nHTTP: PATCH /v1/backup-schedules/:id\nCategory: Backup Schedules",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/backup-schedules/:id",
+      "category": "Backup Schedules",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_backup_schedules_delete_v1_backup_schedules_id",
+    "description": "Delete backup schedule\n\nHTTP: DELETE /v1/backup-schedules/:id\nCategory: Backup Schedules",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/backup-schedules/:id",
+      "category": "Backup Schedules",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_system_cron_post_v1_system_cron_jobs_id_toggle",
+    "description": "Toggle system cron job\n\nHTTP: POST /v1/system-cron-jobs/:id/toggle\nCategory: System Cron",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/system-cron-jobs/:id/toggle",
+      "category": "System Cron",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ftp_post_v1_ftp_accounts_id_suspend",
+    "description": "Suspend FTP account\n\nHTTP: POST /v1/ftp-accounts/:id/suspend\nCategory: FTP",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ftp-accounts/:id/suspend",
+      "category": "FTP",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ftp_post_v1_ftp_accounts_id_unsuspend",
+    "description": "Unsuspend FTP account\n\nHTTP: POST /v1/ftp-accounts/:id/unsuspend\nCategory: FTP",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ftp-accounts/:id/unsuspend",
+      "category": "FTP",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_ftp_post_v1_ftp_accounts_id_change_password",
+    "description": "Change FTP password\n\nHTTP: POST /v1/ftp-accounts/:id/change-password\nCategory: FTP",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/ftp-accounts/:id/change-password",
+      "category": "FTP",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_email_post_v1_email_accounts_id_change_password",
+    "description": "Change email password\n\nHTTP: POST /v1/email-accounts/:id/change-password\nCategory: Email",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/email-accounts/:id/change-password",
+      "category": "Email",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_databases_post_v1_databases_id_grant",
+    "description": "Grants a user access to a database.\n\nHTTP: POST /v1/databases/:id/grant\nCategory: Databases",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "privileges": {
+              "type": "array",
+              "description": ""
+            }
+          },
+          "required": [
+            "privileges"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/databases/:id/grant",
+      "category": "Databases",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_databases_post_v1_databases_id_revoke",
+    "description": "Revokes user access to a database.\n\nHTTP: POST /v1/databases/:id/revoke\nCategory: Databases",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/databases/:id/revoke",
+      "category": "Databases",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_logs_access",
+    "description": "Returns recent access logs for a domain.\n\nHTTP: GET /v1/domains/:id/logs/access\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/logs/access",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_logs_error",
+    "description": "Returns recent error logs for a domain.\n\nHTTP: GET /v1/domains/:id/logs/error\nCategory: Domains",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/logs/error",
+      "category": "Domains",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dkim_spf_get_v1_domains_id_dkim",
+    "description": "Returns DKIM configuration for a domain.\n\nHTTP: GET /v1/domains/:id/dkim\nCategory: DKIM/SPF",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/dkim",
+      "category": "DKIM/SPF",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dkim_spf_post_v1_domains_id_dkim_enable",
+    "description": "Enables DKIM signing for a domain.\n\nHTTP: POST /v1/domains/:id/dkim/enable\nCategory: DKIM/SPF",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/dkim/enable",
+      "category": "DKIM/SPF",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dkim_spf_post_v1_domains_id_dkim_disable",
+    "description": "Disables DKIM signing for a domain.\n\nHTTP: POST /v1/domains/:id/dkim/disable\nCategory: DKIM/SPF",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/dkim/disable",
+      "category": "DKIM/SPF",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dkim_spf_get_v1_domains_id_spf",
+    "description": "Returns SPF configuration for a domain.\n\nHTTP: GET /v1/domains/:id/spf\nCategory: DKIM/SPF",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/spf",
+      "category": "DKIM/SPF",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_dkim_spf_patch_v1_domains_id_spf",
+    "description": "Updates SPF record for a domain.\n\nHTTP: PATCH /v1/domains/:id/spf\nCategory: DKIM/SPF",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/domains/:id/spf",
+      "category": "DKIM/SPF",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_notifications_get_v1_notifications",
+    "description": "Get notifications\n\nHTTP: GET /v1/notifications\nCategory: Notifications",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/notifications",
+      "category": "Notifications",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_notifications_post_v1_notifications_id_read",
+    "description": "Mark notification read\n\nHTTP: POST /v1/notifications/:id/read\nCategory: Notifications",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/notifications/:id/read",
+      "category": "Notifications",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_audit_get_v1_activity_log",
+    "description": "Get activity log\n\nHTTP: GET /v1/activity-log\nCategory: Audit",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "string",
+          "description": "Query parameter: limit"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/activity-log",
+      "category": "Audit",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_core_get_v1_search",
+    "description": "Quick search\n\nHTTP: GET /v1/search\nCategory: Core",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "q": {
+          "type": "string",
+          "description": "Query parameter: q"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/search",
+      "category": "Core",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_antivirus_get_v1_antivirus_status",
+    "description": "Returns ClamAV daemon status, active threats count, quarantined files count, last scan info, and current settings. Only ROOT/ADMIN can access.\n\nHTTP: GET /v1/antivirus/status\nCategory: Antivirus",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/antivirus/status",
+      "category": "Antivirus",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_antivirus_post_v1_antivirus_scan",
+    "description": "Starts an antivirus scan on the specified path. Scan types: quick (common locations), full (all user data), custom (specific path). Non-admin users can only scan /home/ paths. ClamAV daemon must be running.\n\nHTTP: POST /v1/antivirus/scan\nCategory: Antivirus",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/antivirus/scan",
+      "category": "Antivirus",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_antivirus_get_v1_antivirus_scan_id",
+    "description": "Returns scan details including progress, files scanned, and detected threats with file paths and severity levels. Non-admin users can only view their own scans.\n\nHTTP: GET /v1/antivirus/scan/:id\nCategory: Antivirus",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/antivirus/scan/:id",
+      "category": "Antivirus",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_antivirus_get_v1_antivirus_quarantine",
+    "description": "Returns paginated list of quarantined files with threat details. Supports filtering by status (active, restored, deleted). Non-admin users can only view their own quarantined files.\n\nHTTP: GET /v1/antivirus/quarantine\nCategory: Antivirus",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "string",
+          "description": "Query parameter: page"
+        },
+        "limit": {
+          "type": "string",
+          "description": "Query parameter: limit"
+        },
+        "status": {
+          "type": "string",
+          "description": "Query parameter: status"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/antivirus/quarantine",
+      "category": "Antivirus",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_panel_settings_get_v1_panel_settings",
+    "description": "Get panel settings\n\nHTTP: GET /v1/panel-settings\nCategory: Panel Settings",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/panel-settings",
+      "category": "Panel Settings",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_panel_settings_patch_v1_panel_settings",
+    "description": "Update panel settings\n\nHTTP: PATCH /v1/panel-settings\nCategory: Panel Settings",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/panel-settings",
+      "category": "Panel Settings",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_server_get_v1_server_status",
+    "description": "=========================== Server Status =========================== GetServerStatus gets server status\n\nHTTP: GET /v1/server/status\nCategory: Server",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/server/status",
+      "category": "Server",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_server_get_v1_server_metrics",
+    "description": "GetServerMetrics gets server metrics\n\nHTTP: GET /v1/server/metrics\nCategory: Server",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/server/metrics",
+      "category": "Server",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_server_get_v1_server_services",
+    "description": "Get services status\n\nHTTP: GET /v1/server/services\nCategory: Server",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/server/services",
+      "category": "Server",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_server_post_v1_server_services_name_restart",
+    "description": "Restarts a specific service (nginx, apache, mysql, postgresql, redis, bind, proftpd, etc.).\n\nHTTP: POST /v1/server/services/:name/restart\nCategory: Server",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Path parameter: name"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/server/services/:name/restart",
+      "category": "Server",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_server_post_v1_server_services_name_stop",
+    "description": "Stops a specific service. Use with caution.\n\nHTTP: POST /v1/server/services/:name/stop\nCategory: Server",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Path parameter: name"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/server/services/:name/stop",
+      "category": "Server",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_server_post_v1_server_services_name_start",
+    "description": "Starts a specific service that was previously stopped.\n\nHTTP: POST /v1/server/services/:name/start\nCategory: Server",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Path parameter: name"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/server/services/:name/start",
+      "category": "Server",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_metrics_get_v1_metrics_native",
+    "description": "Returns system metrics collected directly from OS.\n\nHTTP: GET /v1/metrics/native\nCategory: Metrics",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/metrics/native",
+      "category": "Metrics",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_webhooks_get_v1_webhooks_id",
+    "description": "GetWebhook gets a specific webhook GET /api/external/v1/webhooks/:id\n\nHTTP: GET /v1/webhooks/:id\nCategory: Webhooks",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/webhooks/:id",
+      "category": "Webhooks",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_webhooks_patch_v1_webhooks_id",
+    "description": "UpdateWebhook updates a webhook PATCH /api/external/v1/webhooks/:id\n\nHTTP: PATCH /v1/webhooks/:id\nCategory: Webhooks",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "events": {
+              "type": "array",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/webhooks/:id",
+      "category": "Webhooks",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_webhooks_delete_v1_webhooks_id",
+    "description": "DeleteWebhook deletes a webhook DELETE /api/external/v1/webhooks/:id\n\nHTTP: DELETE /v1/webhooks/:id\nCategory: Webhooks",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/webhooks/:id",
+      "category": "Webhooks",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_webhooks_post_v1_webhooks_id_test",
+    "description": "TestWebhook tests a webhook POST /api/external/v1/webhooks/:id/test\n\nHTTP: POST /v1/webhooks/:id/test\nCategory: Webhooks",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/webhooks/:id/test",
+      "category": "Webhooks",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_migrations_get_v1_migrations_id",
+    "description": "GetMigration returns a single migration session GET /v1/migrations/:id\n\nHTTP: GET /v1/migrations/:id\nCategory: Migrations",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/migrations/:id",
+      "category": "Migrations",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_mailing_lists_get_v1_mailing_lists_id",
+    "description": "Get mailing list\n\nHTTP: GET /v1/mailing-lists/:id\nCategory: Mailing Lists",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/mailing-lists/:id",
+      "category": "Mailing Lists",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_mailing_lists_delete_v1_mailing_lists_id",
+    "description": "Delete mailing list\n\nHTTP: DELETE /v1/mailing-lists/:id\nCategory: Mailing Lists",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/mailing-lists/:id",
+      "category": "Mailing Lists",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_spam_get_v1_spam_statistics",
+    "description": "Get spam statistics\n\nHTTP: GET /v1/spam/statistics\nCategory: Spam",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/spam/statistics",
+      "category": "Spam",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_spam_get_v1_spam_blacklist",
+    "description": "List spam blacklist\n\nHTTP: GET /v1/spam/blacklist\nCategory: Spam",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/spam/blacklist",
+      "category": "Spam",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_spam_post_v1_spam_blacklist",
+    "description": "Add to blacklist\n\nHTTP: POST /v1/spam/blacklist\nCategory: Spam",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/spam/blacklist",
+      "category": "Spam",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_spam_delete_v1_spam_blacklist_id",
+    "description": "Remove from blacklist\n\nHTTP: DELETE /v1/spam/blacklist/:id\nCategory: Spam",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/spam/blacklist/:id",
+      "category": "Spam",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_spam_get_v1_spam_whitelist",
+    "description": "List spam whitelist\n\nHTTP: GET /v1/spam/whitelist\nCategory: Spam",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/spam/whitelist",
+      "category": "Spam",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_spam_post_v1_spam_whitelist",
+    "description": "Add to whitelist\n\nHTTP: POST /v1/spam/whitelist\nCategory: Spam",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/spam/whitelist",
+      "category": "Spam",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_spam_delete_v1_spam_whitelist_id",
+    "description": "Remove from whitelist\n\nHTTP: DELETE /v1/spam/whitelist/:id\nCategory: Spam",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/spam/whitelist/:id",
+      "category": "Spam",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_mail_queue_get_v1_mail_queue_stats",
+    "description": "Get mail queue stats\n\nHTTP: GET /v1/mail-queue/stats\nCategory: Mail Queue",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/mail-queue/stats",
+      "category": "Mail Queue",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_remote_mysql_delete_v1_remote_mysql_hosts_id",
+    "description": "Delete remote MySQL host\n\nHTTP: DELETE /v1/remote-mysql-hosts/:id\nCategory: Remote MySQL",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/remote-mysql-hosts/:id",
+      "category": "Remote MySQL",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_resource_quota_get_v1_resource_quota_users_user_id",
+    "description": "Get user resource quota\n\nHTTP: GET /v1/resource-quota/users/:user_id\nCategory: Resource Quota",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "description": "Path parameter: user_id"
+        }
+      },
+      "required": [
+        "user_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/resource-quota/users/:user_id",
+      "category": "Resource Quota",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_license_get_v1_license_status",
+    "description": "Returns current license validity, plan name, expiry date, and grace period info.\n\nHTTP: GET /v1/license/status\nCategory: License",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/license/status",
+      "category": "License",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_license_get_v1_license_features",
+    "description": "Returns all 27 license features with their enabled/disabled status.\n\nHTTP: GET /v1/license/features\nCategory: License",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/license/features",
+      "category": "License",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_license_get_v1_license_features_feature",
+    "description": "Check if a specific license feature is enabled. Returns 404 if feature not found.\n\nHTTP: GET /v1/license/features/:feature\nCategory: License",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "feature": {
+          "type": "string",
+          "description": "Path parameter: feature"
+        }
+      },
+      "required": [
+        "feature"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/license/features/:feature",
+      "category": "License",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_license_get_v1_license_quotas",
+    "description": "Returns all 6 resource quotas with current limits (domains, databases, ftp, email, subdomains, users).\n\nHTTP: GET /v1/license/quotas\nCategory: License",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/license/quotas",
+      "category": "License",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_license_get_v1_license_quotas_resource",
+    "description": "Check quota limit for a specific resource. Returns 404 if resource not found.\n\nHTTP: GET /v1/license/quotas/:resource\nCategory: License",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "type": "string",
+          "description": "Path parameter: resource"
+        }
+      },
+      "required": [
+        "resource"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/license/quotas/:resource",
+      "category": "License",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_license_get_v1_license_plan",
+    "description": "Returns detailed license plan information including plan slug, name, status, and expiry.\n\nHTTP: GET /v1/license/plan\nCategory: License",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/license/plan",
+      "category": "License",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_get_v1_cloudflare_zones",
+    "description": "List all CloudFlare zones with settings (security_level, ssl_mode, always_use_https). Returns zone list with Panelica domain matching and IP sync status.\n\nHTTP: GET /v1/cloudflare/zones\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/cloudflare/zones",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_get_v1_cloudflare_zones_zone_id_settings",
+    "description": "Get CloudFlare zone settings including security_level, ssl_mode, and always_use_https.\n\nHTTP: GET /v1/cloudflare/zones/:zone_id/settings\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        }
+      },
+      "required": [
+        "zone_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/cloudflare/zones/:zone_id/settings",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_get_v1_cloudflare_zones_zone_id_dns",
+    "description": "List all DNS records for a CloudFlare zone.\n\nHTTP: GET /v1/cloudflare/zones/:zone_id/dns\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        }
+      },
+      "required": [
+        "zone_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/cloudflare/zones/:zone_id/dns",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_post_v1_cloudflare_zones_zone_id_dns",
+    "description": "Create a new DNS record in a CloudFlare zone.\n\nHTTP: POST /v1/cloudflare/zones/:zone_id/dns\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": ""
+            },
+            "name": {
+              "type": "string",
+              "description": ""
+            },
+            "content": {
+              "type": "string",
+              "description": ""
+            },
+            "ttl": {
+              "type": "string",
+              "description": ""
+            },
+            "proxied": {
+              "type": "string",
+              "description": ""
+            },
+            "priority": {
+              "type": "string",
+              "description": ""
+            }
+          },
+          "required": [
+            "type",
+            "name",
+            "content"
+          ]
+        }
+      },
+      "required": [
+        "zone_id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cloudflare/zones/:zone_id/dns",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_put_v1_cloudflare_zones_zone_id_dns_abb3a8b2",
+    "description": "Update an existing DNS record in a CloudFlare zone.\n\nHTTP: PUT /v1/cloudflare/zones/:zone_id/dns/:record_id\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "record_id": {
+          "type": "string",
+          "description": "Path parameter: record_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": ""
+            },
+            "name": {
+              "type": "string",
+              "description": ""
+            },
+            "content": {
+              "type": "string",
+              "description": ""
+            },
+            "ttl": {
+              "type": "string",
+              "description": ""
+            },
+            "proxied": {
+              "type": "string",
+              "description": ""
+            },
+            "priority": {
+              "type": "string",
+              "description": ""
+            }
+          },
+          "required": [
+            "type",
+            "name",
+            "content"
+          ]
+        }
+      },
+      "required": [
+        "zone_id",
+        "record_id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/cloudflare/zones/:zone_id/dns/:record_id",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_delete_v1_cloudflare_zones_zone_id__5d0d4625",
+    "description": "Delete a DNS record from a CloudFlare zone.\n\nHTTP: DELETE /v1/cloudflare/zones/:zone_id/dns/:record_id\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "record_id": {
+          "type": "string",
+          "description": "Path parameter: record_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        }
+      },
+      "required": [
+        "zone_id",
+        "record_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/cloudflare/zones/:zone_id/dns/:record_id",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_post_v1_cloudflare_zones_zone_id_purge",
+    "description": "Purge CloudFlare cache for a zone. Send purge_everything:true to purge all, or files array for specific URLs.\n\nHTTP: POST /v1/cloudflare/zones/:zone_id/purge\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        }
+      },
+      "required": [
+        "zone_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cloudflare/zones/:zone_id/purge",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_post_v1_cloudflare_zones_zone_id_dev_mode",
+    "description": "Enable or disable CloudFlare development mode. When enabled, bypasses cache for 3 hours.\n\nHTTP: POST /v1/cloudflare/zones/:zone_id/dev-mode\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        }
+      },
+      "required": [
+        "zone_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cloudflare/zones/:zone_id/dev-mode",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_post_v1_cloudflare_zones_zone_id_un_8d5cbd2a",
+    "description": "Enable or disable CloudFlare Under Attack mode. When enabled, shows a JavaScript challenge to all visitors for 5 seconds.\n\nHTTP: POST /v1/cloudflare/zones/:zone_id/under-attack\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        }
+      },
+      "required": [
+        "zone_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cloudflare/zones/:zone_id/under-attack",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_post_v1_cloudflare_zones_zone_id_ssl_mode",
+    "description": "Set CloudFlare SSL/TLS encryption mode. Options: off (no encryption), flexible (CF-to-origin HTTP), full (CF-to-origin HTTPS, self-signed OK), strict (CF-to-origin HTTPS, valid cert required).\n\nHTTP: POST /v1/cloudflare/zones/:zone_id/ssl-mode\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        }
+      },
+      "required": [
+        "zone_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cloudflare/zones/:zone_id/ssl-mode",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_post_v1_cloudflare_zones_zone_id_ht_602debf0",
+    "description": "Enable or disable automatic HTTPS redirect (Always Use HTTPS) for a CloudFlare zone. When enabled, all HTTP requests are redirected to HTTPS.\n\nHTTP: POST /v1/cloudflare/zones/:zone_id/https-redirect\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        },
+        "credential_id": {
+          "type": "string",
+          "description": "Query parameter: credential_id"
+        }
+      },
+      "required": [
+        "zone_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cloudflare/zones/:zone_id/https-redirect",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_cloudflare_post_v1_cloudflare_zones_zone_id_sync_ip",
+    "description": "Sync the Panelica server IP to the root A record of a CloudFlare zone. If an A record exists, it will be updated; otherwise a new one is created with proxy enabled.\n\nHTTP: POST /v1/cloudflare/zones/:zone_id/sync-ip\nCategory: CloudFlare",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Path parameter: zone_id"
+        }
+      },
+      "required": [
+        "zone_id"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/cloudflare/zones/:zone_id/sync-ip",
+      "category": "CloudFlare",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_external_get_v1_migration_cloudflare_credentials",
+    "description": "GetCloudflareCredentials exports ALL Cloudflare credentials from source server External API endpoint: GET /v1/migration/cloudflare-credentials Used during Panelica-to-Panelica migration to transfer server-level CF credentials  Flow: 1. Target server calls this endpoint on source server (HMAC-authenticated) 2. Source queries cloudflare_credentials table (ALL records) 3. Source DECRYPTS API keys with source encryption key 4. Returns array of credentials (decrypted) 5. Target RE-ENCRYPTS with target encryption key and saves to DB  Security: HMAC authentication required (external_auth middleware)\n\nHTTP: GET /v1/migration/cloudflare-credentials\nCategory: External",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/migration/cloudflare-credentials",
+      "category": "External",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_external_get_v1_migration_sites_export",
+    "description": "GetMigrationSitesMetadata exports site metadata (domains, databases, emails, etc.) External API endpoint: GET /v1/migration/sites/export NOTE: This endpoint is currently DEPRECATED in favor of CLI tool export Use: <path> migration export-metadata --domains \"domain.com\" The CLI tool provides complete metadata including encrypted passwords, cron jobs, etc.  Returns basic domain list for compatibility\n\nHTTP: GET /v1/migration/sites/export\nCategory: External",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/migration/sites/export",
+      "category": "External",
+      "scopes": []
+    }
+  },
+  {
+    "name": "panelica_external_get_v1_migration_mysql_root_password",
+    "description": "GetMySQLRootPassword exports MySQL root password from panelica.conf External API endpoint: GET /v1/migration/mysql-root-password Used during Panelica-to-Panelica migration for database transfer\n\nHTTP: GET /v1/migration/mysql-root-password\nCategory: External",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/migration/mysql-root-password",
+      "category": "External",
+      "scopes": []
+    }
+  }
+]
