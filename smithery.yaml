@@ -1,0 +1,41 @@
+# Smithery deployment manifest.
+# https://smithery.ai/docs/build/project-config
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - panelicaBaseUrl
+      - panelicaApiKey
+      - panelicaApiSecret
+    properties:
+      panelicaBaseUrl:
+        type: string
+        title: Panelica base URL
+        description: External API base URL of your panel (e.g. https://your-panel-host:3002).
+      panelicaApiKey:
+        type: string
+        title: API key
+        description: X-API-Key value generated in the panel under Settings -> API Keys.
+      panelicaApiSecret:
+        type: string
+        title: API secret
+        description: Paired secret shown once at key creation.
+        format: password
+      panelicaTimeoutMs:
+        type: integer
+        title: Request timeout (ms)
+        default: 30000
+  commandFunction: |-
+    (config) => ({
+      command: 'node',
+      args: ['dist/index.js'],
+      env: {
+        PANELICA_BASE_URL: config.panelicaBaseUrl,
+        PANELICA_API_KEY: config.panelicaApiKey,
+        PANELICA_API_SECRET: config.panelicaApiSecret,
+        PANELICA_TIMEOUT_MS: String(config.panelicaTimeoutMs ?? 30000),
+      },
+    })
+build:
+  dockerfile: Dockerfile
