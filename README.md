@@ -51,15 +51,22 @@ SSL, email, MySQL, FTP, security, backups, server resources, and more.
                                             X-Timestamp      |
                                             X-Signature      |
                                                              v
-                                        +--------------------+--------------------+
-                                        |  Panelica External API  (port 3002)    |
-                                        |  external-server process               |
-                                        +----------------------+-----------------+
-                                                               |
-                                                               v
-                                            +------------------+-----------------+
-                                            |  Panelica panel + Linux services   |
-                                            +------------------------------------+
+                              +------------------------------+------------------------------+
+                              |  https://<panel-host>:8443/api/external/v1/...               |
+                              |  nginx reverse proxy on the panel host                       |
+                              |  (TLS termination + path rewrite: /api/external/X -> /X)     |
+                              +------------------------------+------------------------------+
+                                                             |
+                                       127.0.0.1:3002 plain  |
+                                                             v
+                                            +----------------+-----------------+
+                                            |  external-server (HMAC verify)   |
+                                            +----------------+-----------------+
+                                                             |
+                                                             v
+                                            +----------------+-----------------+
+                                            |  Panelica panel + Linux services |
+                                            +----------------------------------+
 ```
 
 `panelica-mcp` is a thin, stateless adapter:
@@ -79,14 +86,15 @@ machine running the MCP server.
 
 - A running Panelica panel (version 1.0.193 or newer recommended; the External
   API surface is stable from 1.0.180+).
-- Network reachability from the machine running `panelica-mcp` to your panel's
-  External API port (default 3002 — see [configuration](#1-open-the-external-api-port)
-  below).
-- One of the following runtimes on the machine that hosts `panelica-mcp`:
+- HTTPS access to the panel UI on port 8443 from the machine that will run
+  `panelica-mcp`. This is the same port you already use in the browser — no
+  extra firewall change is required.
+- One of the following runtimes on that machine:
   - **Node.js ≥ 20** for the npm install path
   - **Docker** for the container path
 
-You do **not** need to install anything on the panel host itself.
+You do **not** need to install anything on the panel host itself, and you do
+**not** need to open the internal port 3002 to the public internet.
 
 ## Install
 
@@ -129,7 +137,7 @@ Run it from an MCP client config:
     "ghcr.io/panelica/panelica-mcp:latest"
   ],
   "env": {
-    "PANELICA_BASE_URL": "https://your-panel-host:3002",
+    "PANELICA_BASE_URL": "https://your-panel-host:8443/api/external",
     "PANELICA_API_KEY":  "pk_...",
     "PANELICA_API_SECRET": "sk_..."
   }
@@ -159,30 +167,35 @@ PANELICA_DATASET=/path/to/panelica-api-complete.jsonl npm run rebuild-tools
 
 You need three values: a reachable base URL, an API key, and an API secret.
 
-### 1. Open the External API port
+### 1. Pick the right base URL
 
-Panelica's `external-server` process listens on **TCP 3002** by default. The
-panel's reverse proxy on port 8443 does **not** transparently forward HMAC
-requests — its path rewrite invalidates the signature — so the MCP server must
-talk to 3002 directly.
+Panelica's `external-server` process listens on `127.0.0.1:3002`, and the
+panel's nginx on **8443** reverse-proxies `/api/external/...` to it. Nginx
+strips the `/api/external` prefix before forwarding, so the path the HMAC
+signature is computed over and the path the backend sees both end up as
+`/v1/...` — signatures match end-to-end without any extra knobs.
 
-On the panel host:
+The right `PANELICA_BASE_URL` depends on where you run `panelica-mcp`:
+
+| Scenario | Recommended `PANELICA_BASE_URL` |
+|---|---|
+| MCP client on your laptop, panel on a remote server | `https://<panel-host>:8443/api/external` |
+| MCP client and panel on the **same** machine | `http://127.0.0.1:3002` |
+
+You should **not** open port 3002 to the public internet. The default install
+binds it on all interfaces but expects it to be either firewalled or only
+reached through the 8443 reverse proxy.
+
+Sanity-check the proxy from your machine:
 
 ```bash
-# Verify external-server is up
-/opt/panelica/bin/pn-service status external-server
-
-# Allow inbound 3002 from the host that will run panelica-mcp.
-# Replace <mcp-host-ip>/32 with the public IP of that machine.
-sudo nft add rule inet panelica input ip saddr <mcp-host-ip>/32 tcp dport 3002 accept
+curl -sk https://<panel-host>:8443/api/external/health
+# {"status":"ok"} or similar
 ```
 
-> Do not open 3002 to `0.0.0.0/0`. HMAC stops replay and forgery, but exposing
-> the port to the public internet is unnecessary attack surface. Whitelist
-> only the MCP host (or the LAN it sits in).
-
-If the MCP host and the panel host are the same machine, no firewall change
-is required — set `PANELICA_BASE_URL=http://127.0.0.1:3002`.
+If you get a TLS error, that is the panel's self-signed certificate — install
+a real cert on the panel (panel UI → Settings → SSL) rather than disabling
+verification client-side.
 
 ### 2. Generate an API key in the panel
 
@@ -197,22 +210,34 @@ is required — set `PANELICA_BASE_URL=http://127.0.0.1:3002`.
 
 ### 3. Verify the credentials with curl
 
-Before you wire the MCP client up, prove the credentials work:
+Before you wire the MCP client up, prove the credentials work end-to-end:
 
 ```bash
-TS=$(date +%s)
-SIG=$(printf "GET/v1/accounts/me${TS}" | \
-      openssl dgst -sha256 -hmac "$PANELICA_API_SECRET" -hex | awk '{print $2}')
+export PANELICA_BASE_URL=https://your-panel-host:8443/api/external
+export PANELICA_API_KEY=pk_xxxxxxxx
+export PANELICA_API_SECRET=sk_xxxxxxxx
 
-curl -sk "$PANELICA_BASE_URL/v1/accounts/me" \
-  -H "X-API-Key:    $PANELICA_API_KEY" \
-  -H "X-Timestamp:  $TS" \
-  -H "X-Signature:  $SIG"
+TS=$(date +%s)
+# Signature is over METHOD + PATH + TIMESTAMP + BODY. The path is the
+# backend-visible path (/v1/...) — NOT the /api/external/ prefix that nginx
+# strips before forwarding. panelica-mcp does this automatically.
+SIG=$(printf "GET/v1/api-keys${TS}" \
+  | openssl dgst -sha256 -hmac "$PANELICA_API_SECRET" -hex | awk '{print $2}')
+
+curl -sk "$PANELICA_BASE_URL/v1/api-keys" \
+  -H "X-API-Key:   $PANELICA_API_KEY" \
+  -H "X-Timestamp: $TS" \
+  -H "X-Signature: $SIG"
 ```
 
-You should get back a JSON document describing your panel account. If you
-get `401 INVALID_SIGNATURE`, the secret is wrong or the system clock has
-drifted more than 5 minutes from the panel host.
+You should get back JSON listing your API keys. Common 401 responses:
+
+| `error.code` | Likely cause |
+|---|---|
+| `MISSING_API_KEY` / `MISSING_TIMESTAMP` / `MISSING_SIGNATURE` | Header is empty — re-check the curl flags |
+| `INVALID_KEY_FORMAT` | The `PANELICA_API_KEY` value is malformed |
+| `INVALID_TIMESTAMP` | Local clock drifted more than 5 minutes — sync NTP |
+| `INVALID_SIGNATURE` | Wrong secret, **or** the path you signed includes `/api/external/` (it must not — nginx strips it before the backend sees it) |
 
 ## Wire it into your MCP client
 
@@ -231,7 +256,7 @@ Edit your Claude Desktop config:
       "command": "npx",
       "args": ["-y", "panelica-mcp"],
       "env": {
-        "PANELICA_BASE_URL":   "https://your-panel-host:3002",
+        "PANELICA_BASE_URL":   "https://your-panel-host:8443/api/external",
         "PANELICA_API_KEY":    "pk_...",
         "PANELICA_API_SECRET": "sk_..."
       }
@@ -254,7 +279,7 @@ In **Settings → MCP → Add new server**:
     "command": "npx",
     "args": ["-y", "panelica-mcp"],
     "env": {
-      "PANELICA_BASE_URL":   "https://your-panel-host:3002",
+      "PANELICA_BASE_URL":   "https://your-panel-host:8443/api/external",
       "PANELICA_API_KEY":    "pk_...",
       "PANELICA_API_SECRET": "sk_..."
     }
@@ -278,7 +303,7 @@ sandbox.
 ### Generic stdio client
 
 ```bash
-PANELICA_BASE_URL=https://your-panel-host:3002 \
+PANELICA_BASE_URL=https://your-panel-host:8443/api/external \
 PANELICA_API_KEY=pk_... \
 PANELICA_API_SECRET=sk_... \
 panelica-mcp
@@ -389,7 +414,7 @@ key, so a read-only key safely answers "list" questions but refuses
 | `401 MISSING_API_KEY` | `PANELICA_API_KEY` not set or wrong header passthrough | Re-check the MCP client config; restart the client after editing |
 | `401 INVALID_SIGNATURE` | Wrong `PANELICA_API_SECRET`, or clock drift > 5 min | `chronyc tracking` (or `timedatectl status`) on both the MCP host and panel host |
 | `401 INVALID_TIMESTAMP` | Local clock drift > 5 min | Sync NTP on the MCP host |
-| Connect timeout on `BASE_URL` | Firewall on panel host is blocking 3002 | `sudo nft list ruleset \| grep 3002` on the panel host; whitelist the MCP host's IP |
+| Connect timeout on `BASE_URL` | Wrong host/port — typically `:8443/api/external` was missed off the URL | Verify with `curl -sk $PANELICA_BASE_URL/health` — should return `{"status":"ok"}` |
 | `403 FORBIDDEN` on a tool | API key lacks the required scope | Regenerate the key in the panel with the scope listed in the tool's description |
 | Tool description says "Schema not statically extractable" | The endpoint uses dynamic request bodies | Pass a free-form `body` object; the panel will validate and tell you the missing fields with a 400 response |
 | TLS verification fails | Panel is using its self-signed cert | If the MCP host trusts that CA, this works out of the box. If not, deploy a real cert on the panel (panel UI → Settings → SSL) — do not disable TLS verification client-side |
