@@ -1,0 +1,51 @@
+name: Refresh API tools
+
+# Keeps the MCP tool catalogue in lock-step with the live Panelica External API.
+# The backend serves an always-current /v1/api-spec (generated from its route
+# registry), so regenerating here means the published tools never drift.
+#
+# Set repository variable  PANELICA_SPEC_URL  to a reachable public spec, e.g.
+#   https://panel.example.com:8443/api/external/v1/api-spec
+# (The /v1/api-spec endpoint is unauthenticated and external-only by design.)
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "17 6 * * 1" # every Monday 06:17 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Regenerate tool catalogue from the live spec
+        env:
+          PANELICA_SPEC_URL: ${{ vars.PANELICA_SPEC_URL }}
+        run: |
+          if [ -z "$PANELICA_SPEC_URL" ]; then
+            echo "PANELICA_SPEC_URL variable is not set — building from the committed snapshot."
+          fi
+          node tools/build-tools.mjs
+          npm ci
+          npm run build
+
+      - name: Commit if the catalogue changed
+        run: |
+          git config user.name  "Panelica"
+          git config user.email "info@panelica.com"
+          if git diff --quiet -- tools/tools.json tools/api-spec.json; then
+            echo "No API changes — tool catalogue already current."
+            exit 0
+          fi
+          COUNT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('tools/tools.json','utf8')).length)")
+          git add tools/tools.json tools/api-spec.json
+          git commit -m "chore: refresh tool catalogue from live API (${COUNT} tools)"
+          git push

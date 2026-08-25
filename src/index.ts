@@ -2,7 +2,7 @@
 /**
  * Panelica MCP Server
  *
- * Exposes the Panelica External API (198 endpoints, HMAC-authenticated) as MCP
+ * Exposes the Panelica External API (266 endpoints, HMAC-authenticated) as MCP
  * tools so AI assistants like Claude Desktop, Cursor, and ChatGPT can manage
  * hosting accounts, domains, databases, email, DNS, SSL, FTP, security, and
  * server resources through natural language.
@@ -41,6 +41,7 @@ interface PanelicaTool {
     name: string;
     description: string;
     inputSchema: Record<string, unknown>;
+    annotations?: Record<string, unknown>;
     metadata: ToolMetadata;
 }
 
@@ -118,7 +119,7 @@ async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<string>
         "X-Timestamp": timestamp,
         "X-Signature": signature,
         "Accept": "application/json",
-        "User-Agent": "panelica-mcp/0.1.0",
+        "User-Agent": "panelica-mcp/0.2.0",
     };
     if (bodyString) headers["Content-Type"] = "application/json";
 
@@ -149,7 +150,7 @@ async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<string>
 }
 
 const server = new Server(
-    { name: "panelica-mcp", version: "0.1.0" },
+    { name: "panelica-mcp", version: "0.2.0" },
     { capabilities: { tools: {} } }
 );
 
@@ -158,6 +159,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         name: t.name,
         description: t.description,
         inputSchema: t.inputSchema,
+        // Safety hints let MCP clients auto-approve read-only calls and warn before
+        // destructive ones (DELETE). Generated per HTTP method by build-tools.mjs.
+        ...(t.annotations ? { annotations: t.annotations } : {}),
     })),
 }));
 

@@ -1,6 +1,6 @@
 {
   "name": "panelica-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server exposing the Panelica hosting panel External API to AI assistants. Manage accounts, domains, databases, email, DNS, SSL, FTP, security, and server resources through natural language.",
   "type": "module",
   "bin": {
@@ -17,7 +17,8 @@
     "build": "tsc -p tsconfig.json",
     "rebuild-tools": "node tools/build-tools.mjs",
     "prepare": "npm run build",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "refresh": "node tools/build-tools.mjs   # set PANELICA_SPEC_URL to pull the live spec"
   },
   "keywords": [
     "mcp",
