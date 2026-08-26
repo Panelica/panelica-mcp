@@ -5,6 +5,7 @@
 > service through Claude Desktop, Cursor, ChatGPT, or any other
 > [Model Context Protocol](https://modelcontextprotocol.io) client.
 
+[![npm](https://img.shields.io/npm/v/panelica-mcp?color=CB3837&logo=npm)](https://www.npmjs.com/package/panelica-mcp)
 [![Tools](https://img.shields.io/badge/tools-404-blue)](tools/tools.json)
 [![Scopes](https://img.shields.io/badge/permission%20scopes-50-8A2BE2)](#permission-scopes)
 [![Docker](https://img.shields.io/badge/ghcr.io-panelica%2Fpanelica--mcp-2496ED?logo=docker&logoColor=white)](https://github.com/Panelica/panelica-mcp/pkgs/container/panelica-mcp)
