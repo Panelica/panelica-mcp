@@ -2,7 +2,7 @@
 /**
  * Panelica MCP Server
  *
- * Exposes the Panelica External API (266 endpoints, HMAC-authenticated) as MCP
+ * Exposes the Panelica External API (404 endpoints, HMAC-authenticated) as MCP
  * tools so AI assistants like Claude Desktop, Cursor, and ChatGPT can manage
  * hosting accounts, domains, databases, email, DNS, SSL, FTP, security, and
  * server resources through natural language.

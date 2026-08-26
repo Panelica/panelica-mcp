@@ -303,6 +303,38 @@
     }
   },
   {
+    "name": "panelica_accounts_get_v1_accounts_id_resource_usage",
+    "description": "Get account resource usage\n\nHTTP: GET /v1/accounts/:id/resource-usage\nCategory: Accounts\nRequired scopes: accounts:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get account resource usage",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/accounts/:id/resource-usage",
+      "category": "Accounts",
+      "scopes": [
+        "accounts:read"
+      ]
+    }
+  },
+  {
     "name": "panelica_accounts_get_v1_accounts_id_stats",
     "description": "List stats\n\nHTTP: GET /v1/accounts/:id/stats\nCategory: Accounts\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
@@ -2815,6 +2847,88 @@
     }
   },
   {
+    "name": "panelica_docker_get_v1_docker_domains_linked",
+    "description": "List container-domain links\n\nHTTP: GET /v1/docker/domains/linked\nCategory: Docker\nRequired scopes: docker:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List container-domain links",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/docker/domains/linked",
+      "category": "Docker",
+      "scopes": [
+        "docker:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_docker_get_v1_docker_templates",
+    "description": "One-click app template catalogue (same catalogue the panel uses).\n\nHTTP: GET /v1/docker/templates\nCategory: Docker\nRequired scopes: docker:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List app templates",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/docker/templates",
+      "category": "Docker",
+      "scopes": [
+        "docker:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_docker_get_v1_docker_templates_slug",
+    "description": "Get app template\n\nHTTP: GET /v1/docker/templates/:slug\nCategory: Docker\nRequired scopes: docker:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Path parameter: slug"
+        }
+      },
+      "required": [
+        "slug"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get app template",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/docker/templates/:slug",
+      "category": "Docker",
+      "scopes": [
+        "docker:read"
+      ]
+    }
+  },
+  {
     "name": "panelica_docker_post_v1_docker_containers",
     "description": "Create container\n\nHTTP: POST /v1/docker/containers\nCategory: Docker\nRequired scopes: docker:write\nMutating: changes server state.",
     "inputSchema": {
@@ -2888,6 +3002,105 @@
     }
   },
   {
+    "name": "panelica_docker_post_v1_docker_domains_link",
+    "description": "Serve an installed app on the customer's own domain.\n\nHTTP: POST /v1/docker/domains/link\nCategory: Docker\nRequired scopes: docker:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Link domain to container",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/docker/domains/link",
+      "category": "Docker",
+      "scopes": [
+        "docker:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_docker_post_v1_docker_domains_unlink",
+    "description": "Unlink domain from container\n\nHTTP: POST /v1/docker/domains/unlink\nCategory: Docker\nRequired scopes: docker:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Unlink domain from container",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/docker/domains/unlink",
+      "category": "Docker",
+      "scopes": [
+        "docker:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_docker_post_v1_docker_templates_slug_deploy",
+    "description": "Provision a container from an app template. Owner resolution and plan container limits are enforced.\n\nHTTP: POST /v1/docker/templates/:slug/deploy\nCategory: Docker\nRequired scopes: docker:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Path parameter: slug"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "slug"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Deploy app from template",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/docker/templates/:slug/deploy",
+      "category": "Docker",
+      "scopes": [
+        "docker:write"
+      ]
+    }
+  },
+  {
     "name": "panelica_domains_delete_v1_domains_id",
     "description": "Delete domain\n\nHTTP: DELETE /v1/domains/:id\nCategory: Domains\nRequired scopes: domains:delete\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
@@ -2913,6 +3126,38 @@
     "metadata": {
       "method": "DELETE",
       "path": "/v1/domains/:id",
+      "category": "Domains",
+      "scopes": [
+        "domains:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_domains_delete_v1_domains_id_databases",
+    "description": "Delete database from domain\n\nHTTP: DELETE /v1/domains/:id/databases\nCategory: Domains\nRequired scopes: domains:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete database from domain",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/domains/:id/databases",
       "category": "Domains",
       "scopes": [
         "domains:delete"
@@ -3602,6 +3847,43 @@
     "metadata": {
       "method": "POST",
       "path": "/v1/domains",
+      "category": "Domains",
+      "scopes": [
+        "domains:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_domains_post_v1_domains_id_databases",
+    "description": "Create database for domain\n\nHTTP: POST /v1/domains/:id/databases\nCategory: Domains\nRequired scopes: domains:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create database for domain",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/databases",
       "category": "Domains",
       "scopes": [
         "domains:write"
@@ -5098,6 +5380,37 @@
     }
   },
   {
+    "name": "panelica_file_manager_post_v1_files_upload",
+    "description": "Upload a file (multipart/form-data).\n\nHTTP: POST /v1/files/upload\nCategory: File Manager\nRequired scopes: files:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (multipart/form-data). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Upload file",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/files/upload",
+      "category": "File Manager",
+      "scopes": [
+        "files:write"
+      ]
+    }
+  },
+  {
     "name": "panelica_file_manager_put_v1_files_content",
     "description": "Write file content\n\nHTTP: PUT /v1/files/content\nCategory: File Manager\nRequired scopes: files:write\nMutating: changes server state.",
     "inputSchema": {
@@ -5417,6 +5730,1465 @@
     }
   },
   {
+    "name": "panelica_git_delete_v1_git_oauth_id",
+    "description": "Delete OAuth connection\n\nHTTP: DELETE /v1/git/oauth/:id\nCategory: Git\nRequired scopes: git:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete OAuth connection",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/git/oauth/:id",
+      "category": "Git",
+      "scopes": [
+        "git:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_delete_v1_git_repositories_id",
+    "description": "Delete repository\n\nHTTP: DELETE /v1/git/repositories/:id\nCategory: Git\nRequired scopes: git:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete repository",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/git/repositories/:id",
+      "category": "Git",
+      "scopes": [
+        "git:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_delete_v1_git_repositories_id_branches",
+    "description": "Delete branch\n\nHTTP: DELETE /v1/git/repositories/:id/branches\nCategory: Git\nRequired scopes: git:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete branch",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/git/repositories/:id/branches",
+      "category": "Git",
+      "scopes": [
+        "git:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_delete_v1_git_repositories_id_environments_envid",
+    "description": "Delete environment\n\nHTTP: DELETE /v1/git/repositories/:id/environments/:envId\nCategory: Git\nRequired scopes: git:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "envId": {
+          "type": "string",
+          "description": "Path parameter: envId"
+        }
+      },
+      "required": [
+        "id",
+        "envId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete environment",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/git/repositories/:id/environments/:envId",
+      "category": "Git",
+      "scopes": [
+        "git:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_delete_v1_git_repositories_id_keys_keyid",
+    "description": "Delete deploy key\n\nHTTP: DELETE /v1/git/repositories/:id/keys/:keyId\nCategory: Git\nRequired scopes: git:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "keyId": {
+          "type": "string",
+          "description": "Path parameter: keyId"
+        }
+      },
+      "required": [
+        "id",
+        "keyId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete deploy key",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/git/repositories/:id/keys/:keyId",
+      "category": "Git",
+      "scopes": [
+        "git:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_delete_v1_git_repositories_id_pipelines_pipelineid",
+    "description": "Delete pipeline\n\nHTTP: DELETE /v1/git/repositories/:id/pipelines/:pipelineId\nCategory: Git\nRequired scopes: git:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "pipelineId": {
+          "type": "string",
+          "description": "Path parameter: pipelineId"
+        }
+      },
+      "required": [
+        "id",
+        "pipelineId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete pipeline",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/git/repositories/:id/pipelines/:pipelineId",
+      "category": "Git",
+      "scopes": [
+        "git:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_delete_v1_git_repositories_id_webhooks_webhookid",
+    "description": "Delete webhook\n\nHTTP: DELETE /v1/git/repositories/:id/webhooks/:webhookId\nCategory: Git\nRequired scopes: git:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "webhookId": {
+          "type": "string",
+          "description": "Path parameter: webhookId"
+        }
+      },
+      "required": [
+        "id",
+        "webhookId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete webhook",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/git/repositories/:id/webhooks/:webhookId",
+      "category": "Git",
+      "scopes": [
+        "git:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_dashboard",
+    "description": "Git dashboard stats\n\nHTTP: GET /v1/git/dashboard\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Git dashboard stats",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/dashboard",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_deployments_id_logs",
+    "description": "Get deployment logs\n\nHTTP: GET /v1/git/deployments/:id/logs\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get deployment logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/deployments/:id/logs",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_oauth",
+    "description": "List OAuth connections\n\nHTTP: GET /v1/git/oauth\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List OAuth connections",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/oauth",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_quota",
+    "description": "Git quota info\n\nHTTP: GET /v1/git/quota\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Git quota info",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/quota",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories",
+    "description": "List repositories\n\nHTTP: GET /v1/git/repositories\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List repositories",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id",
+    "description": "Get repository\n\nHTTP: GET /v1/git/repositories/:id\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get repository",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_branches",
+    "description": "List branches\n\nHTTP: GET /v1/git/repositories/:id/branches\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List branches",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/branches",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_commits",
+    "description": "List commits\n\nHTTP: GET /v1/git/repositories/:id/commits\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List commits",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/commits",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_commits_hash_diff",
+    "description": "Get commit diff\n\nHTTP: GET /v1/git/repositories/:id/commits/:hash/diff\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "hash": {
+          "type": "string",
+          "description": "Path parameter: hash"
+        }
+      },
+      "required": [
+        "id",
+        "hash"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get commit diff",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/commits/:hash/diff",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_deployments",
+    "description": "List deployments\n\nHTTP: GET /v1/git/repositories/:id/deployments\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List deployments",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/deployments",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_environments",
+    "description": "List environments\n\nHTTP: GET /v1/git/repositories/:id/environments\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List environments",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/environments",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_files",
+    "description": "List repository files\n\nHTTP: GET /v1/git/repositories/:id/files\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List repository files",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/files",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_files_content",
+    "description": "Get file content\n\nHTTP: GET /v1/git/repositories/:id/files/content\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get file content",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/files/content",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_keys",
+    "description": "List deploy keys\n\nHTTP: GET /v1/git/repositories/:id/keys\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List deploy keys",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/keys",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_pipelines",
+    "description": "List pipelines\n\nHTTP: GET /v1/git/repositories/:id/pipelines\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List pipelines",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/pipelines",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_stats",
+    "description": "Repository stats\n\nHTTP: GET /v1/git/repositories/:id/stats\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Repository stats",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/stats",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_get_v1_git_repositories_id_webhooks",
+    "description": "List webhooks\n\nHTTP: GET /v1/git/repositories/:id/webhooks\nCategory: Git\nRequired scopes: git:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List webhooks",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/git/repositories/:id/webhooks",
+      "category": "Git",
+      "scopes": [
+        "git:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_deployments_id_cancel",
+    "description": "Cancel deployment\n\nHTTP: POST /v1/git/deployments/:id/cancel\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Cancel deployment",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/deployments/:id/cancel",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_oauth_callback",
+    "description": "OAuth callback\n\nHTTP: POST /v1/git/oauth/callback\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "OAuth callback",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/oauth/callback",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_oauth_init",
+    "description": "Init OAuth flow\n\nHTTP: POST /v1/git/oauth/init\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Init OAuth flow",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/oauth/init",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_oauth_token",
+    "description": "Save OAuth token\n\nHTTP: POST /v1/git/oauth/token\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Save OAuth token",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/oauth/token",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories",
+    "description": "Clone repository\n\nHTTP: POST /v1/git/repositories\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Clone repository",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_branches",
+    "description": "Create branch\n\nHTTP: POST /v1/git/repositories/:id/branches\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create branch",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/branches",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_checkout",
+    "description": "Checkout branch\n\nHTTP: POST /v1/git/repositories/:id/checkout\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Checkout branch",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/checkout",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_deploy",
+    "description": "Trigger deployment\n\nHTTP: POST /v1/git/repositories/:id/deploy\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Trigger deployment",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/deploy",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_environments",
+    "description": "Create environment\n\nHTTP: POST /v1/git/repositories/:id/environments\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create environment",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/environments",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_fetch",
+    "description": "Fetch repository\n\nHTTP: POST /v1/git/repositories/:id/fetch\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Fetch repository",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/fetch",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_keys",
+    "description": "Create deploy key\n\nHTTP: POST /v1/git/repositories/:id/keys\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create deploy key",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/keys",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_pipelines",
+    "description": "Create pipeline\n\nHTTP: POST /v1/git/repositories/:id/pipelines\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create pipeline",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/pipelines",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_pipelines_pipe_2eabd6e9",
+    "description": "Run pipeline\n\nHTTP: POST /v1/git/repositories/:id/pipelines/:pipelineId/run\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "pipelineId": {
+          "type": "string",
+          "description": "Path parameter: pipelineId"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id",
+        "pipelineId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Run pipeline",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/pipelines/:pipelineId/run",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_pull",
+    "description": "Pull repository\n\nHTTP: POST /v1/git/repositories/:id/pull\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Pull repository",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/pull",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_rollback",
+    "description": "Rollback deployment\n\nHTTP: POST /v1/git/repositories/:id/rollback\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Rollback deployment",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/rollback",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_post_v1_git_repositories_id_webhooks",
+    "description": "Create webhook\n\nHTTP: POST /v1/git/repositories/:id/webhooks\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create webhook",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/git/repositories/:id/webhooks",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_put_v1_git_repositories_id",
+    "description": "Update repository\n\nHTTP: PUT /v1/git/repositories/:id\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update repository",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/git/repositories/:id",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_put_v1_git_repositories_id_environments_envid",
+    "description": "Update environment\n\nHTTP: PUT /v1/git/repositories/:id/environments/:envId\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "envId": {
+          "type": "string",
+          "description": "Path parameter: envId"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id",
+        "envId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update environment",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/git/repositories/:id/environments/:envId",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_git_put_v1_git_repositories_id_pipelines_pipelineid",
+    "description": "Update pipeline\n\nHTTP: PUT /v1/git/repositories/:id/pipelines/:pipelineId\nCategory: Git\nRequired scopes: git:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "pipelineId": {
+          "type": "string",
+          "description": "Path parameter: pipelineId"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id",
+        "pipelineId"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update pipeline",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/git/repositories/:id/pipelines/:pipelineId",
+      "category": "Git",
+      "scopes": [
+        "git:write"
+      ]
+    }
+  },
+  {
     "name": "panelica_ip_addresses_delete_v1_ip_addresses_id",
     "description": "Delete IP address\n\nHTTP: DELETE /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: *:*\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
@@ -5692,6 +7464,694 @@
     }
   },
   {
+    "name": "panelica_laravel_apps_delete_v1_laravel_apps_id",
+    "description": "Delete Laravel app\n\nHTTP: DELETE /v1/laravel/apps/:id\nCategory: Laravel Apps\nRequired scopes: apps:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete Laravel app",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/laravel/apps/:id",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_apps",
+    "description": "List Laravel apps\n\nHTTP: GET /v1/laravel/apps\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List Laravel apps",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/apps",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_apps_id",
+    "description": "Get Laravel app\n\nHTTP: GET /v1/laravel/apps/:id\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get Laravel app",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/apps/:id",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_apps_id_composer",
+    "description": "Get composer packages\n\nHTTP: GET /v1/laravel/apps/:id/composer\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get composer packages",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/apps/:id/composer",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_apps_id_env",
+    "description": "Get app environment\n\nHTTP: GET /v1/laravel/apps/:id/env\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get app environment",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/apps/:id/env",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_apps_id_logs",
+    "description": "Get app logs\n\nHTTP: GET /v1/laravel/apps/:id/logs\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get app logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/apps/:id/logs",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_apps_id_queues",
+    "description": "Get queue workers\n\nHTTP: GET /v1/laravel/apps/:id/queues\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get queue workers",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/apps/:id/queues",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_apps_id_scheduler",
+    "description": "Get scheduler\n\nHTTP: GET /v1/laravel/apps/:id/scheduler\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get scheduler",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/apps/:id/scheduler",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_owners",
+    "description": "List app owners\n\nHTTP: GET /v1/laravel/owners\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List app owners",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/owners",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_php_versions",
+    "description": "List PHP versions\n\nHTTP: GET /v1/laravel/php-versions\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List PHP versions",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/php-versions",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_get_v1_laravel_stats",
+    "description": "Laravel stats\n\nHTTP: GET /v1/laravel/stats\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Laravel stats",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/laravel/stats",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps",
+    "description": "Create Laravel app\n\nHTTP: POST /v1/laravel/apps\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create Laravel app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps_id_artisan",
+    "description": "Run artisan command\n\nHTTP: POST /v1/laravel/apps/:id/artisan\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Run artisan command",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps/:id/artisan",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps_id_composer_remove",
+    "description": "Composer remove\n\nHTTP: POST /v1/laravel/apps/:id/composer/remove\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Composer remove",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps/:id/composer/remove",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps_id_composer_require",
+    "description": "Composer require\n\nHTTP: POST /v1/laravel/apps/:id/composer/require\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Composer require",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps/:id/composer/require",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps_id_composer_update",
+    "description": "Composer update\n\nHTTP: POST /v1/laravel/apps/:id/composer/update\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Composer update",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps/:id/composer/update",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps_id_deploy",
+    "description": "Deploy Laravel app\n\nHTTP: POST /v1/laravel/apps/:id/deploy\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Deploy Laravel app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps/:id/deploy",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps_id_queues_restart",
+    "description": "Restart queue workers\n\nHTTP: POST /v1/laravel/apps/:id/queues/restart\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Restart queue workers",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps/:id/queues/restart",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps_id_rollback",
+    "description": "Rollback deployment\n\nHTTP: POST /v1/laravel/apps/:id/rollback\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Rollback deployment",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps/:id/rollback",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_post_v1_laravel_apps_id_scheduler",
+    "description": "Set scheduler\n\nHTTP: POST /v1/laravel/apps/:id/scheduler\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Set scheduler",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/laravel/apps/:id/scheduler",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_laravel_apps_put_v1_laravel_apps_id_queues",
+    "description": "Update queue workers\n\nHTTP: PUT /v1/laravel/apps/:id/queues\nCategory: Laravel Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update queue workers",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/laravel/apps/:id/queues",
+      "category": "Laravel Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
     "name": "panelica_license_get_v1_license_features",
     "description": "Returns all 27 license features with their enabled/disabled status.\n\nHTTP: GET /v1/license/features\nCategory: License\nRequired scopes: license:read\nRead-only.",
     "inputSchema": {
@@ -5852,6 +8312,762 @@
       "category": "License",
       "scopes": [
         "license:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_delete_v1_logs_logrotate_name",
+    "description": "Delete logrotate config\n\nHTTP: DELETE /v1/logs/logrotate/:name\nCategory: Logs\nRequired scopes: logs:write\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Path parameter: name"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete logrotate config",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/logs/logrotate/:name",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_access",
+    "description": "Get access logs\n\nHTTP: GET /v1/logs/access\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get access logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/access",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_access_stats",
+    "description": "Access log stats\n\nHTTP: GET /v1/logs/access/stats\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Access log stats",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/access/stats",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_access_tail",
+    "description": "Tail access logs\n\nHTTP: GET /v1/logs/access/tail\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Tail access logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/access/tail",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_category_id",
+    "description": "Log category details\n\nHTTP: GET /v1/logs/category/:id\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Log category details",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/category/:id",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_dashboard",
+    "description": "Log dashboard stats\n\nHTTP: GET /v1/logs/dashboard\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Log dashboard stats",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/dashboard",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_download_file",
+    "description": "Download log file\n\nHTTP: GET /v1/logs/download-file\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Download log file",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/download-file",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_download_id",
+    "description": "Download log category\n\nHTTP: GET /v1/logs/download/:id\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Download log category",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/download/:id",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_errors",
+    "description": "Get error logs\n\nHTTP: GET /v1/logs/errors\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get error logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/errors",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_errors_stats",
+    "description": "Error log stats\n\nHTTP: GET /v1/logs/errors/stats\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Error log stats",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/errors/stats",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_errors_tail",
+    "description": "Tail error logs\n\nHTTP: GET /v1/logs/errors/tail\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Tail error logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/errors/tail",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_logrotate",
+    "description": "List logrotate configs\n\nHTTP: GET /v1/logs/logrotate\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List logrotate configs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/logrotate",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_logrotate_summary",
+    "description": "Logrotate summary\n\nHTTP: GET /v1/logs/logrotate/summary\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Logrotate summary",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/logrotate/summary",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_rotation_settings",
+    "description": "Rotation settings\n\nHTTP: GET /v1/logs/rotation-settings\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Rotation settings",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/rotation-settings",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_sites",
+    "description": "List per-site logs\n\nHTTP: GET /v1/logs/sites\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List per-site logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/sites",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_sites_id",
+    "description": "Tail site log\n\nHTTP: GET /v1/logs/sites/:id\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Tail site log",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/sites/:id",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_sources",
+    "description": "List log sources\n\nHTTP: GET /v1/logs/sources\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List log sources",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/sources",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_get_v1_logs_storage",
+    "description": "Log storage overview\n\nHTTP: GET /v1/logs/storage\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Log storage overview",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/logs/storage",
+      "category": "Logs",
+      "scopes": [
+        "logs:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_post_v1_logs_clear_all",
+    "description": "Clear all logs\n\nHTTP: POST /v1/logs/clear-all\nCategory: Logs\nRequired scopes: logs:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Clear all logs",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/logs/clear-all",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_post_v1_logs_clear_id",
+    "description": "Clear log category\n\nHTTP: POST /v1/logs/clear/:id\nCategory: Logs\nRequired scopes: logs:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Clear log category",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/logs/clear/:id",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_post_v1_logs_logrotate",
+    "description": "Create logrotate config\n\nHTTP: POST /v1/logs/logrotate\nCategory: Logs\nRequired scopes: logs:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create logrotate config",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/logs/logrotate",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_post_v1_logs_logrotate_name_rotate",
+    "description": "Force log rotation\n\nHTTP: POST /v1/logs/logrotate/:name/rotate\nCategory: Logs\nRequired scopes: logs:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Path parameter: name"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Force log rotation",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/logs/logrotate/:name/rotate",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_post_v1_logs_logrotate_name_test",
+    "description": "Test logrotate config\n\nHTTP: POST /v1/logs/logrotate/:name/test\nCategory: Logs\nRequired scopes: logs:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Path parameter: name"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Test logrotate config",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/logs/logrotate/:name/test",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_post_v1_logs_sites_id_clear",
+    "description": "Clear site log\n\nHTTP: POST /v1/logs/sites/:id/clear\nCategory: Logs\nRequired scopes: logs:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Clear site log",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/logs/sites/:id/clear",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_post_v1_logs_truncate",
+    "description": "Truncate log file\n\nHTTP: POST /v1/logs/truncate\nCategory: Logs\nRequired scopes: logs:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Truncate log file",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/logs/truncate",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_logs_put_v1_logs_logrotate_name",
+    "description": "Update logrotate config\n\nHTTP: PUT /v1/logs/logrotate/:name\nCategory: Logs\nRequired scopes: logs:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Path parameter: name"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update logrotate config",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/logs/logrotate/:name",
+      "category": "Logs",
+      "scopes": [
+        "logs:write"
       ]
     }
   },
@@ -6383,6 +9599,593 @@
     }
   },
   {
+    "name": "panelica_node_js_apps_delete_v1_nodejs_apps_id",
+    "description": "Delete Node.js app\n\nHTTP: DELETE /v1/nodejs/apps/:id\nCategory: Node.js Apps\nRequired scopes: apps:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete Node.js app",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/nodejs/apps/:id",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_delete_v1_nodejs_versions_major",
+    "description": "Remove Node.js version\n\nHTTP: DELETE /v1/nodejs/versions/:major\nCategory: Node.js Apps\nRequired scopes: apps:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "string",
+          "description": "Path parameter: major"
+        }
+      },
+      "required": [
+        "major"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Remove Node.js version",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/nodejs/versions/:major",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_get_v1_nodejs_apps",
+    "description": "List Node.js apps\n\nHTTP: GET /v1/nodejs/apps\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List Node.js apps",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/nodejs/apps",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_get_v1_nodejs_apps_id",
+    "description": "Get Node.js app\n\nHTTP: GET /v1/nodejs/apps/:id\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get Node.js app",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/nodejs/apps/:id",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_get_v1_nodejs_apps_id_logs",
+    "description": "Get app logs\n\nHTTP: GET /v1/nodejs/apps/:id/logs\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get app logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/nodejs/apps/:id/logs",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_get_v1_nodejs_apps_id_stats",
+    "description": "Get app stats\n\nHTTP: GET /v1/nodejs/apps/:id/stats\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get app stats",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/nodejs/apps/:id/stats",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_get_v1_nodejs_owners",
+    "description": "List app owners\n\nHTTP: GET /v1/nodejs/owners\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List app owners",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/nodejs/owners",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_get_v1_nodejs_versions",
+    "description": "List Node.js versions\n\nHTTP: GET /v1/nodejs/versions\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List Node.js versions",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/nodejs/versions",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_apps",
+    "description": "Create Node.js app\n\nHTTP: POST /v1/nodejs/apps\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create Node.js app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/apps",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_apps_id_npm",
+    "description": "Run npm command\n\nHTTP: POST /v1/nodejs/apps/:id/npm\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Run npm command",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/apps/:id/npm",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_apps_id_restart",
+    "description": "Restart app\n\nHTTP: POST /v1/nodejs/apps/:id/restart\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Restart app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/apps/:id/restart",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_apps_id_start",
+    "description": "Start app\n\nHTTP: POST /v1/nodejs/apps/:id/start\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Start app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/apps/:id/start",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_apps_id_stop",
+    "description": "Stop app\n\nHTTP: POST /v1/nodejs/apps/:id/stop\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Stop app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/apps/:id/stop",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_apps_id_upload_code",
+    "description": "Upload app code\n\nHTTP: POST /v1/nodejs/apps/:id/upload-code\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Upload app code",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/apps/:id/upload-code",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_example",
+    "description": "Deploy example app\n\nHTTP: POST /v1/nodejs/example\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Deploy example app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/example",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_versions_install",
+    "description": "Install Node.js version\n\nHTTP: POST /v1/nodejs/versions/install\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Install Node.js version",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/versions/install",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_versions_major_default",
+    "description": "Set default version\n\nHTTP: POST /v1/nodejs/versions/:major/default\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "string",
+          "description": "Path parameter: major"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "major"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Set default version",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/versions/:major/default",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_put_v1_nodejs_apps_id",
+    "description": "Update Node.js app\n\nHTTP: PUT /v1/nodejs/apps/:id\nCategory: Node.js Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update Node.js app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/nodejs/apps/:id",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
     "name": "panelica_notifications_get_v1_notifications",
     "description": "Get notifications\n\nHTTP: GET /v1/notifications\nCategory: Notifications\nRequired scopes: *:*\nRead-only.",
     "inputSchema": {
@@ -6683,6 +10486,618 @@
     }
   },
   {
+    "name": "panelica_python_apps_delete_v1_python_apps_id",
+    "description": "Delete Python app\n\nHTTP: DELETE /v1/python/apps/:id\nCategory: Python Apps\nRequired scopes: apps:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete Python app",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/python/apps/:id",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_delete_v1_python_versions_major",
+    "description": "Remove Python version\n\nHTTP: DELETE /v1/python/versions/:major\nCategory: Python Apps\nRequired scopes: apps:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "string",
+          "description": "Path parameter: major"
+        }
+      },
+      "required": [
+        "major"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Remove Python version",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/python/versions/:major",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_get_v1_python_apps",
+    "description": "List Python apps\n\nHTTP: GET /v1/python/apps\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List Python apps",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/python/apps",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_get_v1_python_apps_id",
+    "description": "Get Python app\n\nHTTP: GET /v1/python/apps/:id\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get Python app",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/python/apps/:id",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_get_v1_python_apps_id_logs",
+    "description": "Get app logs\n\nHTTP: GET /v1/python/apps/:id/logs\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get app logs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/python/apps/:id/logs",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_get_v1_python_apps_id_stats",
+    "description": "Get app stats\n\nHTTP: GET /v1/python/apps/:id/stats\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get app stats",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/python/apps/:id/stats",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_get_v1_python_examples",
+    "description": "List example apps\n\nHTTP: GET /v1/python/examples\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List example apps",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/python/examples",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_get_v1_python_owners",
+    "description": "List app owners\n\nHTTP: GET /v1/python/owners\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List app owners",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/python/owners",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_get_v1_python_versions",
+    "description": "List Python versions\n\nHTTP: GET /v1/python/versions\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List Python versions",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/python/versions",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:read"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_apps",
+    "description": "Create Python app\n\nHTTP: POST /v1/python/apps\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create Python app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/apps",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_apps_id_pip",
+    "description": "Run pip command\n\nHTTP: POST /v1/python/apps/:id/pip\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Run pip command",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/apps/:id/pip",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_apps_id_restart",
+    "description": "Restart app\n\nHTTP: POST /v1/python/apps/:id/restart\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Restart app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/apps/:id/restart",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_apps_id_start",
+    "description": "Start app\n\nHTTP: POST /v1/python/apps/:id/start\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Start app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/apps/:id/start",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_apps_id_stop",
+    "description": "Stop app\n\nHTTP: POST /v1/python/apps/:id/stop\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Stop app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/apps/:id/stop",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_apps_id_upload_code",
+    "description": "Upload app code\n\nHTTP: POST /v1/python/apps/:id/upload-code\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Upload app code",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/apps/:id/upload-code",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_example",
+    "description": "Deploy example app\n\nHTTP: POST /v1/python/example\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Deploy example app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/example",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_versions_install",
+    "description": "Install Python version\n\nHTTP: POST /v1/python/versions/install\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Install Python version",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/versions/install",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_versions_major_default",
+    "description": "Set default version\n\nHTTP: POST /v1/python/versions/:major/default\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "string",
+          "description": "Path parameter: major"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "major"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Set default version",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/versions/:major/default",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_python_apps_put_v1_python_apps_id",
+    "description": "Update Python app\n\nHTTP: PUT /v1/python/apps/:id\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Path parameter: id"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update Python app",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/python/apps/:id",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
+    }
+  },
+  {
     "name": "panelica_redirects_delete_v1_redirects_id",
     "description": "Delete redirect\n\nHTTP: DELETE /v1/redirects/:id\nCategory: Redirects\nRequired scopes: domains:delete\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
@@ -6920,6 +11335,31 @@
       "category": "Security",
       "scopes": [
         "*:*"
+      ]
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_security_advisor",
+    "description": "Run security advisor checks\n\nHTTP: GET /v1/security/advisor\nCategory: Security\nRequired scopes: security:read\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Run security advisor checks",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/security/advisor",
+      "category": "Security",
+      "scopes": [
+        "security:read"
       ]
     }
   },

@@ -5,7 +5,7 @@
 > service through Claude Desktop, Cursor, ChatGPT, or any other
 > [Model Context Protocol](https://modelcontextprotocol.io) client.
 
-266 tools cover the entire External API surface — accounts, domains, DNS,
+404 tools cover the entire External API surface — accounts, domains, DNS,
 SSL, email, MySQL, FTP, security, backups, server resources, and more.
 
 ---
@@ -73,7 +73,7 @@ SSL, email, MySQL, FTP, security, backups, server resources, and more.
 
 1. The MCP client launches the binary over stdio.
 2. The client asks for the tool list — the server reads `tools/tools.json`
-   (266 entries, auto-generated from the panel's live API spec) and returns it.
+   (404 entries, auto-generated from the panel's live API spec) and returns it.
 3. When the client calls a tool, the server builds the corresponding HTTP
    request, signs it with HMAC-SHA256 using your local `PANELICA_API_SECRET`,
    and forwards it to the panel.
@@ -157,10 +157,10 @@ npm run build
 node dist/index.js          # speaks MCP over stdio
 ```
 
-To regenerate `tools/tools.json` from a fresh API dataset:
+To regenerate `tools/tools.json` from your panel's live API spec:
 
 ```bash
-PANELICA_DATASET=/path/to/panelica-api-complete.jsonl npm run rebuild-tools
+PANELICA_SPEC_URL="https://your-panel:8443/api/external/v1/api-spec" npm run rebuild-tools
 ```
 
 ## Configuration
@@ -267,7 +267,7 @@ Edit your Claude Desktop config:
 
 Save, fully quit Claude Desktop (not just close the window — *Quit*), and
 re-open it. A new chat will show `panelica` as a connected MCP server with
-"266 tools available".
+"404 tools available".
 
 ### Cursor
 
@@ -314,7 +314,7 @@ request first, then `tools/list`, then `tools/call`.
 
 ## Tool catalogue
 
-266 tools are auto-generated from the panel's live /v1/api-spec, so they never drift from the API. Each tool carries safety annotations (read-only vs destructive). Categories:
+404 tools are auto-generated from the panel's live /v1/api-spec, so they never drift from the API. Each tool carries safety annotations (read-only vs destructive). Categories:
 
 | Category | Tools | What you can do |
 |----------|------:|------------------|
@@ -441,7 +441,7 @@ Project layout:
 ├── tools/
 │   ├── build-tools.mjs   # Generates tools.json from the API spec
 │   ├── api-spec.json     # Committed snapshot of the live /v1/api-spec
-│   └── tools.json        # 266 tool definitions, auto-generated (committed)
+│   └── tools.json        # 404 tool definitions, auto-generated (committed)
 ├── .github/workflows/
 │   └── refresh-tools.yml # Weekly CI: regenerate from the live API, commit if changed
 ├── Dockerfile
@@ -471,7 +471,7 @@ annotations (`readOnlyHint` for `GET`, `destructiveHint` for `DELETE`) that
 capable MCP clients use to auto-approve reads and warn before destructive calls.
 
 A separate, internal dataset of every panel endpoint (1,263 total) exists for
-training purposes — only the **266 documented External API endpoints** are
+training purposes — only the **404 documented External API endpoints** are
 exposed through this package. Internal panel endpoints, recorded DEV data,
 and training jsonl files are not part of the public repository.
 
