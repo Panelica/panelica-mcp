@@ -1,0 +1,43 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.panelica/panelica-mcp",
+  "description": "Manage a Panelica hosting panel in plain English: accounts, domains, DNS, SSL, email, databases, FTP, backups, Docker, app hosting (Laravel/Node.js/Python), Git deploys, logs and security — 404 scoped, HMAC-signed tools.",
+  "repository": {
+    "url": "https://github.com/Panelica/panelica-mcp",
+    "source": "github"
+  },
+  "version": "0.2.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "panelica-mcp",
+      "version": "0.2.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "PANELICA_BASE_URL",
+          "description": "External API base URL of your panel, e.g. https://panel.example.com:8443/api/external",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "PANELICA_API_KEY",
+          "description": "API key from the panel (Developer -> API). Grant only the scopes the assistant needs.",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "PANELICA_API_SECRET",
+          "description": "API secret paired with the key; used locally for HMAC-SHA256 request signing.",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

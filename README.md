@@ -30,8 +30,10 @@ SSL, email, MySQL, FTP, security, backups, server resources, and more.
   - [2. Generate an API key in the panel](#2-generate-an-api-key-in-the-panel)
   - [3. Verify the credentials with curl](#3-verify-the-credentials-with-curl)
 - [Wire it into your MCP client](#wire-it-into-your-mcp-client)
+  - [Claude Code (one command)](#claude-code-one-command)
   - [Claude Desktop](#claude-desktop)
   - [Cursor](#cursor)
+  - [OpenAI Codex CLI](#openai-codex-cli)
   - [Continue.dev, Cline, Zed](#continuedev-cline-zed)
   - [Generic stdio client](#generic-stdio-client)
 - [Tool catalogue](#tool-catalogue)
@@ -248,6 +250,19 @@ You should get back JSON listing your API keys. Common 401 responses:
 
 ## Wire it into your MCP client
 
+### Claude Code (one command)
+
+```bash
+claude mcp add panelica \
+  -e PANELICA_BASE_URL=https://your-panel:8443/api/external \
+  -e PANELICA_API_KEY=pk_... \
+  -e PANELICA_API_SECRET=sk_... \
+  -- npx -y panelica-mcp
+```
+
+That's it — ask Claude Code to "list my domains" or "create a database for
+example.com" and it will drive the panel through the scoped API key.
+
 ### Claude Desktop
 
 Edit your Claude Desktop config:
@@ -292,6 +307,21 @@ In **Settings → MCP → Add new server**:
     }
   }
 }
+```
+
+### OpenAI Codex CLI
+
+Add to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.panelica]
+command = "npx"
+args = ["-y", "panelica-mcp"]
+
+[mcp_servers.panelica.env]
+PANELICA_BASE_URL = "https://your-panel:8443/api/external"
+PANELICA_API_KEY = "pk_..."
+PANELICA_API_SECRET = "sk_..."
 ```
 
 ### Continue.dev, Cline, Zed

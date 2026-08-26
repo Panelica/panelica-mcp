@@ -1,6 +1,6 @@
 {
   "name": "panelica-mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "MCP server exposing the Panelica hosting panel External API to AI assistants. Manage accounts, domains, databases, email, DNS, SSL, FTP, security, and server resources through natural language.",
   "type": "module",
   "bin": {
@@ -50,5 +50,6 @@
   "devDependencies": {
     "@types/node": "^22.10.0",
     "typescript": "^5.6.3"
-  }
+  },
+  "mcpName": "io.github.panelica/panelica-mcp"
 }
