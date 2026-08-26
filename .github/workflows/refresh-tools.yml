@@ -29,12 +29,17 @@ jobs:
       - name: Regenerate tool catalogue from the live spec
         env:
           PANELICA_SPEC_URL: ${{ vars.PANELICA_SPEC_URL }}
+          # The reference panel serves the panel's own certificate; only public
+          # spec METADATA is fetched here (unauthenticated endpoint, no secrets).
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
         run: |
+          BEFORE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('tools/tools.json','utf8')).length)")
+          echo "before=$BEFORE" >> "$GITHUB_ENV"
           if [ -z "$PANELICA_SPEC_URL" ]; then
             echo "PANELICA_SPEC_URL variable is not set — building from the committed snapshot."
           fi
           node tools/build-tools.mjs
-          npm ci
+          npm ci --ignore-scripts
           npm run build
 
       - name: Commit if the catalogue changed
@@ -46,6 +51,15 @@ jobs:
             exit 0
           fi
           COUNT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('tools/tools.json','utf8')).length)")
+          # Shrink guard: the catalogue must never silently lose tools. A smaller
+          # count means the reference panel runs an OLDER release than the one the
+          # committed catalogue was generated from — skip the commit and keep the
+          # richer catalogue until the panel catches up.
+          if [ "$COUNT" -lt "$before" ]; then
+            echo "Refusing to shrink catalogue: $before -> $COUNT tools (reference panel is behind). Skipping commit."
+            git checkout -- tools/tools.json tools/api-spec.json
+            exit 0
+          fi
           git add tools/tools.json tools/api-spec.json
           git commit -m "chore: refresh tool catalogue from live API (${COUNT} tools)"
           git push

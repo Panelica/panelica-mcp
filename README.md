@@ -5,6 +5,12 @@
 > service through Claude Desktop, Cursor, ChatGPT, or any other
 > [Model Context Protocol](https://modelcontextprotocol.io) client.
 
+[![Tools](https://img.shields.io/badge/tools-404-blue)](tools/tools.json)
+[![Scopes](https://img.shields.io/badge/permission%20scopes-50-8A2BE2)](#permission-scopes)
+[![Docker](https://img.shields.io/badge/ghcr.io-panelica%2Fpanelica--mcp-2496ED?logo=docker&logoColor=white)](https://github.com/Panelica/panelica-mcp/pkgs/container/panelica-mcp)
+[![Zero drift](https://img.shields.io/badge/catalogue-auto--generated%20weekly-brightgreen)](#keeping-the-tool-catalogue-current)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 404 tools cover the entire External API surface — accounts, domains, DNS,
 SSL, email, MySQL, FTP, security, backups, server resources, and more.
 
@@ -26,10 +32,10 @@ SSL, email, MySQL, FTP, security, backups, server resources, and more.
   - [Claude Desktop](#claude-desktop)
   - [Cursor](#cursor)
   - [Continue.dev, Cline, Zed](#continuedev-cline-zed)
-  - [Smithery (one-click hosted install)](#smithery-one-click-hosted-install)
   - [Generic stdio client](#generic-stdio-client)
 - [Tool catalogue](#tool-catalogue)
 - [Example sessions](#example-sessions)
+- [Permission scopes](#permission-scopes)
 - [Security model](#security-model)
 - [Troubleshooting](#troubleshooting)
 - [Development](#development)
@@ -293,13 +299,6 @@ Any MCP-aware editor that accepts a stdio command works the same way — give it
 `npx -y panelica-mcp` (or the absolute path to the built `dist/index.js`) and
 the three environment variables.
 
-### Smithery (one-click hosted install)
-
-If you do not want to manage the process yourself, install the server through
-[Smithery](https://smithery.ai/server/Panelica/panelica-mcp). Smithery prompts
-you for the three configuration values and runs the server in its hosted
-sandbox.
-
 ### Generic stdio client
 
 ```bash
@@ -314,43 +313,66 @@ request first, then `tools/list`, then `tools/call`.
 
 ## Tool catalogue
 
-404 tools are auto-generated from the panel's live /v1/api-spec, so they never drift from the API. Each tool carries safety annotations (read-only vs destructive). Categories:
+**404 tools** are auto-generated from the panel's live `/v1/api-spec`, so they never
+drift from the API. Each tool carries MCP safety annotations
+(![read-only](https://img.shields.io/badge/-read--only-brightgreen) 181 ·
+![mutating](https://img.shields.io/badge/-mutating-orange) 177 ·
+![destructive](https://img.shields.io/badge/-destructive-red) 46)
+that capable clients use to auto-approve reads and warn before destructive calls.
 
-| Category | Tools | What you can do |
-|----------|------:|------------------|
-| File Manager | 19 | Browse, upload, download, edit, rename, compress |
-| Domains | 19 | Create, suspend, transfer, delete, list subdomains |
-| CloudFlare | 12 | Zone CRUD, DNS sync, cache purge |
-| Accounts | 12 | Create users, change passwords, suspend, list |
-| Email | 10 | Mailboxes, forwarders, mailing lists, DKIM/SPF |
-| Spam | 7 | Filter configuration, training |
-| Security | 7 | Firewall, IP block, mod_security, audit |
-| IP Addresses | 7 | Assign, release, list |
-| Server | 6 | Resource metrics, snapshots |
-| License | 6 | View, transfer |
-| FTP | 6 | Accounts, quotas |
-| Cron Jobs | 6 | Create, list, delete |
-| SSH Users | 5 | Create, rotate keys, suspend |
-| DNS | 5 | Zone records (A, AAAA, CNAME, MX, TXT, SRV, CAA) |
-| DKIM/SPF | 5 | Generate, verify |
-| Webhooks | 4 | Register, list, test |
-| SSL | 4 | Let's Encrypt, custom certs, revoke |
-| MySQL Users | 4 | Create, grant, drop |
-| Databases | 4 | Create, list, drop, dump |
-| API Keys | 4 | Manage MCP credentials themselves |
-| Antivirus | 4 | Scan, quarantine, definitions |
-| 2FA | 4 | Enable, disable, status, backup codes |
-| Snapshots | 3 | Create, restore, list |
-| Redirects | 3 | URL redirects |
-| Plans | 3 | Hosting plan CRUD |
-| Bandwidth | 3 | Quotas, usage |
-| Backups | 3 | Schedule, list, restore |
-| Sessions | 2 | Active sessions |
-| Panel Settings | 2 | Branding, defaults |
-| Notifications | 2 | Channels, history |
-| Mailing Lists | 2 | Member management |
-| Backup Schedules | 2 | Cron-based backup config |
-| (others) | 12 | Audit, metrics, mail queue, migrations, etc. |
+| Category | Tools |
+|----------|------:|
+| Git | 43 |
+| Domains | 32 |
+| Logs | 26 |
+| File Manager | 23 |
+| Laravel Apps | 21 |
+| Python Apps | 19 |
+| Node.js Apps | 18 |
+| Accounts | 16 |
+| CloudFlare | 12 |
+| Docker | 12 |
+| IP Addresses | 9 |
+| Cron Jobs | 8 |
+| Email | 8 |
+| FTP | 8 |
+| Security | 8 |
+| Databases | 7 |
+| Spam | 7 |
+| SSH Users | 7 |
+| WordPress | 7 |
+| API Keys | 6 |
+| License | 6 |
+| MySQL Users | 6 |
+| Server | 6 |
+| Webhooks | 6 |
+| Backups | 5 |
+| DNS | 5 |
+| Migrations | 5 |
+| Plans | 5 |
+| Snapshots | 5 |
+| 2FA | 4 |
+| Antivirus | 4 |
+| Backup Schedules | 4 |
+| Mailing Lists | 4 |
+| SSL | 4 |
+| Bandwidth | 3 |
+| Config Locks | 3 |
+| Core | 3 |
+| Remote MySQL | 3 |
+| Sessions | 3 |
+| Subdomains | 3 |
+| Terminal | 3 |
+| Audit | 2 |
+| Metrics | 2 |
+| Notifications | 2 |
+| Panel Settings | 2 |
+| Resource Quota | 2 |
+| SMTP Relay | 2 |
+| System Cron | 2 |
+| Mail Queue | 1 |
+| PHP | 1 |
+| Redirects | 1 |
 
 Full machine-readable list: [`tools/tools.json`](tools/tools.json).
 
@@ -384,6 +406,44 @@ sequence. You can watch the calls happen in the client's tool log.
 The assistant will only invoke tools whose scopes are granted to your API
 key, so a read-only key safely answers "list" questions but refuses
 "create / delete".
+
+## Permission scopes
+
+API keys are scoped — grant an AI assistant exactly the access it needs, nothing
+more. **No scope is preselected** when creating a key in the panel, and the
+create dialog has live search over all 50 scopes.
+![read](https://img.shields.io/badge/-read-brightgreen) view/list only · ![write](https://img.shields.io/badge/-write-orange) create/update · ![delete](https://img.shields.io/badge/-delete-red) remove · ![special](https://img.shields.io/badge/-special-blue) special access.
+Every family also accepts its wildcard (`domains:*`) and `*:*` grants everything.
+
+| Area | Scopes |
+|------|--------|
+| Accounts | `accounts:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `accounts:write` ![write](https://img.shields.io/badge/-write-orange) · `accounts:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| Domains & subdomains | `domains:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `domains:write` ![write](https://img.shields.io/badge/-write-orange) · `domains:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| Databases | `databases:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `databases:write` ![write](https://img.shields.io/badge/-write-orange) · `databases:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| DNS | `dns:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `dns:write` ![write](https://img.shields.io/badge/-write-orange) · `dns:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| Email | `email:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `email:write` ![write](https://img.shields.io/badge/-write-orange) · `email:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| FTP | `ftp:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `ftp:write` ![write](https://img.shields.io/badge/-write-orange) · `ftp:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| SSL | `ssl:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `ssl:write` ![write](https://img.shields.io/badge/-write-orange) |
+| Backups & snapshots | `backups:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `backups:write` ![write](https://img.shields.io/badge/-write-orange) · `backups:restore` ![special](https://img.shields.io/badge/-special-blue) |
+| File Manager | `files:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `files:write` ![write](https://img.shields.io/badge/-write-orange) · `files:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| CloudFlare | `cloudflare:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `cloudflare:write` ![write](https://img.shields.io/badge/-write-orange) · `cloudflare:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| Docker & app templates | `docker:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `docker:write` ![write](https://img.shields.io/badge/-write-orange) · `docker:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| App hosting (Laravel / Node.js / Python) | `apps:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `apps:write` ![write](https://img.shields.io/badge/-write-orange) · `apps:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| Git & Deploy | `git:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `git:write` ![write](https://img.shields.io/badge/-write-orange) · `git:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| Logs & audit | `logs:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `logs:write` ![write](https://img.shields.io/badge/-write-orange) |
+| Security (antivirus, firewall, IP blocks) | `security:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `security:write` ![write](https://img.shields.io/badge/-write-orange) · `security:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| Server & infrastructure | `server:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `server:write` ![write](https://img.shields.io/badge/-write-orange) |
+| Service control | `services:restart` ![special](https://img.shields.io/badge/-special-blue) · `services:start` ![special](https://img.shields.io/badge/-special-blue) · `services:stop` ![special](https://img.shields.io/badge/-special-blue) |
+| Plans | `plans:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `plans:write` ![write](https://img.shields.io/badge/-write-orange) |
+| Webhooks | `webhooks:read` ![read](https://img.shields.io/badge/-read-brightgreen) · `webhooks:write` ![write](https://img.shields.io/badge/-write-orange) · `webhooks:delete` ![delete](https://img.shields.io/badge/-delete-red) |
+| Bandwidth | `bandwidth:read` ![read](https://img.shields.io/badge/-read-brightgreen) |
+| License | `license:read` ![read](https://img.shields.io/badge/-read-brightgreen) |
+| Migrations (panel-to-panel) | `migrations:read` ![read](https://img.shields.io/badge/-read-brightgreen) |
+| Terminal | `terminal:access` ![special](https://img.shields.io/badge/-special-blue) |
+| Full access | `*:*` ![special](https://img.shields.io/badge/-special-blue) |
+
+Mutating service control deliberately requires its own action scopes (or
+`server:write`) — a metrics-only `server:read` key can **not** stop MySQL.
 
 ## Security model
 
@@ -498,4 +558,3 @@ MIT. See [LICENSE](LICENSE).
 - Documentation: <https://panelica.com/docs>
 - Forum & support: <https://forum.panelica.com>
 - Public installer: <https://latest.panelica.com/install.sh>
-- This server on Smithery: <https://smithery.ai/server/Panelica/panelica-mcp>

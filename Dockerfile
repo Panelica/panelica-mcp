@@ -4,7 +4,7 @@
 #
 # Usage (stdio MCP client launching the container):
 #   docker run --rm -i \
-#     -e PANELICA_BASE_URL=https://your-panel-host:3002 \
+#     -e PANELICA_BASE_URL=https://your-panel-host:8443/api/external \
 #     -e PANELICA_API_KEY=pk_... \
 #     -e PANELICA_API_SECRET=sk_... \
 #     ghcr.io/panelica/panelica-mcp:latest
@@ -15,7 +15,7 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm ci --no-audit --no-fund
+RUN npm ci --no-audit --no-fund --ignore-scripts
 COPY tsconfig.json ./
 COPY src ./src
 COPY tools ./tools
@@ -25,7 +25,7 @@ FROM node:22-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev --no-audit --no-fund && npm cache clean --force
+RUN npm ci --omit=dev --no-audit --no-fund --ignore-scripts && npm cache clean --force
 COPY --from=build /app/dist ./dist
 COPY tools/tools.json ./tools/tools.json
 COPY LICENSE README.md ./
