@@ -959,7 +959,7 @@
   },
   {
     "name": "panelica_audit_get_v1_activity_log",
-    "description": "Get activity log\n\nHTTP: GET /v1/activity-log\nCategory: Audit\nRequired scopes: *:*\nRead-only.",
+    "description": "Get activity log\n\nHTTP: GET /v1/activity-log\nCategory: Audit\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -978,13 +978,13 @@
       "path": "/v1/activity-log",
       "category": "Audit",
       "scopes": [
-        "*:*"
+        "logs:read"
       ]
     }
   },
   {
     "name": "panelica_audit_get_v1_audit_logs",
-    "description": "Get audit logs\n\nHTTP: GET /v1/audit-logs\nCategory: Audit\nRequired scopes: *:*\nRead-only.",
+    "description": "Get audit logs\n\nHTTP: GET /v1/audit-logs\nCategory: Audit\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -1003,7 +1003,7 @@
       "path": "/v1/audit-logs",
       "category": "Audit",
       "scopes": [
-        "*:*"
+        "logs:read"
       ]
     }
   },
@@ -7190,7 +7190,7 @@
   },
   {
     "name": "panelica_ip_addresses_delete_v1_ip_addresses_id",
-    "description": "Delete IP address\n\nHTTP: DELETE /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: *:*\nWARNING: destructive — permanently removes the resource.",
+    "description": "Delete IP address\n\nHTTP: DELETE /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: server:write\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -7216,13 +7216,13 @@
       "path": "/v1/ip-addresses/:id",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:write"
       ]
     }
   },
   {
     "name": "panelica_ip_addresses_get_v1_ip_addresses",
-    "description": "List IP addresses\n\nHTTP: GET /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: *:*\nRead-only.",
+    "description": "List IP addresses\n\nHTTP: GET /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -7241,13 +7241,13 @@
       "path": "/v1/ip-addresses",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:read"
       ]
     }
   },
   {
     "name": "panelica_ip_addresses_get_v1_ip_addresses_available",
-    "description": "Get available IPs\n\nHTTP: GET /v1/ip-addresses/available\nCategory: IP Addresses\nRequired scopes: *:*\nRead-only.",
+    "description": "Get available IPs\n\nHTTP: GET /v1/ip-addresses/available\nCategory: IP Addresses\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -7266,13 +7266,13 @@
       "path": "/v1/ip-addresses/available",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:read"
       ]
     }
   },
   {
     "name": "panelica_ip_addresses_get_v1_ip_addresses_id",
-    "description": "Get IP address\n\nHTTP: GET /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: *:*\nRead-only.",
+    "description": "Get IP address\n\nHTTP: GET /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -7298,13 +7298,13 @@
       "path": "/v1/ip-addresses/:id",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:read"
       ]
     }
   },
   {
     "name": "panelica_ip_addresses_get_v1_ip_addresses_primary",
-    "description": "Get primary IP\n\nHTTP: GET /v1/ip-addresses/primary\nCategory: IP Addresses\nRequired scopes: *:*\nRead-only.",
+    "description": "Get primary IP\n\nHTTP: GET /v1/ip-addresses/primary\nCategory: IP Addresses\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -7323,13 +7323,13 @@
       "path": "/v1/ip-addresses/primary",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:read"
       ]
     }
   },
   {
     "name": "panelica_ip_addresses_patch_v1_ip_addresses_id",
-    "description": "Update IP address\n\nHTTP: PATCH /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: *:*\nMutating: changes server state.",
+    "description": "Update IP address\n\nHTTP: PATCH /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: server:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -7360,13 +7360,13 @@
       "path": "/v1/ip-addresses/:id",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:write"
       ]
     }
   },
   {
     "name": "panelica_ip_addresses_post_v1_ip_addresses",
-    "description": "Create IP address\n\nHTTP: POST /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: *:*\nMutating: changes server state.",
+    "description": "Create IP address\n\nHTTP: POST /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: server:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -7391,13 +7391,13 @@
       "path": "/v1/ip-addresses",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:write"
       ]
     }
   },
   {
     "name": "panelica_ip_addresses_post_v1_ip_addresses_detect",
-    "description": "Detect IP addresses\n\nHTTP: POST /v1/ip-addresses/detect\nCategory: IP Addresses\nRequired scopes: *:*\nMutating: changes server state.",
+    "description": "Detect IP addresses\n\nHTTP: POST /v1/ip-addresses/detect\nCategory: IP Addresses\nRequired scopes: server:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -7422,13 +7422,13 @@
       "path": "/v1/ip-addresses/detect",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:write"
       ]
     }
   },
   {
     "name": "panelica_ip_addresses_post_v1_ip_addresses_id_set_primary",
-    "description": "Set primary IP\n\nHTTP: POST /v1/ip-addresses/:id/set-primary\nCategory: IP Addresses\nRequired scopes: *:*\nMutating: changes server state.",
+    "description": "Set primary IP\n\nHTTP: POST /v1/ip-addresses/:id/set-primary\nCategory: IP Addresses\nRequired scopes: server:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -7459,7 +7459,7 @@
       "path": "/v1/ip-addresses/:id/set-primary",
       "category": "IP Addresses",
       "scopes": [
-        "*:*"
+        "server:write"
       ]
     }
   },
@@ -11276,7 +11276,7 @@
   },
   {
     "name": "panelica_security_delete_v1_security_blocked_ips_id",
-    "description": "Unblock IP\n\nHTTP: DELETE /v1/security/blocked-ips/:id\nCategory: Security\nRequired scopes: *:*\nWARNING: destructive — permanently removes the resource.",
+    "description": "Unblock IP\n\nHTTP: DELETE /v1/security/blocked-ips/:id\nCategory: Security\nRequired scopes: security:delete\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11302,13 +11302,13 @@
       "path": "/v1/security/blocked-ips/:id",
       "category": "Security",
       "scopes": [
-        "*:*"
+        "security:delete"
       ]
     }
   },
   {
     "name": "panelica_security_delete_v1_security_firewall_rules_id",
-    "description": "Delete firewall rule\n\nHTTP: DELETE /v1/security/firewall-rules/:id\nCategory: Security\nRequired scopes: *:*\nWARNING: destructive — permanently removes the resource.",
+    "description": "Delete firewall rule\n\nHTTP: DELETE /v1/security/firewall-rules/:id\nCategory: Security\nRequired scopes: security:delete\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11334,7 +11334,7 @@
       "path": "/v1/security/firewall-rules/:id",
       "category": "Security",
       "scopes": [
-        "*:*"
+        "security:delete"
       ]
     }
   },
@@ -11365,7 +11365,7 @@
   },
   {
     "name": "panelica_security_get_v1_security_blocked_ips",
-    "description": "List blocked IPs\n\nHTTP: GET /v1/security/blocked-ips\nCategory: Security\nRequired scopes: *:*\nRead-only.",
+    "description": "List blocked IPs\n\nHTTP: GET /v1/security/blocked-ips\nCategory: Security\nRequired scopes: security:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -11384,13 +11384,13 @@
       "path": "/v1/security/blocked-ips",
       "category": "Security",
       "scopes": [
-        "*:*"
+        "security:read"
       ]
     }
   },
   {
     "name": "panelica_security_get_v1_security_firewall_rules",
-    "description": "List firewall rules\n\nHTTP: GET /v1/security/firewall-rules\nCategory: Security\nRequired scopes: *:*\nRead-only.",
+    "description": "List firewall rules\n\nHTTP: GET /v1/security/firewall-rules\nCategory: Security\nRequired scopes: security:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -11409,13 +11409,13 @@
       "path": "/v1/security/firewall-rules",
       "category": "Security",
       "scopes": [
-        "*:*"
+        "security:read"
       ]
     }
   },
   {
     "name": "panelica_security_get_v1_security_login_history",
-    "description": "Get login history\n\nHTTP: GET /v1/security/login-history\nCategory: Security\nRequired scopes: *:*\nRead-only.",
+    "description": "Get login history\n\nHTTP: GET /v1/security/login-history\nCategory: Security\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -11434,13 +11434,13 @@
       "path": "/v1/security/login-history",
       "category": "Security",
       "scopes": [
-        "*:*"
+        "accounts:read"
       ]
     }
   },
   {
     "name": "panelica_security_post_v1_security_blocked_ips",
-    "description": "Block IP\n\nHTTP: POST /v1/security/blocked-ips\nCategory: Security\nRequired scopes: *:*\nMutating: changes server state.",
+    "description": "Block IP\n\nHTTP: POST /v1/security/blocked-ips\nCategory: Security\nRequired scopes: security:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11465,13 +11465,13 @@
       "path": "/v1/security/blocked-ips",
       "category": "Security",
       "scopes": [
-        "*:*"
+        "security:write"
       ]
     }
   },
   {
     "name": "panelica_security_post_v1_security_firewall_rules",
-    "description": "Create firewall rule\n\nHTTP: POST /v1/security/firewall-rules\nCategory: Security\nRequired scopes: *:*\nMutating: changes server state.",
+    "description": "Create firewall rule\n\nHTTP: POST /v1/security/firewall-rules\nCategory: Security\nRequired scopes: security:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11496,7 +11496,7 @@
       "path": "/v1/security/firewall-rules",
       "category": "Security",
       "scopes": [
-        "*:*"
+        "security:write"
       ]
     }
   },
@@ -11577,7 +11577,7 @@
   },
   {
     "name": "panelica_server_post_v1_server_services_name_restart",
-    "description": "Restarts a specific service (nginx, apache, mysql, postgresql, redis, bind, proftpd, etc.).\n\nHTTP: POST /v1/server/services/:name/restart\nCategory: Server\nRequired scopes: server:read\nMutating: changes server state.",
+    "description": "Restarts a specific service (nginx, apache, mysql, postgresql, redis, bind, proftpd, etc.).\n\nHTTP: POST /v1/server/services/:name/restart\nCategory: Server\nRequired scopes: services:restart, server:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11608,13 +11608,14 @@
       "path": "/v1/server/services/:name/restart",
       "category": "Server",
       "scopes": [
-        "server:read"
+        "services:restart",
+        "server:write"
       ]
     }
   },
   {
     "name": "panelica_server_post_v1_server_services_name_start",
-    "description": "Starts a specific service that was previously stopped.\n\nHTTP: POST /v1/server/services/:name/start\nCategory: Server\nRequired scopes: server:read\nMutating: changes server state.",
+    "description": "Starts a specific service that was previously stopped.\n\nHTTP: POST /v1/server/services/:name/start\nCategory: Server\nRequired scopes: services:start, server:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11645,13 +11646,14 @@
       "path": "/v1/server/services/:name/start",
       "category": "Server",
       "scopes": [
-        "server:read"
+        "services:start",
+        "server:write"
       ]
     }
   },
   {
     "name": "panelica_server_post_v1_server_services_name_stop",
-    "description": "Stops a specific service. Use with caution.\n\nHTTP: POST /v1/server/services/:name/stop\nCategory: Server\nRequired scopes: server:read\nMutating: changes server state.",
+    "description": "Stops a specific service. Use with caution.\n\nHTTP: POST /v1/server/services/:name/stop\nCategory: Server\nRequired scopes: services:stop, server:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11682,13 +11684,14 @@
       "path": "/v1/server/services/:name/stop",
       "category": "Server",
       "scopes": [
-        "server:read"
+        "services:stop",
+        "server:write"
       ]
     }
   },
   {
     "name": "panelica_sessions_delete_v1_sessions_id",
-    "description": "Revoke session\n\nHTTP: DELETE /v1/sessions/:id\nCategory: Sessions\nRequired scopes: accounts:read\nWARNING: destructive — permanently removes the resource.",
+    "description": "Revoke session\n\nHTTP: DELETE /v1/sessions/:id\nCategory: Sessions\nRequired scopes: accounts:write\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11714,7 +11717,7 @@
       "path": "/v1/sessions/:id",
       "category": "Sessions",
       "scopes": [
-        "accounts:read"
+        "accounts:write"
       ]
     }
   },
@@ -11745,7 +11748,7 @@
   },
   {
     "name": "panelica_sessions_post_v1_sessions_revoke_all",
-    "description": "Revoke all sessions\n\nHTTP: POST /v1/sessions/revoke-all\nCategory: Sessions\nRequired scopes: accounts:read\nMutating: changes server state.",
+    "description": "Revoke all sessions\n\nHTTP: POST /v1/sessions/revoke-all\nCategory: Sessions\nRequired scopes: accounts:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11770,7 +11773,7 @@
       "path": "/v1/sessions/revoke-all",
       "category": "Sessions",
       "scopes": [
-        "accounts:read"
+        "accounts:write"
       ]
     }
   },
@@ -12665,7 +12668,7 @@
   },
   {
     "name": "panelica_system_cron_get_v1_system_cron_jobs",
-    "description": "List system cron jobs\n\nHTTP: GET /v1/system-cron-jobs\nCategory: System Cron\nRequired scopes: *:*\nRead-only.",
+    "description": "List system cron jobs\n\nHTTP: GET /v1/system-cron-jobs\nCategory: System Cron\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -12684,13 +12687,13 @@
       "path": "/v1/system-cron-jobs",
       "category": "System Cron",
       "scopes": [
-        "*:*"
+        "server:read"
       ]
     }
   },
   {
     "name": "panelica_system_cron_post_v1_system_cron_jobs_id_toggle",
-    "description": "Toggle system cron job\n\nHTTP: POST /v1/system-cron-jobs/:id/toggle\nCategory: System Cron\nRequired scopes: *:*\nMutating: changes server state.",
+    "description": "Toggle system cron job\n\nHTTP: POST /v1/system-cron-jobs/:id/toggle\nCategory: System Cron\nRequired scopes: server:write\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -12721,7 +12724,7 @@
       "path": "/v1/system-cron-jobs/:id/toggle",
       "category": "System Cron",
       "scopes": [
-        "*:*"
+        "server:write"
       ]
     }
   },
