@@ -119,7 +119,7 @@ async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<string>
         "X-Timestamp": timestamp,
         "X-Signature": signature,
         "Accept": "application/json",
-        "User-Agent": "panelica-mcp/0.2.1",
+        "User-Agent": "panelica-mcp/0.2.2",
     };
     if (bodyString) headers["Content-Type"] = "application/json";
 
@@ -150,7 +150,7 @@ async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<string>
 }
 
 const server = new Server(
-    { name: "panelica-mcp", version: "0.2.1" },
+    { name: "panelica-mcp", version: "0.2.2" },
     { capabilities: { tools: {} } }
 );
 

@@ -1,17 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.panelica/panelica-mcp",
+  "name": "io.github.Panelica/panelica-mcp",
   "description": "Manage a Panelica hosting panel in plain English - 404 scoped, HMAC-signed tools.",
   "repository": {
     "url": "https://github.com/Panelica/panelica-mcp",
     "source": "github"
   },
-  "version": "0.2.1",
+  "version": "0.2.2",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "panelica-mcp",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "transport": {
         "type": "stdio"
       },
