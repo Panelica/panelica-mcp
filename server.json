@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.panelica/panelica-mcp",
-  "description": "Manage a Panelica hosting panel in plain English: accounts, domains, DNS, SSL, email, databases, FTP, backups, Docker, app hosting (Laravel/Node.js/Python), Git deploys, logs and security — 404 scoped, HMAC-signed tools.",
+  "description": "Manage a Panelica hosting panel in plain English - 404 scoped, HMAC-signed tools.",
   "repository": {
     "url": "https://github.com/Panelica/panelica-mcp",
     "source": "github"
