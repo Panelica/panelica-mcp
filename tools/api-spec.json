@@ -522,6 +522,56 @@
       ]
     },
     {
+      "method": "POST",
+      "path": "/v1/api-keys",
+      "category": "API Keys",
+      "summary": "Create api key",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "accounts:write"
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
       "method": "GET",
       "path": "/v1/api-keys",
       "category": "API Keys",
@@ -572,15 +622,24 @@
       ]
     },
     {
-      "method": "POST",
-      "path": "/v1/api-keys",
+      "method": "PATCH",
+      "path": "/v1/api-keys/{key_id}",
       "category": "API Keys",
-      "summary": "Create api key",
+      "summary": "Update api key",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
           "accounts:write"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "key_id",
+            "type": "string",
+            "required": true
+          }
         ]
       },
       "errors": [
@@ -690,65 +749,6 @@
         "type": "hmac",
         "scopes": [
           "accounts:delete"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "key_id",
-            "type": "string",
-            "required": true
-          }
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
-      "method": "PATCH",
-      "path": "/v1/api-keys/{key_id}",
-      "category": "API Keys",
-      "summary": "Update api key",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "accounts:write"
         ]
       },
       "request": {
@@ -2084,15 +2084,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/backup-schedules",
       "category": "Backup Schedules",
-      "summary": "List backup schedules",
+      "summary": "Create backup schedule",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "backups:read"
+          "backups:write"
         ]
       },
       "errors": [
@@ -2134,15 +2134,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/backup-schedules",
       "category": "Backup Schedules",
-      "summary": "Create backup schedule",
+      "summary": "List backup schedules",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "backups:write"
+          "backups:read"
         ]
       },
       "errors": [
@@ -2403,15 +2403,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "DELETE",
       "path": "/v1/backups/{filename}",
       "category": "Backups",
-      "summary": "Get backup",
+      "summary": "Delete backup",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "backups:read"
+          "backups:restore"
         ]
       },
       "request": {
@@ -2462,15 +2462,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "GET",
       "path": "/v1/backups/{filename}",
       "category": "Backups",
-      "summary": "Delete backup",
+      "summary": "Get backup",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "backups:restore"
+          "backups:read"
         ]
       },
       "request": {
@@ -3058,73 +3058,6 @@
       ]
     },
     {
-      "method": "DELETE",
-      "path": "/v1/cloudflare/zones/{zone_id}/dns/{record_id}",
-      "category": "CloudFlare",
-      "summary": "Delete DNS record",
-      "description": "Delete a DNS record from a CloudFlare zone.",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "cloudflare:delete"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "zone_id",
-            "type": "string",
-            "required": true,
-            "example": "023e105f4ecef8ad9ca31a8372d0c353"
-          },
-          {
-            "name": "record_id",
-            "type": "string",
-            "required": true,
-            "example": "372e67954025e0ba6aaa6d586b9e0b59"
-          }
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "PUT",
       "path": "/v1/cloudflare/zones/{zone_id}/dns/{record_id}",
       "category": "CloudFlare",
@@ -3200,6 +3133,73 @@
             "type": "A"
           }
         }
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/cloudflare/zones/{zone_id}/dns/{record_id}",
+      "category": "CloudFlare",
+      "summary": "Delete DNS record",
+      "description": "Delete a DNS record from a CloudFlare zone.",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "cloudflare:delete"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "zone_id",
+            "type": "string",
+            "required": true,
+            "example": "023e105f4ecef8ad9ca31a8372d0c353"
+          },
+          {
+            "name": "record_id",
+            "type": "string",
+            "required": true,
+            "example": "372e67954025e0ba6aaa6d586b9e0b59"
+          }
+        ]
       },
       "errors": [
         {
@@ -4032,56 +4032,6 @@
       ]
     },
     {
-      "method": "GET",
-      "path": "/v1/cron-jobs",
-      "category": "Cron Jobs",
-      "summary": "List cron jobs",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "accounts:read"
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "POST",
       "path": "/v1/cron-jobs",
       "category": "Cron Jobs",
@@ -4133,23 +4083,14 @@
     },
     {
       "method": "GET",
-      "path": "/v1/cron-jobs/{id}",
+      "path": "/v1/cron-jobs",
       "category": "Cron Jobs",
-      "summary": "Get cron job",
+      "summary": "List cron jobs",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
           "accounts:read"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "uuid",
-            "required": true
-          }
         ]
       },
       "errors": [
@@ -4259,6 +4200,65 @@
         "type": "hmac",
         "scopes": [
           "accounts:write"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v1/cron-jobs/{id}",
+      "category": "Cron Jobs",
+      "summary": "Get cron job",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "accounts:read"
         ]
       },
       "request": {
@@ -4486,15 +4486,15 @@
       ]
     },
     {
-      "method": "PATCH",
+      "method": "DELETE",
       "path": "/v1/dns/records/{id}",
       "category": "DNS",
-      "summary": "Update DNS record",
+      "summary": "Delete DNS record",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "dns:write"
+          "dns:delete"
         ]
       },
       "request": {
@@ -4545,15 +4545,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "PATCH",
       "path": "/v1/dns/records/{id}",
       "category": "DNS",
-      "summary": "Delete DNS record",
+      "summary": "Update DNS record",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "dns:delete"
+          "dns:write"
         ]
       },
       "request": {
@@ -4781,56 +4781,6 @@
       ]
     },
     {
-      "method": "POST",
-      "path": "/v1/databases",
-      "category": "Databases",
-      "summary": "Create database",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "databases:write"
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "GET",
       "path": "/v1/databases",
       "category": "Databases",
@@ -4881,24 +4831,15 @@
       ]
     },
     {
-      "method": "GET",
-      "path": "/v1/databases/{id}",
+      "method": "POST",
+      "path": "/v1/databases",
       "category": "Databases",
-      "summary": "Get database",
+      "summary": "Create database",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "databases:read"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          }
+          "databases:write"
         ]
       },
       "errors": [
@@ -4949,6 +4890,65 @@
         "type": "hmac",
         "scopes": [
           "databases:delete"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v1/databases/{id}",
+      "category": "Databases",
+      "summary": "Get database",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "databases:read"
         ]
       },
       "request": {
@@ -5167,56 +5167,6 @@
       ]
     },
     {
-      "method": "POST",
-      "path": "/v1/docker/containers",
-      "category": "Docker",
-      "summary": "Create container",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "docker:write"
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "GET",
       "path": "/v1/docker/containers",
       "category": "Docker",
@@ -5267,24 +5217,15 @@
       ]
     },
     {
-      "method": "GET",
-      "path": "/v1/docker/containers/{id}",
+      "method": "POST",
+      "path": "/v1/docker/containers",
       "category": "Docker",
-      "summary": "Get container",
+      "summary": "Create container",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "docker:read"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          }
+          "docker:write"
         ]
       },
       "errors": [
@@ -5335,6 +5276,65 @@
         "type": "hmac",
         "scopes": [
           "docker:delete"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v1/docker/containers/{id}",
+      "category": "Docker",
+      "summary": "Get container",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "docker:read"
         ]
       },
       "request": {
@@ -5829,56 +5829,6 @@
       ]
     },
     {
-      "method": "POST",
-      "path": "/v1/domains",
-      "category": "Domains",
-      "summary": "Create domain",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "domains:write"
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "GET",
       "path": "/v1/domains",
       "category": "Domains",
@@ -5929,15 +5879,65 @@
       ]
     },
     {
-      "method": "GET",
-      "path": "/v1/domains/{id}",
+      "method": "POST",
+      "path": "/v1/domains",
       "category": "Domains",
-      "summary": "Get domain",
+      "summary": "Create domain",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "domains:read"
+          "domains:write"
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/domains/{id}",
+      "category": "Domains",
+      "summary": "Delete domain",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "domains:delete"
         ]
       },
       "request": {
@@ -6047,10 +6047,69 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "GET",
       "path": "/v1/domains/{id}",
       "category": "Domains",
-      "summary": "Delete domain",
+      "summary": "Get domain",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "domains:read"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/domains/{id}/databases",
+      "category": "Domains",
+      "summary": "Delete database from domain",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -6115,65 +6174,6 @@
         "type": "hmac",
         "scopes": [
           "domains:write"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          }
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
-      "method": "DELETE",
-      "path": "/v1/domains/{id}/databases",
-      "category": "Domains",
-      "summary": "Delete database from domain",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "domains:delete"
         ]
       },
       "request": {
@@ -6401,15 +6401,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/domains/{id}/email-autoresponders",
       "category": "Domains",
-      "summary": "List email autoresponders",
+      "summary": "Create email autoresponder",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "domains:read"
+          "domains:write"
         ]
       },
       "request": {
@@ -6460,15 +6460,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/domains/{id}/email-autoresponders",
       "category": "Domains",
-      "summary": "Create email autoresponder",
+      "summary": "List email autoresponders",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "domains:write"
+          "domains:read"
         ]
       },
       "request": {
@@ -6814,65 +6814,6 @@
       ]
     },
     {
-      "method": "GET",
-      "path": "/v1/domains/{id}/modsecurity",
-      "category": "Domains",
-      "summary": "List modsecurity",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "domains:read"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          }
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "PATCH",
       "path": "/v1/domains/{id}/modsecurity",
       "category": "Domains",
@@ -6932,15 +6873,15 @@
       ]
     },
     {
-      "method": "PATCH",
-      "path": "/v1/domains/{id}/php",
+      "method": "GET",
+      "path": "/v1/domains/{id}/modsecurity",
       "category": "Domains",
-      "summary": "Update php",
+      "summary": "List modsecurity",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "domains:write"
+          "domains:read"
         ]
       },
       "request": {
@@ -7000,6 +6941,65 @@
         "type": "hmac",
         "scopes": [
           "domains:read"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/domains/{id}/php",
+      "category": "Domains",
+      "summary": "Update php",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "domains:write"
         ]
       },
       "request": {
@@ -7799,15 +7799,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "PATCH",
       "path": "/v1/email-accounts/{id}",
       "category": "Email",
-      "summary": "Delete email account",
+      "summary": "Update email account",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "email:delete"
+          "email:write"
         ]
       },
       "request": {
@@ -7858,15 +7858,15 @@
       ]
     },
     {
-      "method": "PATCH",
+      "method": "DELETE",
       "path": "/v1/email-accounts/{id}",
       "category": "Email",
-      "summary": "Update email account",
+      "summary": "Delete email account",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "email:write"
+          "email:delete"
         ]
       },
       "request": {
@@ -8253,15 +8253,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "PATCH",
       "path": "/v1/ftp-accounts/{id}",
       "category": "FTP",
-      "summary": "Delete FTP account",
+      "summary": "Update FTP account",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "ftp:delete"
+          "ftp:write"
         ]
       },
       "request": {
@@ -8371,15 +8371,15 @@
       ]
     },
     {
-      "method": "PATCH",
+      "method": "DELETE",
       "path": "/v1/ftp-accounts/{id}",
       "category": "FTP",
-      "summary": "Update FTP account",
+      "summary": "Delete FTP account",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "ftp:write"
+          "ftp:delete"
         ]
       },
       "request": {
@@ -8607,6 +8607,88 @@
       ]
     },
     {
+      "method": "DELETE",
+      "path": "/v1/files",
+      "category": "File Manager",
+      "summary": "Delete files",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "files:delete"
+        ]
+      },
+      "request": {
+        "body": {
+          "content_type": "application/json",
+          "required": true,
+          "fields": [
+            {
+              "name": "user_id",
+              "type": "uuid",
+              "required": true,
+              "description": "Target user ID"
+            },
+            {
+              "name": "paths",
+              "type": "array",
+              "required": true
+            },
+            {
+              "name": "permanent",
+              "type": "boolean",
+              "required": false
+            }
+          ],
+          "example": {
+            "paths": [
+              "/home/username/public_html/old_file.txt",
+              "/home/username/public_html/temp_folder"
+            ],
+            "permanent": false,
+            "user_id": "<uuid>"
+          }
+        }
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
       "method": "GET",
       "path": "/v1/files",
       "category": "File Manager",
@@ -8738,88 +8820,6 @@
             "name": "test.txt",
             "path": "/home/username/public_html",
             "type": "file",
-            "user_id": "<uuid>"
-          }
-        }
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
-      "method": "DELETE",
-      "path": "/v1/files",
-      "category": "File Manager",
-      "summary": "Delete files",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "files:delete"
-        ]
-      },
-      "request": {
-        "body": {
-          "content_type": "application/json",
-          "required": true,
-          "fields": [
-            {
-              "name": "user_id",
-              "type": "uuid",
-              "required": true,
-              "description": "Target user ID"
-            },
-            {
-              "name": "paths",
-              "type": "array",
-              "required": true
-            },
-            {
-              "name": "permanent",
-              "type": "boolean",
-              "required": false
-            }
-          ],
-          "example": {
-            "paths": [
-              "/home/username/public_html/old_file.txt",
-              "/home/username/public_html/temp_folder"
-            ],
-            "permanent": false,
             "user_id": "<uuid>"
           }
         }
@@ -9077,31 +9077,45 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "PUT",
       "path": "/v1/files/content",
       "category": "File Manager",
-      "summary": "Read file content",
+      "summary": "Write file content",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "files:read"
+          "files:write"
         ]
       },
       "request": {
-        "query_params": [
-          {
-            "name": "user_id",
-            "type": "uuid",
-            "required": true,
-            "description": "Target user ID"
-          },
-          {
-            "name": "path",
-            "type": "string",
-            "required": true
+        "body": {
+          "content_type": "application/json",
+          "required": true,
+          "fields": [
+            {
+              "name": "user_id",
+              "type": "uuid",
+              "required": true,
+              "description": "Target user ID"
+            },
+            {
+              "name": "path",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "example": {
+            "content": "<!DOCTYPE html>\n<html>\n<head><title>Test</title></head>\n<body><h1>Hello World</h1></body>\n</html>",
+            "path": "/home/username/public_html/index.html",
+            "user_id": "<uuid>"
           }
-        ]
+        }
       },
       "errors": [
         {
@@ -9142,45 +9156,31 @@
       ]
     },
     {
-      "method": "PUT",
+      "method": "GET",
       "path": "/v1/files/content",
       "category": "File Manager",
-      "summary": "Write file content",
+      "summary": "Read file content",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "files:write"
+          "files:read"
         ]
       },
       "request": {
-        "body": {
-          "content_type": "application/json",
-          "required": true,
-          "fields": [
-            {
-              "name": "user_id",
-              "type": "uuid",
-              "required": true,
-              "description": "Target user ID"
-            },
-            {
-              "name": "path",
-              "type": "string",
-              "required": true
-            },
-            {
-              "name": "content",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "example": {
-            "content": "<!DOCTYPE html>\n<html>\n<head><title>Test</title></head>\n<body><h1>Hello World</h1></body>\n</html>",
-            "path": "/home/username/public_html/index.html",
-            "user_id": "<uuid>"
+        "query_params": [
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "required": true,
+            "description": "Target user ID"
+          },
+          {
+            "name": "path",
+            "type": "string",
+            "required": true
           }
-        }
+        ]
       },
       "errors": [
         {
@@ -9626,71 +9626,6 @@
       ]
     },
     {
-      "method": "GET",
-      "path": "/v1/files/permissions",
-      "category": "File Manager",
-      "summary": "Get file permissions",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "files:read"
-        ]
-      },
-      "request": {
-        "query_params": [
-          {
-            "name": "user_id",
-            "type": "uuid",
-            "required": true,
-            "description": "Target user ID"
-          },
-          {
-            "name": "path",
-            "type": "string",
-            "required": true
-          }
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "PATCH",
       "path": "/v1/files/permissions",
       "category": "File Manager",
@@ -9737,6 +9672,71 @@
             "user_id": "<uuid>"
           }
         }
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/v1/files/permissions",
+      "category": "File Manager",
+      "summary": "Get file permissions",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "files:read"
+        ]
+      },
+      "request": {
+        "query_params": [
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "required": true,
+            "description": "Target user ID"
+          },
+          {
+            "name": "path",
+            "type": "string",
+            "required": true
+          }
+        ]
       },
       "errors": [
         {
@@ -10938,6 +10938,65 @@
       ]
     },
     {
+      "method": "DELETE",
+      "path": "/v1/git/repositories/{id}",
+      "category": "Git",
+      "summary": "Delete repository",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "git:delete"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
       "method": "GET",
       "path": "/v1/git/repositories/{id}",
       "category": "Git",
@@ -10998,73 +11057,14 @@
     },
     {
       "method": "DELETE",
-      "path": "/v1/git/repositories/{id}",
+      "path": "/v1/git/repositories/{id}/branches",
       "category": "Git",
-      "summary": "Delete repository",
+      "summary": "Delete branch",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
           "git:delete"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          }
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
-      "method": "POST",
-      "path": "/v1/git/repositories/{id}/branches",
-      "category": "Git",
-      "summary": "Create branch",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "git:write"
         ]
       },
       "request": {
@@ -11174,15 +11174,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "POST",
       "path": "/v1/git/repositories/{id}/branches",
       "category": "Git",
-      "summary": "Delete branch",
+      "summary": "Create branch",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "git:delete"
+          "git:write"
         ]
       },
       "request": {
@@ -11533,65 +11533,6 @@
       ]
     },
     {
-      "method": "POST",
-      "path": "/v1/git/repositories/{id}/environments",
-      "category": "Git",
-      "summary": "Create environment",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "git:write"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          }
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "GET",
       "path": "/v1/git/repositories/{id}/environments",
       "category": "Git",
@@ -11651,15 +11592,74 @@
       ]
     },
     {
-      "method": "DELETE",
-      "path": "/v1/git/repositories/{id}/environments/{envId}",
+      "method": "POST",
+      "path": "/v1/git/repositories/{id}/environments",
       "category": "Git",
-      "summary": "Delete environment",
+      "summary": "Create environment",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "git:delete"
+          "git:write"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/git/repositories/{id}/environments/{envId}",
+      "category": "Git",
+      "summary": "Update environment",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "git:write"
         ]
       },
       "request": {
@@ -11715,15 +11715,15 @@
       ]
     },
     {
-      "method": "PUT",
+      "method": "DELETE",
       "path": "/v1/git/repositories/{id}/environments/{envId}",
       "category": "Git",
-      "summary": "Update environment",
+      "summary": "Delete environment",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "git:write"
+          "git:delete"
         ]
       },
       "request": {
@@ -12256,15 +12256,15 @@
       ]
     },
     {
-      "method": "PUT",
+      "method": "DELETE",
       "path": "/v1/git/repositories/{id}/pipelines/{pipelineId}",
       "category": "Git",
-      "summary": "Update pipeline",
+      "summary": "Delete pipeline",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "git:write"
+          "git:delete"
         ]
       },
       "request": {
@@ -12320,15 +12320,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "PUT",
       "path": "/v1/git/repositories/{id}/pipelines/{pipelineId}",
       "category": "Git",
-      "summary": "Delete pipeline",
+      "summary": "Update pipeline",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "git:delete"
+          "git:write"
         ]
       },
       "request": {
@@ -12625,15 +12625,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/git/repositories/{id}/webhooks",
       "category": "Git",
-      "summary": "Create webhook",
+      "summary": "List webhooks",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "git:write"
+          "git:read"
         ]
       },
       "request": {
@@ -12684,15 +12684,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/git/repositories/{id}/webhooks",
       "category": "Git",
-      "summary": "List webhooks",
+      "summary": "Create webhook",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "git:read"
+          "git:write"
         ]
       },
       "request": {
@@ -13057,15 +13057,15 @@
       ]
     },
     {
-      "method": "PATCH",
+      "method": "GET",
       "path": "/v1/ip-addresses/{id}",
       "category": "IP Addresses",
-      "summary": "Update IP address",
+      "summary": "Get IP address",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "server:write"
+          "server:read"
         ]
       },
       "request": {
@@ -13116,15 +13116,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "PATCH",
       "path": "/v1/ip-addresses/{id}",
       "category": "IP Addresses",
-      "summary": "Get IP address",
+      "summary": "Update IP address",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "server:read"
+          "server:write"
         ]
       },
       "request": {
@@ -13393,15 +13393,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "GET",
       "path": "/v1/laravel/apps/{id}",
       "category": "Laravel Apps",
-      "summary": "Delete Laravel app",
+      "summary": "Get Laravel app",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:delete"
+          "apps:read"
         ]
       },
       "request": {
@@ -13452,15 +13452,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "DELETE",
       "path": "/v1/laravel/apps/{id}",
       "category": "Laravel Apps",
-      "summary": "Get Laravel app",
+      "summary": "Delete Laravel app",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:read"
+          "apps:delete"
         ]
       },
       "request": {
@@ -13983,15 +13983,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "PUT",
       "path": "/v1/laravel/apps/{id}/queues",
       "category": "Laravel Apps",
-      "summary": "Get queue workers",
+      "summary": "Update queue workers",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:read"
+          "apps:write"
         ]
       },
       "request": {
@@ -14042,15 +14042,15 @@
       ]
     },
     {
-      "method": "PUT",
+      "method": "GET",
       "path": "/v1/laravel/apps/{id}/queues",
       "category": "Laravel Apps",
-      "summary": "Update queue workers",
+      "summary": "Get queue workers",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:write"
+          "apps:read"
         ]
       },
       "request": {
@@ -14219,15 +14219,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/laravel/apps/{id}/scheduler",
       "category": "Laravel Apps",
-      "summary": "Get scheduler",
+      "summary": "Set scheduler",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:read"
+          "apps:write"
         ]
       },
       "request": {
@@ -14278,15 +14278,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/laravel/apps/{id}/scheduler",
       "category": "Laravel Apps",
-      "summary": "Set scheduler",
+      "summary": "Get scheduler",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:write"
+          "apps:read"
         ]
       },
       "request": {
@@ -15440,15 +15440,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/logs/logrotate",
       "category": "Logs",
-      "summary": "Create logrotate config",
+      "summary": "List logrotate configs",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "logs:write"
+          "logs:read"
         ]
       },
       "errors": [
@@ -15490,15 +15490,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/logs/logrotate",
       "category": "Logs",
-      "summary": "List logrotate configs",
+      "summary": "Create logrotate config",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "logs:read"
+          "logs:write"
         ]
       },
       "errors": [
@@ -15590,10 +15590,10 @@
       ]
     },
     {
-      "method": "PUT",
+      "method": "DELETE",
       "path": "/v1/logs/logrotate/{name}",
       "category": "Logs",
-      "summary": "Update logrotate config",
+      "summary": "Delete logrotate config",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -15649,10 +15649,10 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "PUT",
       "path": "/v1/logs/logrotate/{name}",
       "category": "Logs",
-      "summary": "Delete logrotate config",
+      "summary": "Update logrotate config",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -16244,6 +16244,56 @@
       ]
     },
     {
+      "method": "GET",
+      "path": "/v1/mailing-lists",
+      "category": "Mailing Lists",
+      "summary": "List mailing lists",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "email:read"
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
       "method": "POST",
       "path": "/v1/mailing-lists",
       "category": "Mailing Lists",
@@ -16295,64 +16345,14 @@
     },
     {
       "method": "GET",
-      "path": "/v1/mailing-lists",
+      "path": "/v1/mailing-lists/{id}",
       "category": "Mailing Lists",
-      "summary": "List mailing lists",
+      "summary": "Get mailing list",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
           "email:read"
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
-      "method": "DELETE",
-      "path": "/v1/mailing-lists/{id}",
-      "category": "Mailing Lists",
-      "summary": "Delete mailing list",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "email:delete"
         ]
       },
       "request": {
@@ -16403,15 +16403,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "DELETE",
       "path": "/v1/mailing-lists/{id}",
       "category": "Mailing Lists",
-      "summary": "Get mailing list",
+      "summary": "Delete mailing list",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "email:read"
+          "email:delete"
         ]
       },
       "request": {
@@ -16874,56 +16874,6 @@
       ]
     },
     {
-      "method": "POST",
-      "path": "/v1/mysql-users",
-      "category": "MySQL Users",
-      "summary": "Create MySQL user",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "databases:write"
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "GET",
       "path": "/v1/mysql-users",
       "category": "MySQL Users",
@@ -16974,24 +16924,15 @@
       ]
     },
     {
-      "method": "PATCH",
-      "path": "/v1/mysql-users/{id}",
+      "method": "POST",
+      "path": "/v1/mysql-users",
       "category": "MySQL Users",
-      "summary": "Update MySQL user",
+      "summary": "Create MySQL user",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
           "databases:write"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "uuid",
-            "required": true
-          }
         ]
       },
       "errors": [
@@ -17033,15 +16974,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "PATCH",
       "path": "/v1/mysql-users/{id}",
       "category": "MySQL Users",
-      "summary": "Get MySQL user",
+      "summary": "Update MySQL user",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "databases:read"
+          "databases:write"
         ]
       },
       "request": {
@@ -17151,15 +17092,15 @@
       ]
     },
     {
-      "method": "POST",
-      "path": "/v1/mysql-users/{id}/change-password",
+      "method": "GET",
+      "path": "/v1/mysql-users/{id}",
       "category": "MySQL Users",
-      "summary": "Change MySQL password",
+      "summary": "Get MySQL user",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "databases:write"
+          "databases:read"
         ]
       },
       "request": {
@@ -17210,15 +17151,24 @@
       ]
     },
     {
-      "method": "GET",
-      "path": "/v1/nodejs/apps",
-      "category": "Node.js Apps",
-      "summary": "List Node.js apps",
+      "method": "POST",
+      "path": "/v1/mysql-users/{id}/change-password",
+      "category": "MySQL Users",
+      "summary": "Change MySQL password",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:read"
+          "databases:write"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "required": true
+          }
         ]
       },
       "errors": [
@@ -17310,24 +17260,15 @@
       ]
     },
     {
-      "method": "DELETE",
-      "path": "/v1/nodejs/apps/{id}",
+      "method": "GET",
+      "path": "/v1/nodejs/apps",
       "category": "Node.js Apps",
-      "summary": "Delete Node.js app",
+      "summary": "List Node.js apps",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:delete"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          }
+          "apps:read"
         ]
       },
       "errors": [
@@ -17437,6 +17378,65 @@
         "type": "hmac",
         "scopes": [
           "apps:write"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/nodejs/apps/{id}",
+      "category": "Node.js Apps",
+      "summary": "Delete Node.js app",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "apps:delete"
         ]
       },
       "request": {
@@ -18377,10 +18377,10 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "PATCH",
       "path": "/v1/panel-settings",
       "category": "Panel Settings",
-      "summary": "Get panel settings",
+      "summary": "Update panel settings",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -18427,10 +18427,10 @@
       ]
     },
     {
-      "method": "PATCH",
+      "method": "GET",
       "path": "/v1/panel-settings",
       "category": "Panel Settings",
-      "summary": "Update panel settings",
+      "summary": "Get panel settings",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -18577,10 +18577,10 @@
       ]
     },
     {
-      "method": "PATCH",
+      "method": "DELETE",
       "path": "/v1/plans/{id}",
       "category": "Plans",
-      "summary": "Update plan",
+      "summary": "Delete plan",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -18636,10 +18636,10 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "PATCH",
       "path": "/v1/plans/{id}",
       "category": "Plans",
-      "summary": "Delete plan",
+      "summary": "Update plan",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -18854,15 +18854,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "DELETE",
       "path": "/v1/python/apps/{id}",
       "category": "Python Apps",
-      "summary": "Get Python app",
+      "summary": "Delete Python app",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:read"
+          "apps:delete"
         ]
       },
       "request": {
@@ -18913,15 +18913,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "GET",
       "path": "/v1/python/apps/{id}",
       "category": "Python Apps",
-      "summary": "Delete Python app",
+      "summary": "Get Python app",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "apps:delete"
+          "apps:read"
         ]
       },
       "request": {
@@ -20139,56 +20139,6 @@
       ]
     },
     {
-      "method": "PATCH",
-      "path": "/v1/smtp-relay",
-      "category": "SMTP Relay",
-      "summary": "Update SMTP relay config",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "*:*"
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "GET",
       "path": "/v1/smtp-relay",
       "category": "SMTP Relay",
@@ -20239,15 +20189,15 @@
       ]
     },
     {
-      "method": "POST",
-      "path": "/v1/ssh-users",
-      "category": "SSH Users",
-      "summary": "Create SSH user",
+      "method": "PATCH",
+      "path": "/v1/smtp-relay",
+      "category": "SMTP Relay",
+      "summary": "Update SMTP relay config",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "accounts:write"
+          "*:*"
         ]
       },
       "errors": [
@@ -20339,24 +20289,15 @@
       ]
     },
     {
-      "method": "DELETE",
-      "path": "/v1/ssh-users/{id}",
+      "method": "POST",
+      "path": "/v1/ssh-users",
       "category": "SSH Users",
-      "summary": "Delete SSH user",
+      "summary": "Create SSH user",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "accounts:delete"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "uuid",
-            "required": true
-          }
+          "accounts:write"
         ]
       },
       "errors": [
@@ -20407,6 +20348,65 @@
         "type": "hmac",
         "scopes": [
           "accounts:write"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/ssh-users/{id}",
+      "category": "SSH Users",
+      "summary": "Delete SSH user",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "accounts:delete"
         ]
       },
       "request": {
@@ -21081,15 +21081,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/security/firewall-rules",
       "category": "Security",
-      "summary": "Create firewall rule",
+      "summary": "List firewall rules",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "security:write"
+          "security:read"
         ]
       },
       "errors": [
@@ -21131,15 +21131,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/security/firewall-rules",
       "category": "Security",
-      "summary": "List firewall rules",
+      "summary": "Create firewall rule",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "security:read"
+          "security:write"
         ]
       },
       "errors": [
@@ -21785,15 +21785,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/snapshots",
       "category": "Snapshots",
-      "summary": "List domain snapshots",
+      "summary": "Create domain snapshot",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "backups:read"
+          "backups:write"
         ]
       },
       "errors": [
@@ -21835,15 +21835,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/snapshots",
       "category": "Snapshots",
-      "summary": "Create domain snapshot",
+      "summary": "List domain snapshots",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "backups:write"
+          "backups:read"
         ]
       },
       "errors": [
@@ -22062,15 +22062,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/spam/blacklist",
       "category": "Spam",
-      "summary": "Add to blacklist",
+      "summary": "List spam blacklist",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "email:write"
+          "email:read"
         ]
       },
       "errors": [
@@ -22112,15 +22112,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/spam/blacklist",
       "category": "Spam",
-      "summary": "List spam blacklist",
+      "summary": "Add to blacklist",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "email:read"
+          "email:write"
         ]
       },
       "errors": [
@@ -22271,15 +22271,15 @@
       ]
     },
     {
-      "method": "POST",
+      "method": "GET",
       "path": "/v1/spam/whitelist",
       "category": "Spam",
-      "summary": "Add to whitelist",
+      "summary": "List spam whitelist",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "email:write"
+          "email:read"
         ]
       },
       "errors": [
@@ -22321,15 +22321,15 @@
       ]
     },
     {
-      "method": "GET",
+      "method": "POST",
       "path": "/v1/spam/whitelist",
       "category": "Spam",
-      "summary": "List spam whitelist",
+      "summary": "Add to whitelist",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "email:read"
+          "email:write"
         ]
       },
       "errors": [
@@ -22489,15 +22489,15 @@
       ]
     },
     {
-      "method": "DELETE",
+      "method": "PATCH",
       "path": "/v1/subdomains/{id}",
       "category": "Subdomains",
-      "summary": "Delete subdomain",
+      "summary": "Update subdomain",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "domains:delete"
+          "domains:write"
         ]
       },
       "request": {
@@ -22548,15 +22548,15 @@
       ]
     },
     {
-      "method": "PATCH",
+      "method": "DELETE",
       "path": "/v1/subdomains/{id}",
       "category": "Subdomains",
-      "summary": "Update subdomain",
+      "summary": "Delete subdomain",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "domains:write"
+          "domains:delete"
         ]
       },
       "request": {
@@ -22867,56 +22867,6 @@
       ]
     },
     {
-      "method": "GET",
-      "path": "/v1/webhooks",
-      "category": "Webhooks",
-      "summary": "List webhooks",
-      "auth": {
-        "required": true,
-        "type": "hmac",
-        "scopes": [
-          "webhooks:read"
-        ]
-      },
-      "errors": [
-        {
-          "status_code": 400,
-          "code": "BAD_REQUEST",
-          "description": "Invalid request parameters or body"
-        },
-        {
-          "status_code": 401,
-          "code": "UNAUTHORIZED",
-          "description": "Missing or invalid API key"
-        },
-        {
-          "status_code": 403,
-          "code": "FORBIDDEN",
-          "description": "Insufficient scope or permissions"
-        },
-        {
-          "status_code": 404,
-          "code": "NOT_FOUND",
-          "description": "Resource not found"
-        },
-        {
-          "status_code": 409,
-          "code": "CONFLICT",
-          "description": "Resource conflict (e.g., already exists)"
-        },
-        {
-          "status_code": 429,
-          "code": "TOO_MANY_REQUESTS",
-          "description": "Rate limit exceeded"
-        },
-        {
-          "status_code": 500,
-          "code": "INTERNAL_ERROR",
-          "description": "Internal server error"
-        }
-      ]
-    },
-    {
       "method": "POST",
       "path": "/v1/webhooks",
       "category": "Webhooks",
@@ -22967,24 +22917,15 @@
       ]
     },
     {
-      "method": "PATCH",
-      "path": "/v1/webhooks/{id}",
+      "method": "GET",
+      "path": "/v1/webhooks",
       "category": "Webhooks",
-      "summary": "Update webhook",
+      "summary": "List webhooks",
       "auth": {
         "required": true,
         "type": "hmac",
         "scopes": [
-          "webhooks:write"
-        ]
-      },
-      "request": {
-        "path_params": [
-          {
-            "name": "id",
-            "type": "uuid",
-            "required": true
-          }
+          "webhooks:read"
         ]
       },
       "errors": [
@@ -23094,6 +23035,65 @@
         "type": "hmac",
         "scopes": [
           "webhooks:read"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "id",
+            "type": "uuid",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/webhooks/{id}",
+      "category": "Webhooks",
+      "summary": "Update webhook",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "webhooks:write"
         ]
       },
       "request": {
