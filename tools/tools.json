@@ -10211,6 +10211,68 @@
     }
   },
   {
+    "name": "panelica_notifications_post_v1_notifications_archive_all",
+    "description": "Archive all read/unread notifications (optional filter)\n\nHTTP: POST /v1/notifications/archive-all\nCategory: Notifications\nRequired scopes: *:*\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Archive all read/unread notifications (optional filter)",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/notifications/archive-all",
+      "category": "Notifications",
+      "scopes": [
+        "*:*"
+      ]
+    }
+  },
+  {
+    "name": "panelica_notifications_post_v1_notifications_delete_all",
+    "description": "Delete all notifications (optional status/category filter)\n\nHTTP: POST /v1/notifications/delete-all\nCategory: Notifications\nRequired scopes: *:*\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete all notifications (optional status/category filter)",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/notifications/delete-all",
+      "category": "Notifications",
+      "scopes": [
+        "*:*"
+      ]
+    }
+  },
+  {
     "name": "panelica_notifications_post_v1_notifications_id_read",
     "description": "Mark notification read\n\nHTTP: POST /v1/notifications/:id/read\nCategory: Notifications\nRequired scopes: *:*\nMutating: changes server state.",
     "inputSchema": {
