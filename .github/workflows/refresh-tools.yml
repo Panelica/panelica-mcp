@@ -109,7 +109,9 @@ jobs:
           NEW=${NEW#v}
           node -e "const fs=require('fs');const p='server.json';const j=JSON.parse(fs.readFileSync(p,'utf8'));j.version='$NEW';j.packages[0].version='$NEW';fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n')"
           # README badge + counts follow the catalogue.
-          sed -i -E "s/tools-[0-9]+-blue/tools-${COUNT}-blue/; s/\*\*[0-9]+ tools\*\*/**${COUNT} tools**/; s/\"[0-9]+ tools available\"/\"${COUNT} tools available\"/" README.md
+          # Badge + total count only. The "N tools available" phrases describe the
+          # registered core set (37) / a crashed server (0), not the catalogue size.
+          sed -i -E "s/tools-[0-9]+-blue/tools-${COUNT}-blue/; s/\*\*[0-9]+ tools\*\*/**${COUNT} tools**/; s/for all [0-9]+\)/for all ${COUNT})/" README.md
           git add tools/tools.json tools/api-spec.json package.json package-lock.json server.json README.md
           git commit -m "chore: refresh tool catalogue from live API (${COUNT} tools) — v${NEW}"
           git tag "v${NEW}"

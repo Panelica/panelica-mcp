@@ -310,7 +310,7 @@ Edit your Claude Desktop config:
 
 Save, fully quit Claude Desktop (not just close the window — *Quit*), and
 re-open it. A new chat will show `panelica` as a connected MCP server with
-"404 tools available" (the core set plus three meta tools; set `PANELICA_TOOLSETS=all` for all 404).
+"37 tools available" (the core set plus three meta tools; set `PANELICA_TOOLSETS=all` for all 404).
 
 ### Cursor
 
@@ -626,7 +626,7 @@ fans out many calls; create the assistant's key with a higher tier if you see
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
-| Client reports "404 tools available" | Server crashed at startup — usually a missing env var | Run `panelica-mcp` once from a shell with the three env vars set; read stderr |
+| Client reports "0 tools available" | Server crashed at startup — usually a missing env var | Run `panelica-mcp` once from a shell with the three env vars set; read stderr |
 | `401 MISSING_API_KEY` | `PANELICA_API_KEY` not set or wrong header passthrough | Re-check the MCP client config; restart the client after editing |
 | `401 INVALID_SIGNATURE` | Wrong `PANELICA_API_SECRET`, or clock drift > 5 min | `chronyc tracking` (or `timedatectl status`) on both the MCP host and panel host |
 | `401 INVALID_TIMESTAMP` | Local clock drift > 5 min | Sync NTP on the MCP host |
