@@ -140,6 +140,18 @@ jobs:
           if [ -z "$NODE_AUTH_TOKEN" ]; then echo "::error::NPM_TOKEN secret missing"; exit 1; fi
           npm publish --access public --ignore-scripts
 
+      - name: Tag the published version (manual re-release of an untagged main)
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if git ls-remote --tags origin "refs/tags/v${VERSION}" | grep -q .; then
+            echo "tag v${VERSION} already exists"
+          else
+            git config user.name  "Panelica"
+            git config user.email "info@panelica.com"
+            git tag "v${VERSION}"
+            git push origin "v${VERSION}"
+          fi
+
       - uses: docker/setup-buildx-action@v3
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
