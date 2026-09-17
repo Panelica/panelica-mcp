@@ -2,16 +2,25 @@
 /**
  * Panelica MCP Server
  *
- * Exposes the Panelica External API (404 endpoints, HMAC-authenticated) as MCP
- * tools so AI assistants like Claude Desktop, Cursor, and ChatGPT can manage
+ * Exposes the Panelica External API (HMAC-authenticated) as MCP tools so AI
+ * assistants like Claude Desktop, Claude Code, Cursor and Codex can manage
  * hosting accounts, domains, databases, email, DNS, SSL, FTP, security, and
  * server resources through natural language.
  *
  * Environment variables:
- *   PANELICA_BASE_URL   Base URL of the External API (e.g. https://panel.example.com:3002)
- *   PANELICA_API_KEY    External API key (from panel: Settings -> API Keys)
- *   PANELICA_API_SECRET External API secret (paired with the key above)
- *   PANELICA_TIMEOUT_MS Optional request timeout (default 30000)
+ *   PANELICA_BASE_URL    Base URL of the External API
+ *                        (e.g. https://panel.example.com:8443/api/external)
+ *   PANELICA_API_KEY     External API key (panel: Settings -> API Keys)
+ *   PANELICA_API_SECRET  API secret paired with the key above
+ *   PANELICA_TIMEOUT_MS  Optional request timeout (default 30000)
+ *   PANELICA_LIVE_SPEC   "1" (default): at startup fetch <BASE_URL>/v1/api-spec
+ *                        from YOUR panel and build the tool list from it, so the
+ *                        catalogue always matches the panel version you run.
+ *                        "0": use only the committed tools/tools.json snapshot.
+ *                        A live fetch that fails (unreachable panel, self-signed
+ *                        certificate not trusted, timeout) falls back to the
+ *                        snapshot — the server always starts.
+ *   PANELICA_SPEC_TIMEOUT_MS  Optional live-spec fetch timeout (default 8000)
  *
  * Run:
  *   panelica-mcp                 # stdio transport (default for Claude Desktop)
@@ -28,26 +37,14 @@ import {
     ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 
+import { buildTools, fetchSpec, type PanelicaTool } from "./catalog.js";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-interface ToolMetadata {
-    method: string;
-    path: string;
-    category: string;
-    scopes: string[];
-}
-
-interface PanelicaTool {
-    name: string;
-    description: string;
-    inputSchema: Record<string, unknown>;
-    annotations?: Record<string, unknown>;
-    metadata: ToolMetadata;
-}
-
-const toolsPath = resolve(__dirname, "../tools/tools.json");
-const tools: PanelicaTool[] = JSON.parse(readFileSync(toolsPath, "utf8"));
-const toolMap = new Map(tools.map(t => [t.name, t]));
+// Single source of truth for the version: package.json (bumped by the release
+// workflow). No hand-maintained copies.
+const pkg = JSON.parse(readFileSync(resolve(__dirname, "../package.json"), "utf8")) as { version: string };
+const VERSION: string = pkg.version;
 
 function requireEnv(name: string): string {
     const v = process.env[name];
@@ -55,7 +52,7 @@ function requireEnv(name: string): string {
         throw new Error(
             `Missing required environment variable: ${name}.\n` +
             `Generate an API key/secret pair in your Panelica panel (Settings -> API Keys) and set:\n` +
-            `  PANELICA_BASE_URL    e.g. https://panel.example.com:3002\n` +
+            `  PANELICA_BASE_URL    e.g. https://panel.example.com:8443/api/external\n` +
             `  PANELICA_API_KEY     X-API-Key value\n` +
             `  PANELICA_API_SECRET  paired secret`
         );
@@ -63,6 +60,36 @@ function requireEnv(name: string): string {
     return v;
 }
 
+// stderr only: stdout is the MCP JSON-RPC channel and must stay clean.
+function log(msg: string): void {
+    process.stderr.write(`[panelica-mcp] ${msg}\n`);
+}
+
+// ── Tool catalogue: live spec (default) with snapshot fallback ────────────────
+const snapshotPath = resolve(__dirname, "../tools/tools.json");
+const snapshotTools: PanelicaTool[] = JSON.parse(readFileSync(snapshotPath, "utf8"));
+
+async function loadTools(): Promise<{ tools: PanelicaTool[]; source: string }> {
+    const live = (process.env.PANELICA_LIVE_SPEC ?? "1") !== "0";
+    const baseUrl = (process.env.PANELICA_BASE_URL ?? "").replace(/\/+$/, "");
+    if (!live || !baseUrl) {
+        return { tools: snapshotTools, source: `snapshot (${snapshotTools.length} tools)` };
+    }
+    const timeoutMs = Number(process.env.PANELICA_SPEC_TIMEOUT_MS ?? 8_000);
+    try {
+        const spec = await fetchSpec(`${baseUrl}/v1/api-spec`, timeoutMs);
+        const { tools } = buildTools(spec);
+        if (tools.length === 0) throw new Error("live spec produced no tools");
+        const prov = [spec.panel_version ? `panel ${spec.panel_version}` : "", spec.generated_at ?? ""].filter(Boolean).join(" ");
+        return { tools, source: `live spec (${tools.length} tools${prov ? `, ${prov}` : ""})` };
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        log(`live spec unavailable (${msg}); using committed snapshot (${snapshotTools.length} tools)`);
+        return { tools: snapshotTools, source: `snapshot (${snapshotTools.length} tools)` };
+    }
+}
+
+// ── HMAC client ───────────────────────────────────────────────────────────────
 function sign(method: string, fullPath: string, timestamp: string, body: string, secret: string): string {
     // Backend formula: HMAC-SHA256(METHOD + PATH + TIMESTAMP + BODY, SECRET)
     // DELETE requests exclude body from the signature.
@@ -119,7 +146,7 @@ async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<string>
         "X-Timestamp": timestamp,
         "X-Signature": signature,
         "Accept": "application/json",
-        "User-Agent": "panelica-mcp/0.2.2",
+        "User-Agent": `panelica-mcp/${VERSION}`,
     };
     if (bodyString) headers["Content-Type"] = "application/json";
 
@@ -149,18 +176,23 @@ async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<string>
     return text;
 }
 
+// ── Server ────────────────────────────────────────────────────────────────────
+const { tools, source } = await loadTools();
+const toolMap = new Map(tools.map((t) => [t.name, t]));
+log(`v${VERSION} — catalogue from ${source}`);
+
 const server = new Server(
-    { name: "panelica-mcp", version: "0.2.2" },
+    { name: "panelica-mcp", version: VERSION },
     { capabilities: { tools: {} } }
 );
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
-    tools: tools.map(t => ({
+    tools: tools.map((t) => ({
         name: t.name,
         description: t.description,
         inputSchema: t.inputSchema,
         // Safety hints let MCP clients auto-approve read-only calls and warn before
-        // destructive ones (DELETE). Generated per HTTP method by build-tools.mjs.
+        // destructive ones (DELETE). Generated per HTTP method in catalog.ts.
         ...(t.annotations ? { annotations: t.annotations } : {}),
     })),
 }));

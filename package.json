@@ -15,10 +15,10 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "rebuild-tools": "node tools/build-tools.mjs",
+    "rebuild-tools": "npm run build && node tools/build-tools.mjs",
     "prepare": "npm run build",
     "start": "node dist/index.js",
-    "refresh": "node tools/build-tools.mjs   # set PANELICA_SPEC_URL to pull the live spec"
+    "test": "npm run build && node tools/build-tools.mjs && node --test tests/*.test.mjs"
   },
   "keywords": [
     "mcp",

@@ -6,13 +6,13 @@
 > [Model Context Protocol](https://modelcontextprotocol.io) client.
 
 [![npm](https://img.shields.io/npm/v/panelica-mcp?color=CB3837&logo=npm)](https://www.npmjs.com/package/panelica-mcp)
-[![Tools](https://img.shields.io/badge/tools-404-blue)](tools/tools.json)
+[![Tools](https://img.shields.io/badge/tools-406-blue)](tools/tools.json)
 [![Scopes](https://img.shields.io/badge/permission%20scopes-50-8A2BE2)](#permission-scopes)
 [![Docker](https://img.shields.io/badge/ghcr.io-panelica%2Fpanelica--mcp-2496ED?logo=docker&logoColor=white)](https://github.com/Panelica/panelica-mcp/pkgs/container/panelica-mcp)
 [![Zero drift](https://img.shields.io/badge/catalogue-auto--generated%20weekly-brightgreen)](#keeping-the-tool-catalogue-current)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-404 tools cover the entire External API surface — accounts, domains, DNS,
+406 tools cover the entire External API surface — accounts, domains, DNS,
 SSL, email, MySQL, FTP, security, backups, server resources, and more.
 
 ---
@@ -81,12 +81,15 @@ SSL, email, MySQL, FTP, security, backups, server resources, and more.
 `panelica-mcp` is a thin, stateless adapter:
 
 1. The MCP client launches the binary over stdio.
-2. The client asks for the tool list — the server reads `tools/tools.json`
-   (404 entries, auto-generated from the panel's live API spec) and returns it.
-3. When the client calls a tool, the server builds the corresponding HTTP
+2. At startup the server fetches `<PANELICA_BASE_URL>/v1/api-spec` from **your**
+   panel and builds the tool list from it (live catalogue, default). If the panel
+   is unreachable it falls back to the bundled `tools/tools.json` snapshot. Set
+   `PANELICA_LIVE_SPEC=0` to always use the snapshot.
+3. The client asks for the tool list and receives it.
+4. When the client calls a tool, the server builds the corresponding HTTP
    request, signs it with HMAC-SHA256 using your local `PANELICA_API_SECRET`,
    and forwards it to the panel.
-4. The HTTP response is returned to the client as the tool result.
+5. The HTTP response is returned to the client as the tool result.
 
 No data is cached, no telemetry is emitted, and the secret never leaves the
 machine running the MCP server.
@@ -289,7 +292,7 @@ Edit your Claude Desktop config:
 
 Save, fully quit Claude Desktop (not just close the window — *Quit*), and
 re-open it. A new chat will show `panelica` as a connected MCP server with
-"404 tools available".
+"406 tools available".
 
 ### Cursor
 
@@ -344,7 +347,7 @@ request first, then `tools/list`, then `tools/call`.
 
 ## Tool catalogue
 
-**404 tools** are auto-generated from the panel's live `/v1/api-spec`, so they never
+**406 tools** are auto-generated from the panel's live `/v1/api-spec`, so they never
 drift from the API. Each tool carries MCP safety annotations
 (![read-only](https://img.shields.io/badge/-read--only-brightgreen) 181 ·
 ![mutating](https://img.shields.io/badge/-mutating-orange) 177 ·
@@ -528,13 +531,14 @@ Project layout:
 
 ```
 .
-├── src/index.ts          # MCP server (stdio transport, HMAC client)
+├── src/index.ts          # MCP server (stdio transport, HMAC client, live-spec loader)
+├── src/catalog.ts        # spec → tools generator (shared by runtime and build script)
 ├── tools/
 │   ├── build-tools.mjs   # Generates tools.json from the API spec
 │   ├── api-spec.json     # Committed snapshot of the live /v1/api-spec
-│   └── tools.json        # 404 tool definitions, auto-generated (committed)
+│   └── tools.json        # tool definitions, auto-generated (committed)
 ├── .github/workflows/
-│   └── refresh-tools.yml # Weekly CI: regenerate from the live API, commit if changed
+│   └── refresh-tools.yml # Weekly CI: regenerate, bump, tag, publish npm + Docker + Registry
 ├── Dockerfile
 ├── smithery.yaml         # Smithery deployment manifest
 ├── .env.example
@@ -556,8 +560,11 @@ PANELICA_SPEC_URL="https://your-panel:8443/api/external/v1/api-spec" npm run reb
 ```
 
 CI (`refresh-tools.yml`) runs this weekly against the panel named in the
-`PANELICA_SPEC_URL` repository variable and commits any changes, so a new API
-endpoint becomes an MCP tool automatically. Each tool is tagged with safety
+`PANELICA_SPEC_URL` repository **secret**. When the catalogue changed it bumps the
+patch version, tags, and publishes npm, the Docker image and the MCP Registry
+entry in the same run, so a new API endpoint reaches `npx -y panelica-mcp`
+users automatically. Running servers do not even need that: with the default
+live catalogue they read the spec from the panel they talk to. Each tool is tagged with safety
 annotations (`readOnlyHint` for `GET`, `destructiveHint` for `DELETE`) that
 capable MCP clients use to auto-approve reads and warn before destructive calls.
 
