@@ -4,7 +4,20 @@
     "description": "Get 2FA status\n\nHTTP: GET /v1/2fa/status\nCategory: 2FA\nRequired scopes: accounts:write\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -21,7 +34,8 @@
       "category": "2FA",
       "scopes": [
         "accounts:write"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -154,7 +168,20 @@
     "description": "List accounts\n\nHTTP: GET /v1/accounts\nCategory: Accounts\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -171,7 +198,8 @@
       "category": "Accounts",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -655,7 +683,20 @@
     "description": "List quarantine\n\nHTTP: GET /v1/antivirus/quarantine\nCategory: Antivirus\nRequired scopes: security:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -672,7 +713,8 @@
       "category": "Antivirus",
       "scopes": [
         "security:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -712,7 +754,20 @@
     "description": "List status\n\nHTTP: GET /v1/antivirus/status\nCategory: Antivirus\nRequired scopes: security:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -729,7 +784,8 @@
       "category": "Antivirus",
       "scopes": [
         "security:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -800,7 +856,20 @@
     "description": "List api keys\n\nHTTP: GET /v1/api-keys\nCategory: API Keys\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -817,7 +886,8 @@
       "category": "API Keys",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -962,7 +1032,20 @@
     "description": "Get activity log\n\nHTTP: GET /v1/activity-log\nCategory: Audit\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -979,7 +1062,8 @@
       "category": "Audit",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -987,7 +1071,20 @@
     "description": "Get audit logs\n\nHTTP: GET /v1/audit-logs\nCategory: Audit\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -1004,7 +1101,8 @@
       "category": "Audit",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -1044,7 +1142,20 @@
     "description": "List backup schedules\n\nHTTP: GET /v1/backup-schedules\nCategory: Backup Schedules\nRequired scopes: backups:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -1061,7 +1172,8 @@
       "category": "Backup Schedules",
       "scopes": [
         "backups:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -1169,7 +1281,20 @@
     "description": "Returns all full and incremental server backups.\n\nHTTP: GET /v1/backups\nCategory: Backups\nRequired scopes: backups:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -1186,7 +1311,8 @@
       "category": "Backups",
       "scopes": [
         "backups:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -1358,7 +1484,20 @@
     "description": "Get bandwidth summary\n\nHTTP: GET /v1/bandwidth/summary\nCategory: Bandwidth\nRequired scopes: bandwidth:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -1375,7 +1514,8 @@
       "category": "Bandwidth",
       "scopes": [
         "bandwidth:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -1424,6 +1564,18 @@
         "credential_id": {
           "type": "string",
           "description": "Optional CloudFlare credential ID for multi-account"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [],
@@ -1442,7 +1594,8 @@
       "category": "CloudFlare",
       "scopes": [
         "cloudflare:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2003,7 +2156,20 @@
     "description": "List me\n\nHTTP: GET /v1/me\nCategory: Core\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2020,7 +2186,8 @@
       "category": "Core",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2028,7 +2195,20 @@
     "description": "Returns current rate limit status for the API key.\n\nHTTP: GET /v1/rate-limit\nCategory: Core\nRequired scopes: *:*\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2045,7 +2225,8 @@
       "category": "Core",
       "scopes": [
         "*:*"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2053,7 +2234,20 @@
     "description": "Quick search\n\nHTTP: GET /v1/search\nCategory: Core\nRequired scopes: *:*\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2070,7 +2264,8 @@
       "category": "Core",
       "scopes": [
         "*:*"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2110,7 +2305,20 @@
     "description": "List cron jobs\n\nHTTP: GET /v1/cron-jobs\nCategory: Cron Jobs\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2127,7 +2335,8 @@
       "category": "Cron Jobs",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2373,7 +2582,20 @@
     "description": "List databases\n\nHTTP: GET /v1/databases\nCategory: Databases\nRequired scopes: databases:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2390,7 +2612,8 @@
       "category": "Databases",
       "scopes": [
         "databases:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2430,7 +2653,20 @@
     "description": "List phpmyadmin\n\nHTTP: GET /v1/phpmyadmin\nCategory: Databases\nRequired scopes: databases:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2447,7 +2683,8 @@
       "category": "Databases",
       "scopes": [
         "databases:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2762,7 +2999,20 @@
     "description": "List containers\n\nHTTP: GET /v1/docker/containers\nCategory: Docker\nRequired scopes: docker:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2779,7 +3029,8 @@
       "category": "Docker",
       "scopes": [
         "docker:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2851,7 +3102,20 @@
     "description": "List container-domain links\n\nHTTP: GET /v1/docker/domains/linked\nCategory: Docker\nRequired scopes: docker:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2868,7 +3132,8 @@
       "category": "Docker",
       "scopes": [
         "docker:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -2876,7 +3141,20 @@
     "description": "One-click app template catalogue (same catalogue the panel uses).\n\nHTTP: GET /v1/docker/templates\nCategory: Docker\nRequired scopes: docker:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -2893,7 +3171,8 @@
       "category": "Docker",
       "scopes": [
         "docker:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -3169,7 +3448,20 @@
     "description": "List domains\n\nHTTP: GET /v1/domains\nCategory: Domains\nRequired scopes: domains:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -3186,7 +3478,8 @@
       "category": "Domains",
       "scopes": [
         "domains:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4287,7 +4580,20 @@
     "description": "List email accounts\n\nHTTP: GET /v1/email-accounts\nCategory: Email\nRequired scopes: email:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -4304,7 +4610,8 @@
       "category": "Email",
       "scopes": [
         "email:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4556,6 +4863,18 @@
         "sort_order": {
           "type": "string",
           "description": "Query parameter: sort_order"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [
@@ -4576,7 +4895,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4588,6 +4908,18 @@
         "user_id": {
           "type": "string",
           "description": "Target user ID"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [
@@ -4608,7 +4940,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4624,6 +4957,18 @@
         "path": {
           "type": "string",
           "description": "Query parameter: path"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [
@@ -4645,7 +4990,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4661,6 +5007,18 @@
         "path": {
           "type": "string",
           "description": "Query parameter: path"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [
@@ -4682,7 +5040,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4698,6 +5057,18 @@
         "path": {
           "type": "string",
           "description": "Query parameter: path"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [
@@ -4719,7 +5090,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4735,6 +5107,18 @@
         "path": {
           "type": "string",
           "description": "Query parameter: path"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [
@@ -4756,7 +5140,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4764,7 +5149,20 @@
     "description": "Get permission presets\n\nHTTP: GET /v1/files/permissions/presets\nCategory: File Manager\nRequired scopes: files:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -4781,7 +5179,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4801,6 +5200,18 @@
         "limit": {
           "type": "integer",
           "description": "Query parameter: limit"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [
@@ -4821,7 +5232,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -4833,6 +5245,18 @@
         "user_id": {
           "type": "string",
           "description": "Target user ID"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [
@@ -4853,7 +5277,8 @@
       "category": "File Manager",
       "scopes": [
         "files:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -5498,7 +5923,20 @@
     "description": "List FTP accounts\n\nHTTP: GET /v1/ftp-accounts\nCategory: FTP\nRequired scopes: ftp:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -5515,7 +5953,8 @@
       "category": "FTP",
       "scopes": [
         "ftp:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -5978,7 +6417,20 @@
     "description": "Git dashboard stats\n\nHTTP: GET /v1/git/dashboard\nCategory: Git\nRequired scopes: git:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -5995,7 +6447,8 @@
       "category": "Git",
       "scopes": [
         "git:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -6035,7 +6488,20 @@
     "description": "List OAuth connections\n\nHTTP: GET /v1/git/oauth\nCategory: Git\nRequired scopes: git:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -6052,7 +6518,8 @@
       "category": "Git",
       "scopes": [
         "git:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -6060,7 +6527,20 @@
     "description": "Git quota info\n\nHTTP: GET /v1/git/quota\nCategory: Git\nRequired scopes: git:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -6077,7 +6557,8 @@
       "category": "Git",
       "scopes": [
         "git:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -6085,7 +6566,20 @@
     "description": "List repositories\n\nHTTP: GET /v1/git/repositories\nCategory: Git\nRequired scopes: git:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -6102,7 +6596,8 @@
       "category": "Git",
       "scopes": [
         "git:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -7225,7 +7720,20 @@
     "description": "List IP addresses\n\nHTTP: GET /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -7242,7 +7750,8 @@
       "category": "IP Addresses",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -7250,7 +7759,20 @@
     "description": "Get available IPs\n\nHTTP: GET /v1/ip-addresses/available\nCategory: IP Addresses\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -7267,7 +7789,8 @@
       "category": "IP Addresses",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -7307,7 +7830,20 @@
     "description": "Get primary IP\n\nHTTP: GET /v1/ip-addresses/primary\nCategory: IP Addresses\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -7324,7 +7860,8 @@
       "category": "IP Addresses",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -7500,7 +8037,20 @@
     "description": "List Laravel apps\n\nHTTP: GET /v1/laravel/apps\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -7517,7 +8067,8 @@
       "category": "Laravel Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -7717,7 +8268,20 @@
     "description": "List app owners\n\nHTTP: GET /v1/laravel/owners\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -7734,7 +8298,8 @@
       "category": "Laravel Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -7742,7 +8307,20 @@
     "description": "List PHP versions\n\nHTTP: GET /v1/laravel/php-versions\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -7759,7 +8337,8 @@
       "category": "Laravel Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -7767,7 +8346,20 @@
     "description": "Laravel stats\n\nHTTP: GET /v1/laravel/stats\nCategory: Laravel Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -7784,7 +8376,8 @@
       "category": "Laravel Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8156,7 +8749,20 @@
     "description": "Returns all 27 license features with their enabled/disabled status.\n\nHTTP: GET /v1/license/features\nCategory: License\nRequired scopes: license:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8173,7 +8779,8 @@
       "category": "License",
       "scopes": [
         "license:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8213,7 +8820,20 @@
     "description": "Returns detailed license plan information including plan slug, name, status, and expiry.\n\nHTTP: GET /v1/license/plan\nCategory: License\nRequired scopes: license:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8230,7 +8850,8 @@
       "category": "License",
       "scopes": [
         "license:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8238,7 +8859,20 @@
     "description": "Returns all 6 resource quotas with current limits (domains, databases, ftp, email, subdomains, users).\n\nHTTP: GET /v1/license/quotas\nCategory: License\nRequired scopes: license:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8255,7 +8889,8 @@
       "category": "License",
       "scopes": [
         "license:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8295,7 +8930,20 @@
     "description": "Returns current license validity, plan name, expiry date, and grace period info.\n\nHTTP: GET /v1/license/status\nCategory: License\nRequired scopes: license:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8312,7 +8960,8 @@
       "category": "License",
       "scopes": [
         "license:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8352,7 +9001,20 @@
     "description": "Get access logs\n\nHTTP: GET /v1/logs/access\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8369,7 +9031,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8377,7 +9040,20 @@
     "description": "Access log stats\n\nHTTP: GET /v1/logs/access/stats\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8394,7 +9070,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8402,7 +9079,20 @@
     "description": "Tail access logs\n\nHTTP: GET /v1/logs/access/tail\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8419,7 +9109,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8459,7 +9150,20 @@
     "description": "Log dashboard stats\n\nHTTP: GET /v1/logs/dashboard\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8476,7 +9180,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8484,7 +9189,20 @@
     "description": "Download log file\n\nHTTP: GET /v1/logs/download-file\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8501,7 +9219,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8541,7 +9260,20 @@
     "description": "Get error logs\n\nHTTP: GET /v1/logs/errors\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8558,7 +9290,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8566,7 +9299,20 @@
     "description": "Error log stats\n\nHTTP: GET /v1/logs/errors/stats\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8583,7 +9329,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8591,7 +9338,20 @@
     "description": "Tail error logs\n\nHTTP: GET /v1/logs/errors/tail\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8608,7 +9368,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8616,7 +9377,20 @@
     "description": "List logrotate configs\n\nHTTP: GET /v1/logs/logrotate\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8633,7 +9407,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8641,7 +9416,20 @@
     "description": "Logrotate summary\n\nHTTP: GET /v1/logs/logrotate/summary\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8658,7 +9446,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8666,7 +9455,20 @@
     "description": "Rotation settings\n\nHTTP: GET /v1/logs/rotation-settings\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8683,7 +9485,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8691,7 +9494,20 @@
     "description": "List per-site logs\n\nHTTP: GET /v1/logs/sites\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8708,7 +9524,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8748,7 +9565,20 @@
     "description": "List log sources\n\nHTTP: GET /v1/logs/sources\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8765,7 +9595,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -8773,7 +9604,20 @@
     "description": "Log storage overview\n\nHTTP: GET /v1/logs/storage\nCategory: Logs\nRequired scopes: logs:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -8790,7 +9634,8 @@
       "category": "Logs",
       "scopes": [
         "logs:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9076,7 +9921,20 @@
     "description": "Get mail queue stats\n\nHTTP: GET /v1/mail-queue/stats\nCategory: Mail Queue\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9093,7 +9951,8 @@
       "category": "Mail Queue",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9133,7 +9992,20 @@
     "description": "List mailing lists\n\nHTTP: GET /v1/mailing-lists\nCategory: Mailing Lists\nRequired scopes: email:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9150,7 +10022,8 @@
       "category": "Mailing Lists",
       "scopes": [
         "email:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9221,7 +10094,20 @@
     "description": "Returns system metrics collected directly from OS.\n\nHTTP: GET /v1/metrics/native\nCategory: Metrics\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9238,7 +10124,8 @@
       "category": "Metrics",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9246,7 +10133,20 @@
     "description": "List cloudflare credentials\n\nHTTP: GET /v1/migration/cloudflare-credentials\nCategory: Migrations\nRequired scopes: migrations:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9263,7 +10163,8 @@
       "category": "Migrations",
       "scopes": [
         "migrations:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9271,7 +10172,20 @@
     "description": "List mysql root password\n\nHTTP: GET /v1/migration/mysql-root-password\nCategory: Migrations\nRequired scopes: migrations:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9288,7 +10202,8 @@
       "category": "Migrations",
       "scopes": [
         "migrations:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9296,7 +10211,20 @@
     "description": "List export\n\nHTTP: GET /v1/migration/sites/export\nCategory: Migrations\nRequired scopes: migrations:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9313,7 +10241,8 @@
       "category": "Migrations",
       "scopes": [
         "migrations:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9321,7 +10250,20 @@
     "description": "List migrations\n\nHTTP: GET /v1/migrations\nCategory: Migrations\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9338,7 +10280,8 @@
       "category": "Migrations",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9410,7 +10353,20 @@
     "description": "List MySQL users\n\nHTTP: GET /v1/mysql-users\nCategory: MySQL Users\nRequired scopes: databases:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9427,7 +10383,8 @@
       "category": "MySQL Users",
       "scopes": [
         "databases:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9636,7 +10593,20 @@
     "description": "List Node.js apps\n\nHTTP: GET /v1/nodejs/apps\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9653,7 +10623,8 @@
       "category": "Node.js Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9757,7 +10728,20 @@
     "description": "List app owners\n\nHTTP: GET /v1/nodejs/owners\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9774,7 +10758,8 @@
       "category": "Node.js Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -9782,7 +10767,20 @@
     "description": "List Node.js versions\n\nHTTP: GET /v1/nodejs/versions\nCategory: Node.js Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -9799,7 +10797,8 @@
       "category": "Node.js Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -10159,7 +11158,20 @@
     "description": "Get notifications\n\nHTTP: GET /v1/notifications\nCategory: Notifications\nRequired scopes: *:*\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -10176,7 +11188,8 @@
       "category": "Notifications",
       "scopes": [
         "*:*"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -10283,7 +11296,20 @@
     "description": "Get panel settings\n\nHTTP: GET /v1/panel-settings\nCategory: Panel Settings\nRequired scopes: *:*\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -10300,7 +11326,8 @@
       "category": "Panel Settings",
       "scopes": [
         "*:*"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -10339,7 +11366,20 @@
     "description": "List PHP versions\n\nHTTP: GET /v1/php/versions\nCategory: PHP\nRequired scopes: domains:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -10356,7 +11396,8 @@
       "category": "PHP",
       "scopes": [
         "domains:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -10396,7 +11437,20 @@
     "description": "List plans\n\nHTTP: GET /v1/plans\nCategory: Plans\nRequired scopes: plans:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -10413,7 +11467,8 @@
       "category": "Plans",
       "scopes": [
         "plans:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -10585,7 +11640,20 @@
     "description": "List Python apps\n\nHTTP: GET /v1/python/apps\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -10602,7 +11670,8 @@
       "category": "Python Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -10706,7 +11775,20 @@
     "description": "List example apps\n\nHTTP: GET /v1/python/examples\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -10723,7 +11805,8 @@
       "category": "Python Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -10731,7 +11814,20 @@
     "description": "List app owners\n\nHTTP: GET /v1/python/owners\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -10748,7 +11844,8 @@
       "category": "Python Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -10756,7 +11853,20 @@
     "description": "List Python versions\n\nHTTP: GET /v1/python/versions\nCategory: Python Apps\nRequired scopes: apps:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -10773,7 +11883,8 @@
       "category": "Python Apps",
       "scopes": [
         "apps:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11197,7 +12308,20 @@
     "description": "List remote MySQL hosts\n\nHTTP: GET /v1/remote-mysql-hosts\nCategory: Remote MySQL\nRequired scopes: databases:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11214,7 +12338,8 @@
       "category": "Remote MySQL",
       "scopes": [
         "databases:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11253,7 +12378,20 @@
     "description": "Get resource quota\n\nHTTP: GET /v1/resource-quota\nCategory: Resource Quota\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11270,7 +12408,8 @@
       "category": "Resource Quota",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11374,7 +12513,20 @@
     "description": "Run security advisor checks\n\nHTTP: GET /v1/security/advisor\nCategory: Security\nRequired scopes: security:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11391,7 +12543,8 @@
       "category": "Security",
       "scopes": [
         "security:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11399,7 +12552,20 @@
     "description": "List blocked IPs\n\nHTTP: GET /v1/security/blocked-ips\nCategory: Security\nRequired scopes: security:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11416,7 +12582,8 @@
       "category": "Security",
       "scopes": [
         "security:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11424,7 +12591,20 @@
     "description": "List firewall rules\n\nHTTP: GET /v1/security/firewall-rules\nCategory: Security\nRequired scopes: security:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11441,7 +12621,8 @@
       "category": "Security",
       "scopes": [
         "security:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11449,7 +12630,20 @@
     "description": "Get login history\n\nHTTP: GET /v1/security/login-history\nCategory: Security\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11466,7 +12660,8 @@
       "category": "Security",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11536,7 +12731,20 @@
     "description": "Get server metrics\n\nHTTP: GET /v1/server/metrics\nCategory: Server\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11553,7 +12761,8 @@
       "category": "Server",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11561,7 +12770,20 @@
     "description": "Get services status\n\nHTTP: GET /v1/server/services\nCategory: Server\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11578,7 +12800,8 @@
       "category": "Server",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11586,7 +12809,20 @@
     "description": "Get server status\n\nHTTP: GET /v1/server/status\nCategory: Server\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11603,7 +12839,8 @@
       "category": "Server",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11757,7 +12994,20 @@
     "description": "List sessions\n\nHTTP: GET /v1/sessions\nCategory: Sessions\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11774,7 +13024,8 @@
       "category": "Sessions",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11813,7 +13064,20 @@
     "description": "Get SMTP relay config\n\nHTTP: GET /v1/smtp-relay\nCategory: SMTP Relay\nRequired scopes: *:*\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11830,7 +13094,8 @@
       "category": "SMTP Relay",
       "scopes": [
         "*:*"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -11901,7 +13166,20 @@
     "description": "List domain snapshots\n\nHTTP: GET /v1/snapshots\nCategory: Snapshots\nRequired scopes: backups:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -11918,7 +13196,8 @@
       "category": "Snapshots",
       "scopes": [
         "backups:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -12090,7 +13369,20 @@
     "description": "List spam blacklist\n\nHTTP: GET /v1/spam/blacklist\nCategory: Spam\nRequired scopes: email:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -12107,7 +13399,8 @@
       "category": "Spam",
       "scopes": [
         "email:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -12115,7 +13408,20 @@
     "description": "Get spam statistics\n\nHTTP: GET /v1/spam/statistics\nCategory: Spam\nRequired scopes: email:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -12132,7 +13438,8 @@
       "category": "Spam",
       "scopes": [
         "email:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -12140,7 +13447,20 @@
     "description": "List spam whitelist\n\nHTTP: GET /v1/spam/whitelist\nCategory: Spam\nRequired scopes: email:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -12157,7 +13477,8 @@
       "category": "Spam",
       "scopes": [
         "email:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -12259,7 +13580,20 @@
     "description": "List SSH users\n\nHTTP: GET /v1/ssh-users\nCategory: SSH Users\nRequired scopes: accounts:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -12276,7 +13610,8 @@
       "category": "SSH Users",
       "scopes": [
         "accounts:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -12702,7 +14037,20 @@
     "description": "List system cron jobs\n\nHTTP: GET /v1/system-cron-jobs\nCategory: System Cron\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -12719,7 +14067,8 @@
       "category": "System Cron",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -12764,7 +14113,20 @@
     "description": "List terminal\n\nHTTP: GET /v1/terminal\nCategory: Terminal\nRequired scopes: server:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -12781,7 +14143,8 @@
       "category": "Terminal",
       "scopes": [
         "server:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -12852,7 +14215,20 @@
     "description": "List webhooks\n\nHTTP: GET /v1/webhooks\nCategory: Webhooks\nRequired scopes: webhooks:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -12869,7 +14245,8 @@
       "category": "Webhooks",
       "scopes": [
         "webhooks:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {
@@ -13014,7 +14391,20 @@
     "description": "List wordpress\n\nHTTP: GET /v1/wordpress\nCategory: WordPress\nRequired scopes: domains:read\nRead-only.",
     "inputSchema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
       "required": [],
       "additionalProperties": false
     },
@@ -13031,7 +14421,8 @@
       "category": "WordPress",
       "scopes": [
         "domains:read"
-      ]
+      ],
+      "shaping": true
     }
   },
   {

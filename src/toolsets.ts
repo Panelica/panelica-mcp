@@ -86,19 +86,59 @@ export function selectTools(all: PanelicaTool[], toolsets: string[]): PanelicaTo
     });
 }
 
-/** Keyword search: every term must appear in name, path, category or description. */
+/**
+ * Vocabulary a user (and therefore a model) uses versus the API's own words.
+ * Each query term matches if it or any synonym appears; plurals are stemmed.
+ */
+export const SYNONYMS: Record<string, string[]> = {
+    website: ["domain"], site: ["domain", "wordpress"], webpage: ["domain"], vhost: ["domain"],
+    user: ["account"], customer: ["account"], client: ["account"], tenant: ["account"], reseller: ["account"],
+    mailbox: ["email"], mail: ["email"], inbox: ["email"], forwarder: ["email"], alias: ["email"],
+    certificate: ["ssl"], cert: ["ssl"], https: ["ssl"], tls: ["ssl"], letsencrypt: ["ssl"],
+    db: ["database"], mysql: ["database", "mysql"], postgres: ["database"], postgresql: ["database"],
+    record: ["dns"], zone: ["dns"], nameserver: ["dns"], mx: ["dns"], txt: ["dns"], cname: ["dns"], spf: ["dns"], dkim: ["dns", "email"],
+    container: ["docker"], image: ["docker"], compose: ["docker"],
+    cron: ["cron"], schedule: ["cron", "backup"], job: ["cron"],
+    restore: ["backup", "snapshot"], snapshot: ["snapshot", "backup"],
+    service: ["server", "services"], daemon: ["server"], restart: ["server"], reboot: ["server"],
+    disk: ["disk", "server"], memory: ["server", "metrics"], cpu: ["server", "metrics"], load: ["server", "metrics"],
+    firewall: ["firewall", "security"], ban: ["security", "ip"], block: ["security", "ip"], malware: ["antivirus", "security"], virus: ["antivirus"],
+    wp: ["wordpress"], plugin: ["wordpress"], theme: ["wordpress"],
+    key: ["api-keys", "ssh"], token: ["api-keys"], password: ["accounts", "email", "ftp", "database"],
+    php: ["php"], version: ["php", "nodejs", "python"],
+    log: ["logs"], error: ["logs"], access: ["logs"],
+    quota: ["plan", "accounts"], limit: ["plan", "rate"], package: ["plan"],
+    suspend: ["suspend"], disable: ["suspend"], enable: ["unsuspend"],
+    upload: ["files"], download: ["files", "backup"], file: ["files"], folder: ["files"], directory: ["files"],
+    git: ["git"], deploy: ["git", "laravel", "nodejs", "python", "docker"], repo: ["git"], repository: ["git"],
+};
+
+function stem(term: string): string {
+    if (term.length > 4 && term.endsWith("ies")) return term.slice(0, -3) + "y";
+    if (term.length > 4 && /(sses|shes|ches|xes)$/.test(term)) return term.slice(0, -2);
+    if (term.length > 3 && term.endsWith("s") && !term.endsWith("ss")) return term.slice(0, -1);
+    return term;
+}
+
+/** Keyword search: every term (or a synonym of it) must appear in name, path, category or description. */
 export function findTools(all: PanelicaTool[], query: string, limit = 10): PanelicaTool[] {
     const terms = String(query ?? "").toLowerCase().split(/[\s,]+/).filter(Boolean);
     if (terms.length === 0) return [];
+    const alternatives = terms.map((term) => {
+        const base = stem(term);
+        return [...new Set([term, base, ...(SYNONYMS[term] ?? []), ...(SYNONYMS[base] ?? [])])];
+    });
     const scored = all.map((t) => {
         const hay = `${t.name} ${t.metadata.method} ${t.metadata.path} ${t.metadata.category} ${t.description}`.toLowerCase();
         let score = 0;
-        for (const term of terms) {
-            if (!hay.includes(term)) return null;
-            // Prefer matches in the path / category over description-only hits.
-            if (t.metadata.path.toLowerCase().includes(term)) score += 3;
-            if (t.metadata.category.toLowerCase().includes(term)) score += 2;
-            score += 1;
+        for (const alts of alternatives) {
+            const hit = alts.find((a) => hay.includes(a));
+            if (!hit) return null;
+            // Prefer matches in the path / category over description-only hits,
+            // and the user's own word over a synonym.
+            if (t.metadata.path.toLowerCase().includes(hit)) score += 3;
+            if (t.metadata.category.toLowerCase().includes(hit)) score += 2;
+            score += hit === alts[0] ? 1 : 0.5;
         }
         if (t.metadata.method === "GET") score += 0.5; // reads first when tied
         return { t, score };
@@ -133,11 +173,12 @@ export function describeTool(t: PanelicaTool): Record<string, unknown> {
     const schema = t.inputSchema as { properties?: Record<string, Record<string, unknown>>; required?: string[] };
     const props = schema.properties ?? {};
     const required = new Set(schema.required ?? []);
-    const params = Object.entries(props).filter(([k]) => k !== "body").map(([k, v]) => ({ name: k, type: v.type ?? "string", required: required.has(k), description: v.description ?? "" }));
+    const withEnum = (v: Record<string, unknown>) => ({ ...(v.enum ? { enum: v.enum } : {}), ...(v.default !== undefined ? { default: v.default } : {}) });
+    const params = Object.entries(props).filter(([k]) => k !== "body").map(([k, v]) => ({ name: k, type: v.type ?? "string", required: required.has(k), description: v.description ?? "", ...withEnum(v) }));
     const body = props.body as { properties?: Record<string, Record<string, unknown>>; required?: string[]; additionalProperties?: boolean } | undefined;
     const bodyReq = new Set(body?.required ?? []);
     const bodyFields = body?.properties
-        ? Object.entries(body.properties).map(([k, v]) => ({ name: k, type: v.type ?? "string", required: bodyReq.has(k), description: v.description ?? "" }))
+        ? Object.entries(body.properties).map(([k, v]) => ({ name: k, type: v.type ?? "string", required: bodyReq.has(k), description: v.description ?? "", ...withEnum(v) }))
         : undefined;
     const r = t.metadata.response;
     return {
@@ -146,6 +187,8 @@ export function describeTool(t: PanelicaTool): Record<string, unknown> {
         category: t.metadata.category,
         description: t.description.split("\n")[0],
         scopes: t.metadata.scopes,
+        ...(t.metadata.scopeRule ? { scope_rule: t.metadata.scopeRule } : {}),
+        ...(t.metadata.roles ? { roles: t.metadata.roles } : {}),
         risk: t.metadata.method === "DELETE" ? "destructive" : (t.metadata.method === "GET" ? "read-only" : "mutating"),
         params,
         body: body ? (bodyFields ?? "free-form object — see the panel's API docs") : "none",

@@ -92,3 +92,29 @@ test("response shapes become a Returns line and tool metadata", () => {
     assert.ok(!by["/v1/old"].description.includes("Returns:"));
     assert.equal(returnsLine({ data_type: "object", fields: Array.from({ length: 15 }, (_, i) => ({ name: `f${i}` })) }), "Returns: {status, data: object {f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, … (+3 more)}}");
 });
+
+test("enums, defaults, scope rules, roles and shaping params reach the tool schema", async () => {
+    const { scopesLine, shapingApplies } = await import(resolve(__dirname, "../dist/catalog.js"));
+    const { tools } = buildTools({ endpoints: [
+        { method: "POST", path: "/v1/domains", category: "Domains", auth: { required: true, scopes: ["domains:write"] }, request: { body: { fields: [{ name: "web_server", type: "string", enum: ["nginx_apache", "nginx_only"], default: "nginx_apache" }] } } },
+        { method: "GET", path: "/v1/antivirus/status", category: "Antivirus", auth: { required: true, scopes: ["accounts:read", "security:read"], scope_rule: "one of security:read, accounts:read" } },
+        { method: "GET", path: "/v1/logs/access", category: "Logs", auth: { required: true, scopes: ["logs:read"], roles: ["ADMIN", "ROOT"] }, response: { data_type: "array", fields: [{ name: "line", type: "string" }] } },
+        { method: "GET", path: "/v1/search", category: "Core", auth: { required: true }, request: { query_params: [{ name: "q", type: "string", required: true }] } },
+        { method: "GET", path: "/v1/domains/{id}", category: "Domains", auth: { required: true, scopes: ["domains:read"] }, request: { path_params: [{ name: "id", type: "uuid" }] }, response: { data_type: "object" } },
+    ] });
+    const by = Object.fromEntries(tools.map((t) => [t.metadata.path, t]));
+    const ws = by["/v1/domains"].inputSchema.properties.body.properties.web_server;
+    assert.deepEqual(ws.enum, ["nginx_apache", "nginx_only"]);
+    assert.equal(ws.default, "nginx_apache");
+    assert.match(by["/v1/antivirus/status"].description, /Required scopes: one of security:read, accounts:read/);
+    assert.equal(by["/v1/antivirus/status"].metadata.scopeRule, "one of security:read, accounts:read");
+    assert.match(by["/v1/logs/access"].description, /Restricted to key owners with role: ADMIN, ROOT/);
+    assert.match(by["/v1/search"].description, /Required scopes: none \(any valid API key\)/);
+    // shaping params only on list-returning GETs
+    assert.ok(by["/v1/logs/access"].inputSchema.properties._limit && by["/v1/logs/access"].metadata.shaping === true);
+    assert.ok(by["/v1/search"].inputSchema.properties._match, "unknown-shape collection GET gets shaping too");
+    assert.equal(by["/v1/domains/:id"].inputSchema.properties._limit, undefined);
+    assert.equal(by["/v1/domains"].inputSchema.properties._limit, undefined);
+    assert.equal(shapingApplies({ method: "GET", path: "/v1/x", response: { data_type: "object" } }), false);
+    assert.equal(scopesLine({ method: "GET", path: "/x", auth: { required: false } }), "");
+});

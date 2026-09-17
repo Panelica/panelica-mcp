@@ -10,12 +10,24 @@
 import type { PanelicaTool } from "./catalog.js";
 import { META_CALL, META_DESCRIBE, META_FIND } from "./toolsets.js";
 
+export interface KeyIdentity {
+    name?: string;
+    keyPrefix?: string;
+    scopes?: string[];
+    tier?: string;
+    status?: string;
+    expiresAt?: string;
+}
+
 export interface InstructionInput {
     tools: PanelicaTool[];      // full catalogue
     registered: PanelicaTool[]; // what tools/list exposes (meta tools excluded)
     toolsets: string[];
     source: string;             // "live spec (…)" | "snapshot (…)"
     panelVersion?: string;
+    key?: KeyIdentity;          // from GET /v1/me at startup
+    keyError?: string;          // why the startup probe failed (credentials rejected, unreachable …)
+    clockSkewSeconds?: number;  // local clock minus panel clock, when measurable
 }
 
 interface Recipe { title: string; steps: string[]; }
@@ -40,6 +52,24 @@ export function buildInstructions(i: InstructionInput): string {
         .map((r) => `- ${r.title}: ${r.steps.join(" → ")}`);
     const lists = i.tools.filter((t) => t.metadata.method === "GET" && !t.metadata.path.includes(":")).length;
 
+    const keyLines: string[] = [];
+    if (i.key) {
+        const k = i.key;
+        keyLines.push("YOUR API KEY (checked at startup with GET /v1/me)");
+        keyLines.push(`- Key: ${k.name ?? "?"}${k.keyPrefix ? ` (${k.keyPrefix}…)` : ""}${k.tier ? `, rate-limit tier ${k.tier}` : ""}${k.status ? `, status ${k.status}` : ""}${k.expiresAt ? `, expires ${k.expiresAt}` : ""}.`);
+        const sc = k.scopes ?? [];
+        keyLines.push(`- Scopes: ${sc.length ? sc.join(", ") : "none"}. A tool whose required scopes are not covered by these (family wildcards like *:read or domains:* count) will answer 403 — say so and suggest the scope instead of calling it.`);
+        const readOnly = sc.length > 0 && sc.every((s) => /:read$/.test(s));
+        if (readOnly) keyLines.push("- This key is read-only: every POST/PUT/PATCH/DELETE tool will be refused. Offer to explain what you would change and which scope the operator must add.");
+    } else if (i.keyError) {
+        keyLines.push("YOUR API KEY");
+        keyLines.push(`- The startup check of the configured credentials failed: ${i.keyError}`);
+        keyLines.push("- Every tool call will fail the same way until the operator fixes it — tell the user first instead of trying tools one by one.");
+    }
+    if (i.clockSkewSeconds !== undefined && Math.abs(i.clockSkewSeconds) > 120) {
+        keyLines.push(`- WARNING: this machine's clock is ${Math.round(Math.abs(i.clockSkewSeconds))}s ${i.clockSkewSeconds > 0 ? "ahead of" : "behind"} the panel. Signed requests may be rejected (401) until the clock is synced (NTP).`);
+    }
+
     return [
         `Panelica MCP: ${i.tools.length} tools = the Panelica hosting-panel External API${i.panelVersion ? ` (panel ${i.panelVersion})` : ""}, catalogue from ${i.source}. ` +
         `${i.registered.length} tools are registered directly (toolsets: ${i.toolsets.join(",")}); the rest are one search away.`,
@@ -51,7 +81,9 @@ export function buildInstructions(i: InstructionInput): string {
         `- Success responses are {\"status\":\"success\",\"data\":…} (sometimes with \"total\" or \"message\"). ${lists} list tools return all items the key's owner may see, unpaginated unless the tool has page/limit parameters; oversized results are cut to the first items with a _truncated note.`,
         "- Errors come back as text starting with \"Panelica API error <status>\" plus what to do: 403 = the key lacks a scope (ask the operator, do not retry); 404 = wrong id (re-list); 409 = conflict/not configured; 429 = rate limit (wait for the reset shown); 5xx = panel fault (report, do not loop).",
         "- Read-only keys see 403 on every mutating call; scopes are per family (domains:read, dns:write, *:read …).",
+        `- List tools accept _limit, _fields and _match (applied here, not by the panel): on a large panel ask for _fields=\"id,domain_name\" and _match=\"<name>\" instead of reading the whole list.`,
         "",
+        ...(keyLines.length ? [...keyLines, ""] : []),
         "FINDING THE RIGHT TOOL",
         `- ${META_FIND}(query) searches all ${i.tools.length} tools by keyword; ${META_DESCRIBE}(tool) returns a tool's exact parameters, body fields and response fields; ${META_CALL}(tool, arguments) runs any catalogue tool, registered or not.`,
         `- Categories: ${cats}.`,

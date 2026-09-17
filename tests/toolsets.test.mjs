@@ -69,3 +69,13 @@ test("describeTool lists params, body fields and the response envelope", async (
     assert.equal(describeTool(by["POST /v1/legacy"]).body, "free-form object — see the panel's API docs");
     assert.equal(summarize(by["GET /v1/domains"]).returns, "array of {id}");
 });
+
+test("find understands user vocabulary: website→domain, certificate→ssl, mailbox→email, plurals", () => {
+    const paths = (q) => findTools(all, q, 5).map((t) => t.metadata.path);
+    assert.ok(paths("list websites").some((p) => p.startsWith("/v1/domains")), paths("list websites").join(","));
+    assert.ok(paths("certificate")[0].includes("/ssl/"), paths("certificate").join(","));
+    assert.ok(paths("boxes")[0] === undefined || true); // plural stemming must not throw
+    assert.ok(paths("mailboxes").some((p) => p.includes("/email")), paths("mailboxes").join(","));
+    assert.ok(paths("dns records").some((p) => p.includes("/dns/")));
+    assert.equal(findTools(all, "zzz-nonexistent-term").length, 0);
+});

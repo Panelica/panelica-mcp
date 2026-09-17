@@ -37,6 +37,9 @@
  *   PANELICA_MAX_RESULT_CHARS  Optional cap on a tool result (default 60000);
  *                        larger list results are cut to the first items with a
  *                        _truncated note so the client context is not flooded.
+ *   PANELICA_STARTUP_PROBE  "1" (default): call GET /v1/me once at startup so the
+ *                        instructions can state the key's scopes/tier (and warn
+ *                        immediately when the credentials are rejected). "0" skips it.
  *
  * Run:
  *   panelica-mcp                 # stdio transport (default for Claude Desktop)
@@ -56,8 +59,8 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 
 import { buildTools, fetchSpec, type ApiSpec, type PanelicaTool } from "./catalog.js";
-import { boundResult, explainError } from "./errors.js";
-import { buildInstructions } from "./instructions.js";
+import { boundResult, explainError, shapeResult, takeShaping } from "./errors.js";
+import { buildInstructions, type KeyIdentity } from "./instructions.js";
 import { META_CALL, META_DESCRIBE, META_FIND, describeTool, findTools, metaTools, parseToolsets, selectTools, summarize } from "./toolsets.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -143,13 +146,59 @@ function buildPathAndQuery(template: string, args: CallArgs): { path: string; qu
 }
 
 interface CallResult { ok: boolean; text: string; }
+interface RawResponse { status: number; statusText: string; text: string; headers: Record<string, string>; }
 
-async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<CallResult> {
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** One signed HTTP request. Throws with an explanation on network failure. */
+async function panelicaRequest(method: string, fullPath: string, bodyString: string): Promise<RawResponse> {
     const baseUrl = requireEnv("PANELICA_BASE_URL").replace(/\/+$/, "");
     const apiKey = requireEnv("PANELICA_API_KEY");
     const apiSecret = requireEnv("PANELICA_API_SECRET");
     const timeoutMs = Number(process.env.PANELICA_TIMEOUT_MS ?? 30_000);
 
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const headers: Record<string, string> = {
+        "X-API-Key": apiKey,
+        "X-Timestamp": timestamp,
+        "X-Signature": sign(method, fullPath, timestamp, bodyString, apiSecret),
+        "Accept": "application/json",
+        "User-Agent": `panelica-mcp/${VERSION}`,
+    };
+    if (bodyString) headers["Content-Type"] = "application/json";
+
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+    let response: Response;
+    try {
+        response = await fetch(`${baseUrl}${fullPath}`, { method, headers, body: bodyString || undefined, signal: ctrl.signal });
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const why = /abort/i.test(msg)
+            ? `timed out after ${timeoutMs} ms — the panel did not answer in time (long operation or unreachable host). Do not loop on retries; try once more later or tell the operator.`
+            : `${msg} — the panel is unreachable from this machine (URL, DNS, firewall or TLS). Nothing to fix from the conversation; tell the operator to check PANELICA_BASE_URL.`;
+        throw new Error(`Request ${method} ${fullPath} failed: ${why}`);
+    } finally {
+        clearTimeout(timer);
+    }
+    const text = await response.text();
+    const hdrs: Record<string, string> = {};
+    response.headers.forEach((v, k) => { hdrs[k] = v; });
+    return { status: response.status, statusText: response.statusText, text, headers: hdrs };
+}
+
+/** Seconds until the per-minute rate-limit window resets, from the panel's headers. */
+function rateLimitWait(h: Record<string, string>): number | undefined {
+    const retry = h["retry-after"];
+    if (retry && /^\d+$/.test(retry)) return Number(retry);
+    const reset = h["x-ratelimit-reset-minute"];
+    if (reset && /^\d+$/.test(reset)) return Math.max(1, Number(reset) - Math.floor(Date.now() / 1000));
+    return undefined;
+}
+
+async function callPanelica(tool: PanelicaTool, rawArgs: CallArgs): Promise<CallResult> {
+    const { rest, shaping } = takeShaping(rawArgs);
+    const args = rest as CallArgs;
     const { method, path: pathTemplate } = tool.metadata;
     const { path: resolvedPath, queryUsed } = buildPathAndQuery(pathTemplate, args);
 
@@ -161,47 +210,63 @@ async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<CallRes
     }
     const queryString = queryParams.toString();
     const fullPath = queryString ? `${resolvedPath}?${queryString}` : resolvedPath;
-
     const bodyString = args.body !== undefined ? JSON.stringify(args.body) : "";
-    const timestamp = Math.floor(Date.now() / 1000).toString();
-    const signature = sign(method, fullPath, timestamp, bodyString, apiSecret);
 
-    const headers: Record<string, string> = {
-        "X-API-Key": apiKey,
-        "X-Timestamp": timestamp,
-        "X-Signature": signature,
-        "Accept": "application/json",
-        "User-Agent": `panelica-mcp/${VERSION}`,
-    };
-    if (bodyString) headers["Content-Type"] = "application/json";
-
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-    let response: Response;
+    let r: RawResponse;
     try {
-        response = await fetch(`${baseUrl}${fullPath}`, {
-            method,
-            headers,
-            body: bodyString || undefined,
-            signal: ctrl.signal,
-        });
+        r = await panelicaRequest(method, fullPath, bodyString);
     } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
-        const why = /abort/i.test(msg)
-            ? `timed out after ${timeoutMs} ms — the panel did not answer in time (long operation or unreachable host). Do not loop on retries; try once more later or tell the operator.`
-            : `${msg} — the panel is unreachable from this machine (URL, DNS, firewall or TLS). Nothing to fix from the conversation; tell the operator to check PANELICA_BASE_URL.`;
-        return { ok: false, text: `Request ${method} ${fullPath} failed: ${why}` };
-    } finally {
-        clearTimeout(timer);
+        // A GET is safe to repeat once after a transient network failure.
+        if (method !== "GET") return { ok: false, text: err instanceof Error ? err.message : String(err) };
+        await sleep(1000);
+        try { r = await panelicaRequest(method, fullPath, bodyString); }
+        catch (err2: unknown) { return { ok: false, text: err2 instanceof Error ? err2.message : String(err2) }; }
     }
+    // Short rate-limit windows are waited out once instead of surfacing a 429.
+    if (r.status === 429) {
+        const wait = rateLimitWait(r.headers);
+        if (wait !== undefined && wait <= 15) {
+            log(`429 on ${method} ${fullPath}; waiting ${wait}s for the rate-limit window`);
+            await sleep((wait + 1) * 1000);
+            r = await panelicaRequest(method, fullPath, bodyString);
+        }
+    }
+    if (r.status < 200 || r.status >= 300) {
+        const bodySchema = (tool.inputSchema as { properties?: { body?: { properties?: Record<string, unknown> } } }).properties?.body;
+        const jsonFields = Object.keys(bodySchema?.properties ?? {});
+        return { ok: false, text: explainError({ status: r.status, statusText: r.statusText, method, path: fullPath, body: r.text, headers: r.headers }, jsonFields) };
+    }
+    const shaped = shapeResult(r.text, shaping);
+    return { ok: true, text: boundResult(shaped, Number(process.env.PANELICA_MAX_RESULT_CHARS ?? 60_000)) };
+}
 
-    const text = await response.text();
-    if (!response.ok) {
-        const hdrs: Record<string, string> = {};
-        response.headers.forEach((v, k) => { hdrs[k] = v; });
-        return { ok: false, text: explainError({ status: response.status, statusText: response.statusText, method, path: fullPath, body: text, headers: hdrs }) };
+/**
+ * Startup probe: GET /v1/me tells us which key this is and what it may do, so
+ * the instructions can say it up front (and a rejected credential is reported
+ * before the model wastes calls). Never fatal.
+ */
+async function probeIdentity(): Promise<{ key?: KeyIdentity; keyError?: string }> {
+    if ((process.env.PANELICA_STARTUP_PROBE ?? "1") === "0") return {};
+    if (!process.env.PANELICA_BASE_URL || !process.env.PANELICA_API_KEY || !process.env.PANELICA_API_SECRET) return {};
+    try {
+        const r = await panelicaRequest("GET", "/v1/me", "");
+        if (r.status < 200 || r.status >= 300) {
+            const text = explainError({ status: r.status, statusText: r.statusText, method: "GET", path: "/v1/me", body: r.text, headers: r.headers });
+            return { keyError: text.split("\n").slice(0, 3).join(" ") };
+        }
+        const j = JSON.parse(r.text) as { data?: Record<string, unknown> };
+        const d = j.data ?? {};
+        return { key: {
+            name: typeof d.name === "string" ? d.name : undefined,
+            keyPrefix: typeof d.key_prefix === "string" ? d.key_prefix : undefined,
+            scopes: Array.isArray(d.scopes) ? d.scopes.map(String) : undefined,
+            tier: typeof d.rate_limit_tier === "string" ? d.rate_limit_tier : undefined,
+            status: typeof d.status === "string" ? d.status : undefined,
+            expiresAt: typeof d.expires_at === "string" ? d.expires_at : undefined,
+        } };
+    } catch (err: unknown) {
+        return { keyError: err instanceof Error ? err.message : String(err) };
     }
-    return { ok: true, text: boundResult(text, Number(process.env.PANELICA_MAX_RESULT_CHARS ?? 60_000)) };
 }
 
 // ── Server ────────────────────────────────────────────────────────────────────
@@ -213,8 +278,20 @@ const toolMap = new Map(tools.map((t) => [t.name, t]));
 const toolsets = parseToolsets(process.env.PANELICA_TOOLSETS);
 const registered = selectTools(tools, toolsets);
 const exposed: PanelicaTool[] = [...metaTools(tools.length, registered.length), ...registered];
-const instructions = buildInstructions({ tools, registered, toolsets, source, panelVersion: loaded.panelVersion });
+const identity = await probeIdentity();
+// Clock skew: the live spec carries the panel's current time; HMAC timestamps
+// are rejected beyond the panel's tolerance, so warn while the model can still
+// tell the operator instead of watching every call fail with 401.
+let clockSkewSeconds: number | undefined;
+if (loaded.spec?.generated_at) {
+    const panelTime = Date.parse(loaded.spec.generated_at);
+    if (!Number.isNaN(panelTime)) clockSkewSeconds = Math.round((Date.now() - panelTime) / 1000);
+}
+const instructions = buildInstructions({ tools, registered, toolsets, source, panelVersion: loaded.panelVersion, key: identity.key, keyError: identity.keyError, clockSkewSeconds });
 log(`v${VERSION} — catalogue from ${source}; toolsets=${toolsets.join(",")} → ${exposed.length} tools registered`);
+if (identity.key) log(`key ${identity.key.name ?? "?"} scopes=${(identity.key.scopes ?? []).join(",") || "none"} tier=${identity.key.tier ?? "?"}`);
+else if (identity.keyError) log(`startup credential check failed: ${identity.keyError}`);
+if (clockSkewSeconds !== undefined && Math.abs(clockSkewSeconds) > 120) log(`WARNING: clock skew of ${clockSkewSeconds}s versus the panel — signed requests may be rejected`);
 
 const server = new Server(
     { name: "panelica-mcp", version: VERSION },

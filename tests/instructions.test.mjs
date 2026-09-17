@@ -30,3 +30,19 @@ test("a tiny catalogue yields no recipes and no dangling references", () => {
     assert.ok(!text.includes("COMMON WORKFLOWS"));
     assert.match(text, /1 tools = the Panelica/);
 });
+
+test("instructions carry the key identity, read-only warning, credential failure and clock skew", () => {
+    const base = { tools: all, registered: selectTools(all, ["core"]), toolsets: ["core"], source: "snapshot (test)" };
+    const ro = buildInstructions({ ...base, key: { name: "ops", keyPrefix: "pk_live_ab", scopes: ["*:read"], tier: "enterprise" } });
+    assert.match(ro, /YOUR API KEY/);
+    assert.match(ro, /Scopes: \*:read\./);
+    assert.match(ro, /This key is read-only/);
+    const rw = buildInstructions({ ...base, key: { name: "ops", scopes: ["*:read", "dns:write"] } });
+    assert.ok(!rw.includes("This key is read-only"));
+    const bad = buildInstructions({ ...base, keyError: "Panelica API error 401 on GET /v1/me" });
+    assert.match(bad, /startup check of the configured credentials failed: Panelica API error 401/);
+    const skew = buildInstructions({ ...base, clockSkewSeconds: 400 });
+    assert.match(skew, /clock is 400s ahead of the panel/);
+    assert.ok(!buildInstructions({ ...base, clockSkewSeconds: 30 }).includes("WARNING: this machine's clock"));
+    assert.match(ro, /_limit, _fields and _match/);
+});

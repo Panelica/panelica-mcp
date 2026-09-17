@@ -267,6 +267,7 @@ You should get back JSON listing your API keys. Common 401 responses:
 | `PANELICA_SPEC_TIMEOUT_MS` | `8000` | Live-spec fetch timeout before falling back to the snapshot |
 | `PANELICA_TIMEOUT_MS` | `30000` | Per-call HTTP timeout |
 | `PANELICA_MAX_RESULT_CHARS` | `60000` | Larger list results are cut to the first items with a `_truncated` note so the client context is not flooded |
+| `PANELICA_STARTUP_PROBE` | `1` | Call `GET /v1/me` once at startup to state the key's scopes in the instructions; `0` skips it |
 
 ## Wire it into your MCP client
 
@@ -404,6 +405,33 @@ path the panel does not have:
   class means and what to do, scope families, the category map with counts,
   safety rules for mutating/destructive tools, and workflow recipes that are
   included only when every step exists in the catalogue.
+- **Your key, up front.** At startup the server calls `GET /v1/me` once and
+  tells the model which key it holds, its scopes, tier and expiry — so a
+  read-only key is announced as read-only and out-of-scope tools are declined
+  with the scope to add, not attempted. A rejected credential is reported in
+  the instructions before the first tool call. (`PANELICA_STARTUP_PROBE=0`
+  disables the probe.)
+- **Scopes as the code enforces them.** Newer panels derive the required scopes
+  from the middleware chain instead of hand-written docs, including "one of a,
+  b" rules and role restrictions (ROOT/ADMIN); the tool description repeats
+  them verbatim.
+- **Allowed values.** Fields with a declared value list (`ssl_provider`,
+  `web_server`, `restart_policy` …) carry a JSON-schema `enum` and `default`,
+  so the model does not guess.
+- **Big lists stay usable.** Every list-returning GET accepts `_limit`,
+  `_fields` and `_match`; the server applies them to the response (the panel
+  never sees them) and reports `{total, matched, shown}` so a 500-domain panel
+  can be searched in one call.
+- **Validation errors name the field.** A Gin validation failure becomes
+  `field "user_id" is required` / `field "type" must be one of the allowed
+  values` using the JSON names the model used.
+- **Search speaks the user's language.** `panelica_find_tools` maps
+  website→domain, certificate→ssl, mailbox→email, container→docker and stems
+  plurals, so the first query finds the right tool.
+- **Transient limits are absorbed.** A 429 whose window resets within 15 s is
+  waited out once; a GET that fails on the network is retried once; a clock
+  skew above two minutes against the panel is flagged in the instructions
+  (HMAC timestamps would be rejected).
 - **Per-tool descriptions** carry the HTTP route, required scopes, a
   `Returns:` line with the response envelope and the first data fields, and the
   risk class (read-only / mutating / destructive).
@@ -606,6 +634,8 @@ fans out many calls; create the assistant's key with a higher tier if you see
 | Tool result starts with `Panelica API error 403` and names a scope | API key lacks that scope | Add the scope to the key in the panel (Settings → API Keys); the assistant is told not to retry |
 | Tool result says `Panelica API error 404 … re-list` | The assistant used an id that does not exist for this key's owner | Nothing to fix server-side; the guidance makes it list again and pick a real id |
 | Tool description says "Schema not statically declared" | The endpoint binds a dynamic request body (map / multipart) | Pass a free-form `body` object; the panel validates and answers 400 with the missing field, which the assistant is told to read |
+| Startup log says `clock skew of Ns versus the panel` | The MCP host's clock is off | Sync NTP on the MCP host; signed requests carry a timestamp the panel checks |
+| Startup log says `startup credential check failed` | Key/secret rejected by `GET /v1/me` | The instructions already tell the assistant; fix the key in the panel and restart the client |
 | TLS verification fails | Panel is using its self-signed cert | If the MCP host trusts that CA, this works out of the box. If not, deploy a real cert on the panel (panel UI → Settings → SSL) — do not disable TLS verification client-side |
 
 If you are still stuck, open an issue at

@@ -19,8 +19,8 @@
 import { createHash } from "node:crypto";
 
 // ── Spec shapes (subset we rely on) ───────────────────────────────────────────
-export interface SpecParam { name: string; type?: string; required?: boolean; description?: string; }
-export interface SpecBodyField { name: string; type?: string; required?: boolean; description?: string; }
+export interface SpecParam { name: string; type?: string; required?: boolean; description?: string; enum?: string[]; default?: string; }
+export interface SpecBodyField { name: string; type?: string; required?: boolean; description?: string; enum?: string[]; default?: string; }
 /** Success-response shape, derived by newer panels from their handler source. */
 export interface SpecResponse {
     status_code?: number;
@@ -35,7 +35,7 @@ export interface SpecEndpoint {
     category?: string;
     summary?: string;
     description?: string;
-    auth?: { required?: boolean; type?: string; scopes?: string[] };
+    auth?: { required?: boolean; type?: string; scopes?: string[]; scope_rule?: string; roles?: string[] };
     request?: {
         path_params?: SpecParam[];
         query_params?: SpecParam[];
@@ -54,7 +54,16 @@ export interface ApiSpec {
 
 // ── Tool shape ────────────────────────────────────────────────────────────────
 export interface ToolResponse { data_type: string; keys?: string[]; fields?: { name: string; type: string; description?: string }[]; }
-export interface ToolMetadata { method: string; path: string; category: string; scopes: string[]; response?: ToolResponse; }
+export interface ToolMetadata {
+    method: string;
+    path: string;
+    category: string;
+    scopes: string[];
+    scopeRule?: string;   // "one of a, b" — how scopes combine when not all are required
+    roles?: string[];     // owner roles allowed to call (ROOT, ADMIN)
+    response?: ToolResponse;
+    shaping?: boolean;    // accepts _limit/_fields/_match (list-returning GET)
+}
 export interface PanelicaTool {
     name: string;
     description: string;
@@ -138,19 +147,37 @@ export function idHint(name: string, path: string, lists: Set<string>, type?: st
     return list ? `${kind} of the ${label} — obtain it from GET ${list}` : `${kind} of the ${label}`;
 }
 
+/** List-returning GET tools get _limit/_fields/_match (client-side shaping). */
+export function shapingApplies(ep: SpecEndpoint): boolean {
+    if (String(ep.method).toUpperCase() !== "GET") return false;
+    const dt = ep.response?.data_type;
+    if (dt) return dt === "array";
+    return !String(ep.path).includes("{"); // unknown shape: collections without an id are lists
+}
+
 function buildInputSchema(ep: SpecEndpoint, lists: Set<string>): Record<string, unknown> {
     const properties: Record<string, unknown> = {};
     const required: string[] = [];
     const req = ep.request || {};
     const hint = (name: string, type?: string) => idHint(name, ep.path, lists, type);
 
+    const withEnum = (schema: Record<string, unknown>, f: { enum?: string[]; default?: string }) => {
+        if (f.enum?.length) schema.enum = f.enum;
+        if (f.default !== undefined && f.default !== "") schema.default = f.default;
+        return schema;
+    };
     for (const p of req.path_params ?? []) {
-        properties[p.name] = { type: jsonType(p.type), description: redactStr(p.description || hint(p.name, p.type) || `Path parameter: ${p.name}`) };
+        properties[p.name] = withEnum({ type: jsonType(p.type), description: redactStr(p.description || hint(p.name, p.type) || `Path parameter: ${p.name}`) }, p);
         if (p.required !== false) required.push(p.name);
     }
     for (const q of req.query_params ?? []) {
-        properties[q.name] = { type: jsonType(q.type), description: redactStr(q.description || hint(q.name, q.type) || `Query parameter: ${q.name}`) };
+        properties[q.name] = withEnum({ type: jsonType(q.type), description: redactStr(q.description || hint(q.name, q.type) || `Query parameter: ${q.name}`) }, q);
         if (q.required) required.push(q.name);
+    }
+    if (shapingApplies(ep)) {
+        properties._limit = { type: "integer", description: "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists." };
+        properties._fields = { type: "string", description: "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need." };
+        properties._match = { type: "string", description: "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status." };
     }
 
     const body = req.body || {};
@@ -161,10 +188,10 @@ function buildInputSchema(ep: SpecEndpoint, lists: Set<string>): Record<string, 
         properties.body = {
             type: "object",
             description: `Request body (${body.content_type || "application/json"})`,
-            properties: Object.fromEntries(body.fields.map((f) => [f.name, {
+            properties: Object.fromEntries(body.fields.map((f) => [f.name, withEnum({
                 type: jsonType(f.type),
                 description: redactStr(f.description || hint(f.name, f.type) || ""),
-            }])),
+            }, f)])),
             required: body.fields.filter((f) => f.required).map((f) => f.name),
         };
         if (body.required) required.push("body");
@@ -215,9 +242,19 @@ function toolResponse(r: SpecResponse | undefined): ToolResponse | undefined {
     return out;
 }
 
+export function scopesLine(ep: SpecEndpoint): string {
+    const a = ep.auth ?? {};
+    const parts: string[] = [];
+    if (a.scope_rule) parts.push(`Required scopes: ${a.scope_rule}`);
+    else if (a.scopes?.length) parts.push(`Required scopes: ${a.scopes.join(", ")}`);
+    else if (a.required) parts.push("Required scopes: none (any valid API key)");
+    if (a.roles?.length) parts.push(`Restricted to key owners with role: ${a.roles.join(", ")}`);
+    return parts.join("\n");
+}
+
 function buildDescription(ep: SpecEndpoint): string {
     const colon = toColonPath(ep.path);
-    const scopes = ep.auth?.scopes?.length ? `Required scopes: ${ep.auth.scopes.join(", ")}` : "";
+    const scopes = scopesLine(ep);
     const risk = ep.method === "DELETE"
         ? "WARNING: destructive — permanently removes the resource."
         : (["POST", "PUT", "PATCH"].includes(ep.method) ? "Mutating: changes server state." : "Read-only.");
@@ -268,7 +305,10 @@ export function buildTools(spec: ApiSpec): { tools: PanelicaTool[]; stats: Build
                 path: toColonPath(ep.path),
                 category: redactStr(ep.category || "misc"),
                 scopes: ep.auth?.scopes ?? [],
+                ...(ep.auth?.scope_rule ? { scopeRule: ep.auth.scope_rule } : {}),
+                ...(ep.auth?.roles?.length ? { roles: ep.auth.roles } : {}),
                 ...(toolResponse(ep.response) ? { response: toolResponse(ep.response) } : {}),
+                ...(shapingApplies(ep) ? { shaping: true } : {}),
             },
         });
         stats.emitted++;

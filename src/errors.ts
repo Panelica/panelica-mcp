@@ -67,12 +67,48 @@ function header(h: Record<string, string>, name: string): string | undefined {
     return k ? h[k] : undefined;
 }
 
+const TAG_TEXT: Record<string, string> = {
+    required: "is required",
+    min: "is below the minimum length/value",
+    max: "exceeds the maximum length/value",
+    len: "has the wrong length",
+    email: "must be a valid e-mail address",
+    url: "must be a valid URL",
+    uuid: "must be a UUID", uuid4: "must be a UUID",
+    oneof: "must be one of the allowed values (see the enum in the tool schema)",
+    gte: "is below the allowed minimum", gt: "is below the allowed minimum",
+    lte: "is above the allowed maximum", lt: "is above the allowed maximum",
+    alphanum: "must contain only letters and digits", alpha: "must contain only letters", numeric: "must be numeric",
+    ip: "must be an IP address", ipv4: "must be an IPv4 address", ipv6: "must be an IPv6 address",
+    fqdn: "must be a valid hostname", hostname: "must be a valid hostname",
+    startswith: "must start with the expected prefix", endswith: "must end with the expected suffix",
+};
+
+/**
+ * Gin/validator messages look like
+ *   Key: 'CreateDomainRequest.UserID' Error:Field validation for 'UserID' failed on the 'required' tag
+ * Map the Go field back to the JSON name the caller used and say what is wrong.
+ */
+export function humanizeValidation(msg: string, jsonFields: string[] = []): string | undefined {
+    const re = /Field validation for '([A-Za-z0-9_]+)' failed on the '([A-Za-z0-9_]+)' tag/g;
+    const norm = (x: string) => x.toLowerCase().replace(/_/g, "");
+    const out: string[] = [];
+    for (const m of msg.matchAll(re)) {
+        const goName = m[1];
+        const json = jsonFields.find((f) => norm(f) === norm(goName)) ?? goName.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase();
+        out.push(`field "${json}" ${TAG_TEXT[m[2]] ?? `failed the "${m[2]}" rule`}`);
+    }
+    return out.length ? out.join("; ") : undefined;
+}
+
 /** One paragraph of guidance per status class, followed by the raw body for reference. */
-export function explainError(c: FailedCall): string {
+export function explainError(c: FailedCall, jsonFields: string[] = []): string {
     const p = parseErrorBody(c.body);
     const where = `${c.method} ${c.path}`;
     const lines: string[] = [`Panelica API error ${c.status}${c.statusText ? ` ${c.statusText}` : ""} on ${where}`];
-    if (p.message) lines.push(`Message: ${humanizeKey(p.message)}`);
+    const validation = p.message ? humanizeValidation(p.message, jsonFields) : undefined;
+    if (validation) lines.push(`Validation: ${validation}`);
+    else if (p.message) lines.push(`Message: ${humanizeKey(p.message)}`);
     if (p.details) lines.push(`Details: ${p.details.slice(0, 800)}`);
 
     switch (true) {
@@ -137,6 +173,42 @@ export function explainError(c: FailedCall): string {
     if (p.requestId && c.status !== 500) lines.push(`request_id: ${p.requestId}`);
     lines.push(`Raw response: ${c.body.slice(0, 1500)}`);
     return lines.join("\n");
+}
+
+export interface Shaping { limit?: number; fields?: string[]; match?: string; }
+
+/** Pull _limit/_fields/_match out of the arguments (they never reach the panel). */
+export function takeShaping(args: Record<string, unknown>): { rest: Record<string, unknown>; shaping: Shaping } {
+    const { _limit, _fields, _match, ...rest } = args;
+    const shaping: Shaping = {};
+    if (_limit !== undefined && _limit !== null && String(_limit) !== "") shaping.limit = Math.max(0, Math.floor(Number(_limit)));
+    if (typeof _fields === "string" && _fields.trim()) shaping.fields = _fields.split(",").map((f) => f.trim()).filter(Boolean);
+    if (typeof _match === "string" && _match.trim()) shaping.match = _match.trim().toLowerCase();
+    return { rest, shaping };
+}
+
+/**
+ * Apply client-side shaping to a {status, data: [...]} result: filter by
+ * substring, project fields, cut to N items. Adds a _shaped note so the model
+ * knows what it is looking at. Non-list results pass through untouched.
+ */
+export function shapeResult(text: string, s: Shaping): string {
+    if (s.limit === undefined && !s.fields && !s.match) return text;
+    let j: Record<string, unknown>;
+    try { j = JSON.parse(text) as Record<string, unknown>; } catch { return text; }
+    if (!j || !Array.isArray(j.data)) return text;
+    const total = j.data.length;
+    let items = j.data as unknown[];
+    if (s.match) items = items.filter((it) => JSON.stringify(it).toLowerCase().includes(s.match as string));
+    const matched = items.length;
+    if (s.fields) {
+        const keep = new Set(s.fields);
+        items = items.map((it) => (it && typeof it === "object" && !Array.isArray(it))
+            ? Object.fromEntries(Object.entries(it as Record<string, unknown>).filter(([k]) => keep.has(k)))
+            : it);
+    }
+    if (s.limit !== undefined) items = items.slice(0, s.limit);
+    return JSON.stringify({ ...j, data: items, _shaped: { total, matched, shown: items.length, ...(s.fields ? { fields: s.fields } : {}), ...(s.match ? { match: s.match } : {}) } });
 }
 
 /**
