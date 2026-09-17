@@ -6,13 +6,13 @@
 > [Model Context Protocol](https://modelcontextprotocol.io) client.
 
 [![npm](https://img.shields.io/npm/v/panelica-mcp?color=CB3837&logo=npm)](https://www.npmjs.com/package/panelica-mcp)
-[![Tools](https://img.shields.io/badge/tools-406-blue)](tools/tools.json)
+[![Tools](https://img.shields.io/badge/tools-404-blue)](tools/tools.json)
 [![Scopes](https://img.shields.io/badge/permission%20scopes-50-8A2BE2)](#permission-scopes)
 [![Docker](https://img.shields.io/badge/ghcr.io-panelica%2Fpanelica--mcp-2496ED?logo=docker&logoColor=white)](https://github.com/Panelica/panelica-mcp/pkgs/container/panelica-mcp)
 [![Zero drift](https://img.shields.io/badge/catalogue-auto--generated%20weekly-brightgreen)](#keeping-the-tool-catalogue-current)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-406 tools cover the entire External API surface — accounts, domains, DNS,
+404 tools cover the entire External API surface — accounts, domains, DNS,
 SSL, email, MySQL, FTP, security, backups, server resources, and more.
 
 ---
@@ -215,8 +215,10 @@ verification client-side.
    API keys.
 2. Navigate to **Settings → API Keys → Generate API Key**.
 3. Pick the scopes you want the MCP server to have. For a read-only assistant,
-   `*:read` is enough. For full automation, grant `*:write` too. Every tool's
-   `description` in this server lists the scopes it requires.
+   `*:read` is enough (panel 1.0.528+; older panels need the individual
+   `<area>:read` scopes). For full automation grant `*:write` and `*:delete`
+   too, or `*:*`. Every tool's `description` in this server lists the scopes it
+   requires.
 4. Copy both **key** (looks like `pk_...`) and **secret** (looks like `sk_...`).
    The secret is shown **only once**; store it in a password manager.
 
@@ -292,7 +294,7 @@ Edit your Claude Desktop config:
 
 Save, fully quit Claude Desktop (not just close the window — *Quit*), and
 re-open it. A new chat will show `panelica` as a connected MCP server with
-"406 tools available".
+"36 tools available" (the core set plus two meta tools; set `PANELICA_TOOLSETS=all` for all 404).
 
 ### Cursor
 
@@ -345,14 +347,45 @@ panelica-mcp
 The process speaks MCP JSON-RPC over stdin/stdout. Send an `initialize`
 request first, then `tools/list`, then `tools/call`.
 
+## Toolsets — what the client sees
+
+MCP clients budget tools: Cursor caps active tools at about 40 across all
+servers and silently drops the rest, and every registered tool costs prompt
+tokens on each turn. So by default the server registers a compact **core** set
+(34 everyday tools: accounts, domains, DNS, SSL, databases, e-mail, FTP,
+backups, server status/services, WordPress, Docker, plans) plus two meta tools
+that reach the whole catalogue:
+
+| Tool | What it does |
+|---|---|
+| `panelica_find_tools` | Keyword search over every catalogue tool; returns names, HTTP route, parameters and body fields |
+| `panelica_call` | Runs any catalogue tool by name with its arguments (same scoped, HMAC-signed client) |
+
+Choose the set with `PANELICA_TOOLSETS` (comma-separated, unioned):
+
+| Value | Registered tools |
+|---|---|
+| `core` (default) | 34 + 2 meta |
+| `all` | every catalogue tool + 2 meta (the pre-0.3 behaviour; fine for Claude Code / Claude Desktop) |
+| `none` | only the 2 meta tools |
+| category slugs, e.g. `domains,dns,ssl,git,docker,file_manager,laravel_apps,node_js_apps,python_apps,logs` | those categories (+ `core` if listed) |
+
+Direct calls to a non-registered catalogue tool are still accepted, so a
+client that learned a tool name from `panelica_find_tools` can call it either
+way.
+
 ## Tool catalogue
 
-**406 tools** are auto-generated from the panel's live `/v1/api-spec`, so they never
+**404 tools** are auto-generated from the panel's live `/v1/api-spec`, so they never
 drift from the API. Each tool carries MCP safety annotations
 (![read-only](https://img.shields.io/badge/-read--only-brightgreen) 181 ·
 ![mutating](https://img.shields.io/badge/-mutating-orange) 177 ·
 ![destructive](https://img.shields.io/badge/-destructive-red) 46)
 that capable clients use to auto-approve reads and warn before destructive calls.
+Body fields and query parameters are derived from the panel's handler code
+(`gen-external-schemas` in the panel repository), so on panels from 1.0.528 on
+mutating tools carry typed, required-marked bodies and action endpoints such as
+`…/suspend` or `…/restart` declare that they take no body at all.
 
 | Category | Tools |
 |----------|------:|
@@ -479,6 +512,14 @@ Every family also accepts its wildcard (`domains:*`) and `*:*` grants everything
 Mutating service control deliberately requires its own action scopes (or
 `server:write`) — a metrics-only `server:read` key can **not** stop MySQL.
 
+## Rate limits
+
+API keys carry a rate-limit tier (`rate_limit_tier` when creating the key:
+`starter` 60/min, `professional` 300/min, `business` 1000/min, `enterprise`
+unlimited). The default `starter` tier is easy to exhaust when an assistant
+fans out many calls; create the assistant's key with a higher tier if you see
+`429 RATE_LIMIT_EXCEEDED` (the response carries `reset_at`).
+
 ## Security model
 
 - **HMAC-SHA256 request signing.** Every request is signed over
@@ -533,6 +574,7 @@ Project layout:
 .
 ├── src/index.ts          # MCP server (stdio transport, HMAC client, live-spec loader)
 ├── src/catalog.ts        # spec → tools generator (shared by runtime and build script)
+├── src/toolsets.ts       # core set, PANELICA_TOOLSETS selection, find/call meta tools
 ├── tools/
 │   ├── build-tools.mjs   # Generates tools.json from the API spec
 │   ├── api-spec.json     # Committed snapshot of the live /v1/api-spec

@@ -21,6 +21,10 @@
  *                        certificate not trusted, timeout) falls back to the
  *                        snapshot — the server always starts.
  *   PANELICA_SPEC_TIMEOUT_MS  Optional live-spec fetch timeout (default 8000)
+ *   PANELICA_TOOLSETS    Which tools to register (default "core"): "core", "all",
+ *                        "none" or category slugs, comma-separated — see
+ *                        src/toolsets.ts. Two meta tools (panelica_find_tools,
+ *                        panelica_call) always give access to the whole catalogue.
  *
  * Run:
  *   panelica-mcp                 # stdio transport (default for Claude Desktop)
@@ -38,6 +42,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 
 import { buildTools, fetchSpec, type PanelicaTool } from "./catalog.js";
+import { META_CALL, META_FIND, findTools, metaTools, parseToolsets, selectTools, summarize } from "./toolsets.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -178,8 +183,13 @@ async function callPanelica(tool: PanelicaTool, args: CallArgs): Promise<string>
 
 // ── Server ────────────────────────────────────────────────────────────────────
 const { tools, source } = await loadTools();
+// Full catalogue (reachable through panelica_call) vs. the registered subset
+// (what the client sees in tools/list). See src/toolsets.ts for the rationale.
 const toolMap = new Map(tools.map((t) => [t.name, t]));
-log(`v${VERSION} — catalogue from ${source}`);
+const toolsets = parseToolsets(process.env.PANELICA_TOOLSETS);
+const registered = selectTools(tools, toolsets);
+const exposed: PanelicaTool[] = [...metaTools(tools.length, registered.length), ...registered];
+log(`v${VERSION} — catalogue from ${source}; toolsets=${toolsets.join(",")} → ${exposed.length} tools registered`);
 
 const server = new Server(
     { name: "panelica-mcp", version: VERSION },
@@ -187,7 +197,7 @@ const server = new Server(
 );
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
-    tools: tools.map((t) => ({
+    tools: exposed.map((t) => ({
         name: t.name,
         description: t.description,
         inputSchema: t.inputSchema,
@@ -199,7 +209,26 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
-    const tool = toolMap.get(name);
+    const a = (args ?? {}) as Record<string, unknown>;
+
+    if (name === META_FIND) {
+        const hits = findTools(tools, String(a.query ?? ""), Number(a.limit ?? 10));
+        return { content: [{ type: "text", text: JSON.stringify({ count: hits.length, tools: hits.map(summarize) }, null, 1) }] };
+    }
+
+    let tool: PanelicaTool | undefined;
+    let callArgs: CallArgs;
+    if (name === META_CALL) {
+        tool = toolMap.get(String(a.tool ?? ""));
+        callArgs = ((a.arguments ?? {}) as CallArgs);
+        if (!tool) {
+            return { isError: true, content: [{ type: "text", text: `Unknown catalogue tool: ${String(a.tool ?? "")}. Use ${META_FIND} to search.` }] };
+        }
+    } else {
+        // Direct calls are accepted for every catalogue tool, registered or not.
+        tool = toolMap.get(name);
+        callArgs = a as CallArgs;
+    }
     if (!tool) {
         return {
             isError: true,
@@ -207,7 +236,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
     }
     try {
-        const body = await callPanelica(tool, (args ?? {}) as CallArgs);
+        const body = await callPanelica(tool, callArgs);
         return { content: [{ type: "text", text: body }] };
     } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);

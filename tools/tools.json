@@ -9242,37 +9242,6 @@
     }
   },
   {
-    "name": "panelica_metrics_post_v1_metrics_ws_ticket",
-    "description": "Returns a short-lived single-use ticket for GET /v1/metrics/ws. Browsers cannot send HMAC headers on a WebSocket handshake, so streaming auth is ticket-based.\n\nHTTP: POST /v1/metrics/ws-ticket\nCategory: Metrics\nRequired scopes: server:read\nMutating: changes server state.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {
-        "body": {
-          "type": "object",
-          "description": "Request body (application/json). Schema not statically declared — see API docs.",
-          "additionalProperties": true
-        }
-      },
-      "required": [],
-      "additionalProperties": false
-    },
-    "annotations": {
-      "title": "Mint a WebSocket streaming ticket",
-      "readOnlyHint": false,
-      "destructiveHint": false,
-      "idempotentHint": false,
-      "openWorldHint": true
-    },
-    "metadata": {
-      "method": "POST",
-      "path": "/v1/metrics/ws-ticket",
-      "category": "Metrics",
-      "scopes": [
-        "server:read"
-      ]
-    }
-  },
-  {
     "name": "panelica_migrations_get_v1_migration_cloudflare_credentials",
     "description": "List cloudflare credentials\n\nHTTP: GET /v1/migration/cloudflare-credentials\nCategory: Migrations\nRequired scopes: migrations:read\nRead-only.",
     "inputSchema": {
@@ -12812,31 +12781,6 @@
       "category": "Terminal",
       "scopes": [
         "server:read"
-      ]
-    }
-  },
-  {
-    "name": "panelica_terminal_get_v1_terminal_ws",
-    "description": "WebSocket endpoint for terminal access. ROOT only. Send JSON messages: {type:'input',data:'command'}, {type:'resize',cols:80,rows:24}\n\nHTTP: GET /v1/terminal/ws\nCategory: Terminal\nRequired scopes: terminal:access\nRead-only.",
-    "inputSchema": {
-      "type": "object",
-      "properties": {},
-      "required": [],
-      "additionalProperties": false
-    },
-    "annotations": {
-      "title": "Terminal WebSocket",
-      "readOnlyHint": true,
-      "destructiveHint": false,
-      "idempotentHint": true,
-      "openWorldHint": true
-    },
-    "metadata": {
-      "method": "GET",
-      "path": "/v1/terminal/ws",
-      "category": "Terminal",
-      "scopes": [
-        "terminal:access"
       ]
     }
   },

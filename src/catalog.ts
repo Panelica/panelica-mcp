@@ -119,7 +119,10 @@ function buildInputSchema(ep: SpecEndpoint): Record<string, unknown> {
     }
 
     const body = req.body || {};
-    if (body.fields?.length) {
+    if (body.content_type === "none") {
+        // The panel declares this mutating endpoint takes no request body
+        // (action endpoints such as …/suspend, …/restart): no body property.
+    } else if (body.fields?.length) {
         properties.body = {
             type: "object",
             description: `Request body (${body.content_type || "application/json"})`,
@@ -170,8 +173,8 @@ function buildDescription(ep: SpecEndpoint): string {
     ].filter(Boolean).join("\n");
 }
 
-/** Meta endpoints that are not tools (unauthenticated / non-REST). */
-const SKIP_PATHS = /^\/(health|v1\/api-spec|v1\/postman-collection|v1\/metrics\/ws)$/;
+/** Meta / non-REST endpoints that are not tools (unauthenticated, WebSocket, ticket minting for WS). */
+const SKIP_PATHS = /^\/(health|v1\/api-spec|v1\/postman-collection|v1\/metrics\/ws|v1\/metrics\/ws-ticket|v1\/terminal\/ws)$/;
 
 export interface BuildStats { total: number; emitted: number; skipped: number; read: number; mutate: number; destructive: number; }
 
