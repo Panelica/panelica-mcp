@@ -35,6 +35,13 @@ async function loadSpec() {
         const data = deepRedact(raw);
         // Never leak the source host into the public snapshot; keep provenance.
         data.base_url = "https://<your-panel>:8443/api/external/v1";
+        // Canonical form, so the weekly refresh only sees REAL API changes:
+        // the panel's generation timestamp changes every fetch and endpoint
+        // order is not significant. Both used to trigger a needless release.
+        delete data.generated_at;
+        if (Array.isArray(data.endpoints)) {
+            data.endpoints.sort((a, b) => `${a.path} ${a.method}`.localeCompare(`${b.path} ${b.method}`));
+        }
         writeFileSync(snapshotPath, JSON.stringify(data, null, 2) + "\n");
         console.log(`Refreshed snapshot (panel ${data.panel_version ?? "unknown"}, ${data.generated_at ?? "no timestamp"})`);
         return data;

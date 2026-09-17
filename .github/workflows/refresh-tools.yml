@@ -83,7 +83,10 @@ jobs:
           git config user.name  "Panelica"
           git config user.email "info@panelica.com"
           CURRENT=$(node -p "require('./package.json').version")
-          if git diff --quiet -- tools/tools.json tools/api-spec.json; then
+          # The generated tool catalogue is what ships; a snapshot that differs
+          # only in a way that produces the same tools is not a change.
+          if git diff --quiet -- tools/tools.json; then
+            git checkout -- tools/api-spec.json
             echo "No API changes — tool catalogue already current."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "version=$CURRENT" >> "$GITHUB_OUTPUT"
