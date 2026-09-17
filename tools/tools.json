@@ -125,7 +125,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -182,7 +182,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -214,7 +214,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -246,7 +246,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -278,7 +278,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -310,7 +310,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -342,7 +342,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -374,7 +374,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         },
         "body": {
           "type": "object",
@@ -442,7 +442,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         },
         "body": {
           "type": "object",
@@ -479,7 +479,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         },
         "body": {
           "type": "object",
@@ -516,7 +516,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         },
         "body": {
           "type": "object",
@@ -553,7 +553,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         },
         "body": {
           "type": "object",
@@ -590,7 +590,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the account — obtain it from GET /v1/accounts"
         },
         "body": {
           "type": "object",
@@ -683,7 +683,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the scan"
         }
       },
       "required": [
@@ -771,7 +771,7 @@
       "properties": {
         "key_id": {
           "type": "string",
-          "description": "Path parameter: key_id"
+          "description": "ID of the key — obtain it from GET /v1/api-keys"
         }
       },
       "required": [
@@ -828,7 +828,7 @@
       "properties": {
         "key_id": {
           "type": "string",
-          "description": "Path parameter: key_id"
+          "description": "ID of the key — obtain it from GET /v1/api-keys"
         }
       },
       "required": [
@@ -860,7 +860,7 @@
       "properties": {
         "key_id": {
           "type": "string",
-          "description": "Path parameter: key_id"
+          "description": "ID of the key — obtain it from GET /v1/api-keys"
         },
         "body": {
           "type": "object",
@@ -928,7 +928,7 @@
       "properties": {
         "key_id": {
           "type": "string",
-          "description": "Path parameter: key_id"
+          "description": "ID of the key — obtain it from GET /v1/api-keys"
         },
         "body": {
           "type": "object",
@@ -1015,7 +1015,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the backup-schedul — obtain it from GET /v1/backup-schedules"
         }
       },
       "required": [
@@ -1072,7 +1072,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the backup-schedul — obtain it from GET /v1/backup-schedules"
         },
         "body": {
           "type": "object",
@@ -1297,7 +1297,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the account — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -1329,7 +1329,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -1386,11 +1386,11 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "record_id": {
           "type": "string",
-          "description": "Path parameter: record_id"
+          "description": "ID of the record"
         }
       },
       "required": [
@@ -1517,7 +1517,7 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "body": {
           "type": "object",
@@ -1562,7 +1562,7 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "body": {
           "type": "object",
@@ -1625,7 +1625,7 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "body": {
           "type": "object",
@@ -1670,7 +1670,7 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "body": {
           "type": "object",
@@ -1717,7 +1717,7 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "body": {
           "type": "object",
@@ -1762,7 +1762,7 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "body": {
           "type": "object",
@@ -1812,7 +1812,7 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "body": {
           "type": "object",
@@ -1857,11 +1857,11 @@
       "properties": {
         "zone_id": {
           "type": "string",
-          "description": "Path parameter: zone_id"
+          "description": "ID of the zone"
         },
         "record_id": {
           "type": "string",
-          "description": "Path parameter: record_id"
+          "description": "ID of the record"
         },
         "body": {
           "type": "object",
@@ -2081,7 +2081,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the cron-job — obtain it from GET /v1/cron-jobs"
         }
       },
       "required": [
@@ -2138,7 +2138,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the cron-job — obtain it from GET /v1/cron-jobs"
         }
       },
       "required": [
@@ -2170,7 +2170,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the cron-job — obtain it from GET /v1/cron-jobs"
         }
       },
       "required": [
@@ -2202,7 +2202,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the cron-job — obtain it from GET /v1/cron-jobs"
         },
         "body": {
           "type": "object",
@@ -2270,7 +2270,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the cron-job — obtain it from GET /v1/cron-jobs"
         },
         "body": {
           "type": "object",
@@ -2307,7 +2307,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the cron-job — obtain it from GET /v1/cron-jobs"
         },
         "body": {
           "type": "object",
@@ -2344,7 +2344,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the databas — obtain it from GET /v1/databases"
         }
       },
       "required": [
@@ -2401,7 +2401,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the databas — obtain it from GET /v1/databases"
         }
       },
       "required": [
@@ -2489,7 +2489,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the databas — obtain it from GET /v1/databases"
         },
         "body": {
           "type": "object",
@@ -2526,7 +2526,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the databas — obtain it from GET /v1/databases"
         },
         "body": {
           "type": "object",
@@ -2563,7 +2563,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the record"
         }
       },
       "required": [
@@ -2595,7 +2595,7 @@
       "properties": {
         "domain_id": {
           "type": "string",
-          "description": "Path parameter: domain_id"
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -2627,7 +2627,7 @@
       "properties": {
         "domain_id": {
           "type": "string",
-          "description": "Path parameter: domain_id"
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -2659,7 +2659,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the record"
         },
         "body": {
           "type": "object",
@@ -2696,7 +2696,7 @@
       "properties": {
         "domain_id": {
           "type": "string",
-          "description": "Path parameter: domain_id"
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -2733,7 +2733,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the container"
         }
       },
       "required": [
@@ -2790,7 +2790,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the container"
         }
       },
       "required": [
@@ -2822,7 +2822,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the container"
         }
       },
       "required": [
@@ -2967,7 +2967,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the container"
         },
         "action": {
           "type": "string",
@@ -3108,7 +3108,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3140,7 +3140,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3197,7 +3197,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3229,7 +3229,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3261,7 +3261,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3293,7 +3293,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3325,7 +3325,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3357,7 +3357,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3389,7 +3389,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3421,7 +3421,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3453,7 +3453,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3485,7 +3485,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3517,7 +3517,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3549,7 +3549,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3581,7 +3581,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3613,7 +3613,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -3645,7 +3645,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -3682,7 +3682,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -3719,7 +3719,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -3756,7 +3756,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -3793,7 +3793,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -3861,7 +3861,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -3898,7 +3898,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -3935,7 +3935,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -3972,7 +3972,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -4009,7 +4009,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -4046,7 +4046,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -4083,7 +4083,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -4120,7 +4120,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -4157,7 +4157,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -4194,7 +4194,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the email-account — obtain it from GET /v1/email-accounts"
         }
       },
       "required": [
@@ -4226,7 +4226,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the email-autoresponder"
         }
       },
       "required": [
@@ -4258,7 +4258,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the email-forwarder"
         }
       },
       "required": [
@@ -4315,7 +4315,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the email-account — obtain it from GET /v1/email-accounts"
         }
       },
       "required": [
@@ -4347,7 +4347,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the email-account — obtain it from GET /v1/email-accounts"
         },
         "body": {
           "type": "object",
@@ -4415,7 +4415,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the email-account — obtain it from GET /v1/email-accounts"
         },
         "body": {
           "type": "object",
@@ -4502,7 +4502,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the trash"
         },
         "user_id": {
           "type": "string",
@@ -5341,7 +5341,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the trash"
         },
         "body": {
           "type": "object",
@@ -5469,7 +5469,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ftp-account — obtain it from GET /v1/ftp-accounts"
         }
       },
       "required": [
@@ -5526,7 +5526,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ftp-account — obtain it from GET /v1/ftp-accounts"
         }
       },
       "required": [
@@ -5558,7 +5558,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ftp-account — obtain it from GET /v1/ftp-accounts"
         },
         "body": {
           "type": "object",
@@ -5626,7 +5626,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ftp-account — obtain it from GET /v1/ftp-accounts"
         },
         "body": {
           "type": "object",
@@ -5663,7 +5663,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ftp-account — obtain it from GET /v1/ftp-accounts"
         },
         "body": {
           "type": "object",
@@ -5700,7 +5700,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ftp-account — obtain it from GET /v1/ftp-accounts"
         },
         "body": {
           "type": "object",
@@ -5737,7 +5737,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the oauth"
         }
       },
       "required": [
@@ -5769,7 +5769,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -5801,7 +5801,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -5833,7 +5833,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "envId": {
           "type": "string",
@@ -5870,7 +5870,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "keyId": {
           "type": "string",
@@ -5907,7 +5907,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "pipelineId": {
           "type": "string",
@@ -5944,7 +5944,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "webhookId": {
           "type": "string",
@@ -6006,7 +6006,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the deployment"
         }
       },
       "required": [
@@ -6113,7 +6113,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6145,7 +6145,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6177,7 +6177,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6209,7 +6209,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "hash": {
           "type": "string",
@@ -6246,7 +6246,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6278,7 +6278,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6310,7 +6310,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6342,7 +6342,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6374,7 +6374,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6406,7 +6406,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6438,7 +6438,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6470,7 +6470,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         }
       },
       "required": [
@@ -6502,7 +6502,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the deployment"
         },
         "body": {
           "type": "object",
@@ -6663,7 +6663,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -6700,7 +6700,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -6737,7 +6737,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -6774,7 +6774,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -6811,7 +6811,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -6848,7 +6848,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -6885,7 +6885,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -6922,7 +6922,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "pipelineId": {
           "type": "string",
@@ -6964,7 +6964,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -7001,7 +7001,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -7038,7 +7038,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -7075,7 +7075,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "body": {
           "type": "object",
@@ -7112,7 +7112,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "envId": {
           "type": "string",
@@ -7154,7 +7154,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the repository"
         },
         "pipelineId": {
           "type": "string",
@@ -7196,7 +7196,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ip-address — obtain it from GET /v1/ip-addresses"
         }
       },
       "required": [
@@ -7278,7 +7278,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ip-address — obtain it from GET /v1/ip-addresses"
         }
       },
       "required": [
@@ -7335,7 +7335,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ip-address — obtain it from GET /v1/ip-addresses"
         },
         "body": {
           "type": "object",
@@ -7434,7 +7434,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ip-address — obtain it from GET /v1/ip-addresses"
         },
         "body": {
           "type": "object",
@@ -7471,7 +7471,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -7528,7 +7528,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -7560,7 +7560,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -7592,7 +7592,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -7624,7 +7624,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -7656,7 +7656,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -7688,7 +7688,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -7826,7 +7826,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -7863,7 +7863,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -7900,7 +7900,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -7937,7 +7937,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -7974,7 +7974,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -8011,7 +8011,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -8048,7 +8048,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -8085,7 +8085,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -8122,7 +8122,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -8430,7 +8430,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the category"
         }
       },
       "required": [
@@ -8512,7 +8512,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the download"
         }
       },
       "required": [
@@ -8719,7 +8719,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the sit"
         }
       },
       "required": [
@@ -8832,7 +8832,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the clear"
         },
         "body": {
           "type": "object",
@@ -8974,7 +8974,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the sit"
         },
         "body": {
           "type": "object",
@@ -9104,7 +9104,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the mailing-list — obtain it from GET /v1/mailing-lists"
         }
       },
       "required": [
@@ -9161,7 +9161,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the mailing-list — obtain it from GET /v1/mailing-lists"
         }
       },
       "required": [
@@ -9349,7 +9349,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the migration — obtain it from GET /v1/migrations"
         }
       },
       "required": [
@@ -9381,7 +9381,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the mysql-user — obtain it from GET /v1/mysql-users"
         }
       },
       "required": [
@@ -9438,7 +9438,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the mysql-user — obtain it from GET /v1/mysql-users"
         }
       },
       "required": [
@@ -9470,7 +9470,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the mysql-user — obtain it from GET /v1/mysql-users"
         },
         "body": {
           "type": "object",
@@ -9538,7 +9538,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the mysql-user — obtain it from GET /v1/mysql-users"
         },
         "body": {
           "type": "object",
@@ -9575,7 +9575,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -9664,7 +9664,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -9696,7 +9696,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -9728,7 +9728,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -9841,7 +9841,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -9878,7 +9878,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -9915,7 +9915,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -9952,7 +9952,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -9989,7 +9989,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -10125,7 +10125,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -10249,7 +10249,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the notification — obtain it from GET /v1/notifications"
         },
         "body": {
           "type": "object",
@@ -10367,7 +10367,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the plan — obtain it from GET /v1/plans"
         }
       },
       "required": [
@@ -10424,7 +10424,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the plan — obtain it from GET /v1/plans"
         }
       },
       "required": [
@@ -10456,7 +10456,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the plan — obtain it from GET /v1/plans"
         },
         "body": {
           "type": "object",
@@ -10524,7 +10524,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -10613,7 +10613,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -10645,7 +10645,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -10677,7 +10677,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         }
       },
       "required": [
@@ -10815,7 +10815,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -10852,7 +10852,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -10889,7 +10889,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -10926,7 +10926,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -10963,7 +10963,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -11099,7 +11099,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the app"
         },
         "body": {
           "type": "object",
@@ -11136,7 +11136,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the redirect"
         }
       },
       "required": [
@@ -11168,7 +11168,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the remote-mysql-host — obtain it from GET /v1/remote-mysql-hosts"
         }
       },
       "required": [
@@ -11281,7 +11281,7 @@
       "properties": {
         "user_id": {
           "type": "string",
-          "description": "Path parameter: user_id"
+          "description": "UUID of the user — obtain it from GET /v1/accounts"
         }
       },
       "required": [
@@ -11313,7 +11313,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the blocked-ip"
         }
       },
       "required": [
@@ -11345,7 +11345,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the firewall-rul"
         }
       },
       "required": [
@@ -11728,7 +11728,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the session — obtain it from GET /v1/sessions"
         }
       },
       "required": [
@@ -11872,7 +11872,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the snapshot — obtain it from GET /v1/snapshots"
         }
       },
       "required": [
@@ -11929,7 +11929,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the snapshot — obtain it from GET /v1/snapshots"
         }
       },
       "required": [
@@ -11992,7 +11992,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the snapshot — obtain it from GET /v1/snapshots"
         },
         "body": {
           "type": "object",
@@ -12029,7 +12029,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the blacklist"
         }
       },
       "required": [
@@ -12061,7 +12061,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the whitelist"
         }
       },
       "required": [
@@ -12230,7 +12230,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ssh-user — obtain it from GET /v1/ssh-users"
         }
       },
       "required": [
@@ -12287,7 +12287,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ssh-user — obtain it from GET /v1/ssh-users"
         }
       },
       "required": [
@@ -12319,7 +12319,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ssh-user — obtain it from GET /v1/ssh-users"
         },
         "body": {
           "type": "object",
@@ -12387,7 +12387,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ssh-user — obtain it from GET /v1/ssh-users"
         },
         "body": {
           "type": "object",
@@ -12424,7 +12424,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the ssh-user — obtain it from GET /v1/ssh-users"
         },
         "body": {
           "type": "object",
@@ -12461,7 +12461,7 @@
       "properties": {
         "domain_id": {
           "type": "string",
-          "description": "Path parameter: domain_id"
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
         }
       },
       "required": [
@@ -12493,7 +12493,7 @@
       "properties": {
         "domain_id": {
           "type": "string",
-          "description": "Path parameter: domain_id"
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -12530,7 +12530,7 @@
       "properties": {
         "domain_id": {
           "type": "string",
-          "description": "Path parameter: domain_id"
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -12567,7 +12567,7 @@
       "properties": {
         "domain_id": {
           "type": "string",
-          "description": "Path parameter: domain_id"
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
         },
         "body": {
           "type": "object",
@@ -12604,7 +12604,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the subdomain"
         }
       },
       "required": [
@@ -12636,7 +12636,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the subdomain"
         }
       },
       "required": [
@@ -12668,7 +12668,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the subdomain"
         },
         "body": {
           "type": "object",
@@ -12730,7 +12730,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the system-cron-job — obtain it from GET /v1/system-cron-jobs"
         },
         "body": {
           "type": "object",
@@ -12823,7 +12823,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the webhook — obtain it from GET /v1/webhooks"
         }
       },
       "required": [
@@ -12880,7 +12880,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the webhook — obtain it from GET /v1/webhooks"
         }
       },
       "required": [
@@ -12912,7 +12912,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the webhook — obtain it from GET /v1/webhooks"
         },
         "body": {
           "type": "object",
@@ -12980,7 +12980,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "UUID of the webhook — obtain it from GET /v1/webhooks"
         },
         "body": {
           "type": "object",
@@ -13042,7 +13042,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the wordpres — obtain it from GET /v1/wordpress"
         }
       },
       "required": [
@@ -13074,7 +13074,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the wordpres — obtain it from GET /v1/wordpress"
         },
         "body": {
           "type": "object",
@@ -13111,7 +13111,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the wordpres — obtain it from GET /v1/wordpress"
         },
         "body": {
           "type": "object",
@@ -13148,7 +13148,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the wordpres — obtain it from GET /v1/wordpress"
         },
         "bid": {
           "type": "string",
@@ -13190,7 +13190,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the wordpres — obtain it from GET /v1/wordpress"
         },
         "body": {
           "type": "object",
@@ -13227,7 +13227,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Path parameter: id"
+          "description": "ID of the wordpres — obtain it from GET /v1/wordpress"
         },
         "body": {
           "type": "object",

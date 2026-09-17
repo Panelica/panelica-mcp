@@ -21,6 +21,14 @@ import { createHash } from "node:crypto";
 // ── Spec shapes (subset we rely on) ───────────────────────────────────────────
 export interface SpecParam { name: string; type?: string; required?: boolean; description?: string; }
 export interface SpecBodyField { name: string; type?: string; required?: boolean; description?: string; }
+/** Success-response shape, derived by newer panels from their handler source. */
+export interface SpecResponse {
+    status_code?: number;
+    description?: string;
+    data_type?: string;      // "object" | "array" | "string" | … | "none" (no "data" key)
+    keys?: string[];         // other top-level envelope keys (total, message, …)
+    fields?: SpecBodyField[]; // fields of one data item (or the top-level keys when data_type is "none")
+}
 export interface SpecEndpoint {
     method: string;
     path: string;
@@ -33,6 +41,7 @@ export interface SpecEndpoint {
         query_params?: SpecParam[];
         body?: { content_type?: string; required?: boolean; fields?: SpecBodyField[] };
     };
+    response?: SpecResponse;
 }
 export interface ApiSpec {
     version?: string;
@@ -44,7 +53,8 @@ export interface ApiSpec {
 }
 
 // ── Tool shape ────────────────────────────────────────────────────────────────
-export interface ToolMetadata { method: string; path: string; category: string; scopes: string[]; }
+export interface ToolResponse { data_type: string; keys?: string[]; fields?: { name: string; type: string; description?: string }[]; }
+export interface ToolMetadata { method: string; path: string; category: string; scopes: string[]; response?: ToolResponse; }
 export interface PanelicaTool {
     name: string;
     description: string;
@@ -104,17 +114,42 @@ function jsonType(t: string | undefined): string {
     return t === "uuid" ? "string" : (t || "string");
 }
 
-function buildInputSchema(ep: SpecEndpoint): Record<string, unknown> {
+/**
+ * Where an id parameter comes from, for panels whose spec predates the
+ * server-side hint: "id" → the collection right before it in the
+ * path, "<x>_id" → the collection <x>s. Only used when the spec has no description.
+ */
+const ID_ALIASES: Record<string, string> = { user: "accounts", account: "accounts", key: "api-keys", zone: "dns/zones" };
+export function idHint(name: string, path: string, lists: Set<string>, type?: string): string {
+    let stem = "";
+    if (name === "id") {
+        const segs = path.split("/");
+        const i = segs.indexOf("{id}");
+        if (i > 0) stem = segs[i - 1];
+    } else if (name.endsWith("_id")) {
+        stem = name.slice(0, -3);
+    }
+    if (!stem) return "";
+    const singular = stem.endsWith("ies") ? stem.slice(0, -3) + "y" : stem.replace(/(es|s)$/, "");
+    const candidates = [ID_ALIASES[singular] ? `/v1/${ID_ALIASES[singular]}` : "", `/v1/${stem}`, `/v1/${singular}s`, `/v1/${singular}es`].filter(Boolean);
+    const kind = type === "uuid" ? "UUID" : "ID";
+    const label = singular.replace(/_/g, " ");
+    const list = candidates.find((c) => lists.has(c));
+    return list ? `${kind} of the ${label} — obtain it from GET ${list}` : `${kind} of the ${label}`;
+}
+
+function buildInputSchema(ep: SpecEndpoint, lists: Set<string>): Record<string, unknown> {
     const properties: Record<string, unknown> = {};
     const required: string[] = [];
     const req = ep.request || {};
+    const hint = (name: string, type?: string) => idHint(name, ep.path, lists, type);
 
     for (const p of req.path_params ?? []) {
-        properties[p.name] = { type: jsonType(p.type), description: redactStr(p.description || `Path parameter: ${p.name}`) };
+        properties[p.name] = { type: jsonType(p.type), description: redactStr(p.description || hint(p.name, p.type) || `Path parameter: ${p.name}`) };
         if (p.required !== false) required.push(p.name);
     }
     for (const q of req.query_params ?? []) {
-        properties[q.name] = { type: jsonType(q.type), description: redactStr(q.description || `Query parameter: ${q.name}`) };
+        properties[q.name] = { type: jsonType(q.type), description: redactStr(q.description || hint(q.name, q.type) || `Query parameter: ${q.name}`) };
         if (q.required) required.push(q.name);
     }
 
@@ -128,7 +163,7 @@ function buildInputSchema(ep: SpecEndpoint): Record<string, unknown> {
             description: `Request body (${body.content_type || "application/json"})`,
             properties: Object.fromEntries(body.fields.map((f) => [f.name, {
                 type: jsonType(f.type),
-                description: redactStr(f.description || ""),
+                description: redactStr(f.description || hint(f.name, f.type) || ""),
             }])),
             required: body.fields.filter((f) => f.required).map((f) => f.name),
         };
@@ -158,6 +193,28 @@ function annotations(ep: SpecEndpoint): Record<string, unknown> {
     };
 }
 
+/** Compact "Returns:" line: the envelope plus the first field names of data. */
+export function returnsLine(r: SpecResponse | undefined, maxNames = 12): string {
+    if (!r || !r.data_type) return "";
+    const names = (r.fields ?? []).map((f) => f.name);
+    const shown = names.slice(0, maxNames).join(", ") + (names.length > maxNames ? `, … (+${names.length - maxNames} more)` : "");
+    const extra = (r.keys ?? []).filter((k) => k !== "status" && k !== "data");
+    if (r.data_type === "none") {
+        return `Returns: {status${names.length ? ", " + names.join(", ") : ""}}`;
+    }
+    const item = names.length ? ` {${shown}}` : "";
+    const data = r.data_type === "array" ? `array of${item || " items"}` : (r.data_type === "object" ? `object${item}` : r.data_type);
+    return `Returns: {status, data: ${data}${extra.length ? ", " + extra.join(", ") : ""}}`;
+}
+
+function toolResponse(r: SpecResponse | undefined): ToolResponse | undefined {
+    if (!r || !r.data_type) return undefined;
+    const out: ToolResponse = { data_type: r.data_type };
+    if (r.keys?.length) out.keys = r.keys;
+    if (r.fields?.length) out.fields = r.fields.map((f) => ({ name: f.name, type: jsonType(f.type), ...(f.description ? { description: redactStr(f.description) } : {}) }));
+    return out;
+}
+
 function buildDescription(ep: SpecEndpoint): string {
     const colon = toColonPath(ep.path);
     const scopes = ep.auth?.scopes?.length ? `Required scopes: ${ep.auth.scopes.join(", ")}` : "";
@@ -169,6 +226,7 @@ function buildDescription(ep: SpecEndpoint): string {
         `\nHTTP: ${ep.method} ${colon}`,
         `Category: ${redactStr(ep.category)}`,
         scopes,
+        redactStr(returnsLine(ep.response)),
         risk,
     ].filter(Boolean).join("\n");
 }
@@ -184,6 +242,8 @@ export function buildTools(spec: ApiSpec): { tools: PanelicaTool[]; stats: Build
     const stats: BuildStats = { total: endpoints.length, emitted: 0, skipped: 0, read: 0, mutate: 0, destructive: 0 };
     const seen = new Set<string>();
     const tools: PanelicaTool[] = [];
+    // GET collections (no path params): where ids are discovered.
+    const lists = new Set(endpoints.filter((e) => e.method === "GET" && e.path && !e.path.includes("{")).map((e) => e.path));
 
     for (const ep of endpoints) {
         if (!ep.method || !ep.path) { stats.skipped++; continue; }
@@ -201,13 +261,14 @@ export function buildTools(spec: ApiSpec): { tools: PanelicaTool[]; stats: Build
         tools.push({
             name,
             description: buildDescription(ep),
-            inputSchema: buildInputSchema(ep),
+            inputSchema: buildInputSchema(ep, lists),
             annotations: annotations(ep),
             metadata: {
                 method: m,
                 path: toColonPath(ep.path),
                 category: redactStr(ep.category || "misc"),
                 scopes: ep.auth?.scopes ?? [],
+                ...(toolResponse(ep.response) ? { response: toolResponse(ep.response) } : {}),
             },
         });
         stats.emitted++;

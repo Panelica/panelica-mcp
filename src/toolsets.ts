@@ -4,15 +4,16 @@
  * Why: MCP clients budget tools. Cursor caps active tools at about 40 across
  * all servers and silently drops the rest; every registered tool also costs
  * prompt tokens on each turn. So by default the server registers a compact
- * "core" set plus two meta tools that reach the whole catalogue:
+ * "core" set plus three meta tools that reach the whole catalogue:
  *
- *   panelica_find_tools  — keyword search over every catalogue tool
- *   panelica_call        — run any catalogue tool by name (same HMAC client)
+ *   panelica_find_tools     — keyword search over every catalogue tool
+ *   panelica_describe_tool  — exact parameters + response fields of one tool
+ *   panelica_call           — run any catalogue tool by name (same HMAC client)
  *
  * PANELICA_TOOLSETS (comma-separated, case-insensitive):
  *   core            curated everyday set (default)
  *   all             every catalogue tool (the pre-0.3 behaviour)
- *   none            only the two meta tools
+ *   none            only the meta tools
  *   <category>      a category slug, e.g. domains, dns, ssl, git, docker,
  *                   file_manager, laravel_apps, node_js_apps, python_apps
  *   Entries are unioned: "core,git" = core + all Git tools.
@@ -60,6 +61,7 @@ export const CORE_TOOLS: readonly string[] = [
 
 export const META_FIND = "panelica_find_tools";
 export const META_CALL = "panelica_call";
+export const META_DESCRIBE = "panelica_describe_tool";
 
 export function categorySlug(category: string): string {
     return String(category ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
@@ -112,6 +114,8 @@ export function summarize(t: PanelicaTool): Record<string, unknown> {
     const params = Object.entries(props).filter(([k]) => k !== "body").map(([k, v]) => `${k}${required.includes(k) ? "*" : ""}:${v.type ?? "string"}`);
     const body = props.body;
     const bodyFields = body?.properties ? Object.keys(body.properties).map((k) => `${k}${(body.required ?? []).includes(k) ? "*" : ""}`) : (body ? ["(free-form object)"] : []);
+    const r = t.metadata.response;
+    const returns = r ? (r.data_type === "none" ? `{status, ${(r.fields ?? []).map((f) => f.name).join(", ")}}` : `${r.data_type}${r.fields?.length ? ` of {${r.fields.slice(0, 10).map((f) => f.name).join(", ")}${r.fields.length > 10 ? ", …" : ""}}` : ""}`) : undefined;
     return {
         name: t.name,
         http: `${t.metadata.method} ${t.metadata.path}`,
@@ -119,11 +123,40 @@ export function summarize(t: PanelicaTool): Record<string, unknown> {
         summary: t.description.split("\n")[0],
         params,
         body: bodyFields,
+        ...(returns ? { returns } : {}),
         scopes: t.metadata.scopes,
     };
 }
 
-/** The two meta tools, as MCP tool definitions. */
+/** Everything a caller needs to use one tool correctly: full input schema + response fields. */
+export function describeTool(t: PanelicaTool): Record<string, unknown> {
+    const schema = t.inputSchema as { properties?: Record<string, Record<string, unknown>>; required?: string[] };
+    const props = schema.properties ?? {};
+    const required = new Set(schema.required ?? []);
+    const params = Object.entries(props).filter(([k]) => k !== "body").map(([k, v]) => ({ name: k, type: v.type ?? "string", required: required.has(k), description: v.description ?? "" }));
+    const body = props.body as { properties?: Record<string, Record<string, unknown>>; required?: string[]; additionalProperties?: boolean } | undefined;
+    const bodyReq = new Set(body?.required ?? []);
+    const bodyFields = body?.properties
+        ? Object.entries(body.properties).map(([k, v]) => ({ name: k, type: v.type ?? "string", required: bodyReq.has(k), description: v.description ?? "" }))
+        : undefined;
+    const r = t.metadata.response;
+    return {
+        name: t.name,
+        http: `${t.metadata.method} ${t.metadata.path}`,
+        category: t.metadata.category,
+        description: t.description.split("\n")[0],
+        scopes: t.metadata.scopes,
+        risk: t.metadata.method === "DELETE" ? "destructive" : (t.metadata.method === "GET" ? "read-only" : "mutating"),
+        params,
+        body: body ? (bodyFields ?? "free-form object — see the panel's API docs") : "none",
+        body_required: required.has("body"),
+        response: r
+            ? { envelope: r.data_type === "none" ? "{status, …keys}" : `{status, data: ${r.data_type}${r.keys?.length ? ", " + r.keys.join(", ") : ""}}`, fields: r.fields ?? [] }
+            : { envelope: "{status, data}", fields: [], note: "field list not available for this panel version" },
+    };
+}
+
+/** The meta tools (find / describe / call), as MCP tool definitions. */
 export function metaTools(catalogueSize: number, registered: number): PanelicaTool[] {
     return [
         {
@@ -142,6 +175,20 @@ export function metaTools(catalogueSize: number, registered: number): PanelicaTo
                 additionalProperties: false,
             },
             annotations: { title: "Find Panelica tools", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+            metadata: { method: "GET", path: "(catalogue)", category: "Meta", scopes: [] },
+        },
+        {
+            name: META_DESCRIBE,
+            description:
+                `Describe one Panelica catalogue tool by name: exact path/query parameters, request body fields (types, required) and the response envelope with its data fields. ` +
+                `Use it before calling a tool whose arguments or result shape you are unsure about.\nRead-only.`,
+            inputSchema: {
+                type: "object",
+                properties: { tool: { type: "string", description: "Catalogue tool name, e.g. panelica_domains_get_v1_domains_id" } },
+                required: ["tool"],
+                additionalProperties: false,
+            },
+            annotations: { title: "Describe a Panelica tool", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
             metadata: { method: "GET", path: "(catalogue)", category: "Meta", scopes: [] },
         },
         {

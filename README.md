@@ -85,11 +85,16 @@ SSL, email, MySQL, FTP, security, backups, server resources, and more.
    panel and builds the tool list from it (live catalogue, default). If the panel
    is unreachable it falls back to the bundled `tools/tools.json` snapshot. Set
    `PANELICA_LIVE_SPEC=0` to always use the snapshot.
-3. The client asks for the tool list and receives it.
+3. The client asks for the tool list and receives it — together with **server
+   instructions** (how ids, scopes, response envelopes, errors and rate limits
+   work, plus workflow recipes), generated from that same catalogue. See
+   [What the assistant knows](#what-the-assistant-knows).
 4. When the client calls a tool, the server builds the corresponding HTTP
    request, signs it with HMAC-SHA256 using your local `PANELICA_API_SECRET`,
    and forwards it to the panel.
-5. The HTTP response is returned to the client as the tool result.
+5. The HTTP response is returned to the client as the tool result. A failed
+   call comes back as an explanation of what to do next (missing scope, wrong
+   id, rate-limit reset…) rather than a bare status code.
 
 No data is cached, no telemetry is emitted, and the secret never leaves the
 machine running the MCP server.
@@ -253,6 +258,16 @@ You should get back JSON listing your API keys. Common 401 responses:
 | `INVALID_TIMESTAMP` | Local clock drifted more than 5 minutes — sync NTP |
 | `INVALID_SIGNATURE` | Wrong secret, **or** the path you signed includes `/api/external/` (it must not — nginx strips it before the backend sees it) |
 
+### 4. Optional environment variables
+
+| Variable | Default | Effect |
+|---|---|---|
+| `PANELICA_TOOLSETS` | `core` | Which tools are registered directly — see [Toolsets](#toolsets--what-the-client-sees) |
+| `PANELICA_LIVE_SPEC` | `1` | Build the catalogue from your panel's `/v1/api-spec` at startup; `0` = bundled snapshot only |
+| `PANELICA_SPEC_TIMEOUT_MS` | `8000` | Live-spec fetch timeout before falling back to the snapshot |
+| `PANELICA_TIMEOUT_MS` | `30000` | Per-call HTTP timeout |
+| `PANELICA_MAX_RESULT_CHARS` | `60000` | Larger list results are cut to the first items with a `_truncated` note so the client context is not flooded |
+
 ## Wire it into your MCP client
 
 ### Claude Code (one command)
@@ -294,7 +309,7 @@ Edit your Claude Desktop config:
 
 Save, fully quit Claude Desktop (not just close the window — *Quit*), and
 re-open it. A new chat will show `panelica` as a connected MCP server with
-"36 tools available" (the core set plus two meta tools; set `PANELICA_TOOLSETS=all` for all 404).
+"37 tools available" (the core set plus three meta tools; set `PANELICA_TOOLSETS=all` for all 404).
 
 ### Cursor
 
@@ -353,26 +368,64 @@ MCP clients budget tools: Cursor caps active tools at about 40 across all
 servers and silently drops the rest, and every registered tool costs prompt
 tokens on each turn. So by default the server registers a compact **core** set
 (34 everyday tools: accounts, domains, DNS, SSL, databases, e-mail, FTP,
-backups, server status/services, WordPress, Docker, plans) plus two meta tools
-that reach the whole catalogue:
+backups, server status/services, WordPress, Docker, plans) plus three meta
+tools that reach the whole catalogue:
 
 | Tool | What it does |
 |---|---|
-| `panelica_find_tools` | Keyword search over every catalogue tool; returns names, HTTP route, parameters and body fields |
+| `panelica_find_tools` | Keyword search over every catalogue tool; returns names, HTTP route, parameters, body fields and what each returns |
+| `panelica_describe_tool` | One tool in full: every parameter with its provenance, body fields (type, required), the response envelope and its data fields |
 | `panelica_call` | Runs any catalogue tool by name with its arguments (same scoped, HMAC-signed client) |
 
 Choose the set with `PANELICA_TOOLSETS` (comma-separated, unioned):
 
 | Value | Registered tools |
 |---|---|
-| `core` (default) | 34 + 2 meta |
-| `all` | every catalogue tool + 2 meta (the pre-0.3 behaviour; fine for Claude Code / Claude Desktop) |
-| `none` | only the 2 meta tools |
+| `core` (default) | 34 + 3 meta |
+| `all` | every catalogue tool + 3 meta (the pre-0.3 behaviour; fine for Claude Code / Claude Desktop) |
+| `none` | only the 3 meta tools |
 | category slugs, e.g. `domains,dns,ssl,git,docker,file_manager,laravel_apps,node_js_apps,python_apps,logs` | those categories (+ `core` if listed) |
 
 Direct calls to a non-registered catalogue tool are still accepted, so a
 client that learned a tool name from `panelica_find_tools` can call it either
 way.
+
+## What the assistant knows
+
+An assistant that only sees 400 tool names guesses ids, retries 403s and
+misreads responses. `panelica-mcp` gives it the API "by heart" instead, and
+everything below is generated from the catalogue, so it can never promise a
+path the panel does not have:
+
+- **Server instructions** (sent on `initialize`, so every client injects them
+  into the model's context): how calls work, that every id is a UUID coming
+  from a list call, that users are called *accounts*, the
+  `{"status":"success","data":…}` envelope, unpaginated lists, what each error
+  class means and what to do, scope families, the category map with counts,
+  safety rules for mutating/destructive tools, and workflow recipes that are
+  included only when every step exists in the catalogue.
+- **Per-tool descriptions** carry the HTTP route, required scopes, a
+  `Returns:` line with the response envelope and the first data fields, and the
+  risk class (read-only / mutating / destructive).
+- **Id parameters say where they come from** — `UUID of the domain — obtain
+  it from GET /v1/domains` — for path, query and body fields alike. Newer
+  panels ship this in the spec; for older panels the server derives it.
+- **`panelica_describe_tool`** returns the exact parameters, body fields and
+  response fields of one tool, so the model checks before it calls.
+- **Errors are explained, not echoed**: a 403 names the missing scope and says
+  retrying cannot help; a 404 says to re-list and use a real id; a 429 reports
+  the reset window; 5xx says to report, not loop. The raw panel response is
+  appended for reference.
+- **Results are bounded**: oversized list responses are cut to the first items
+  with an explicit `_truncated` note (still valid JSON) instead of flooding the
+  context.
+- **Resources** for clients that support them: `panelica://guide` (the
+  instructions), `panelica://catalogue` (every tool with route and summary) and,
+  in live mode, `panelica://spec` (your panel's full API spec).
+
+The response-field lists come from the panel's `/v1/api-spec`, which newer
+panels derive from their handler source at build time; a panel that predates
+this still works — its tools simply show `{status, data}` without field names.
 
 ## Tool catalogue
 
@@ -550,8 +603,9 @@ fans out many calls; create the assistant's key with a higher tier if you see
 | `401 INVALID_SIGNATURE` | Wrong `PANELICA_API_SECRET`, or clock drift > 5 min | `chronyc tracking` (or `timedatectl status`) on both the MCP host and panel host |
 | `401 INVALID_TIMESTAMP` | Local clock drift > 5 min | Sync NTP on the MCP host |
 | Connect timeout on `BASE_URL` | Wrong host/port — typically `:8443/api/external` was missed off the URL | Verify with `curl -sk $PANELICA_BASE_URL/health` — should return `{"status":"ok"}` |
-| `403 FORBIDDEN` on a tool | API key lacks the required scope | Regenerate the key in the panel with the scope listed in the tool's description |
-| Tool description says "Schema not statically extractable" | The endpoint uses dynamic request bodies | Pass a free-form `body` object; the panel will validate and tell you the missing fields with a 400 response |
+| Tool result starts with `Panelica API error 403` and names a scope | API key lacks that scope | Add the scope to the key in the panel (Settings → API Keys); the assistant is told not to retry |
+| Tool result says `Panelica API error 404 … re-list` | The assistant used an id that does not exist for this key's owner | Nothing to fix server-side; the guidance makes it list again and pick a real id |
+| Tool description says "Schema not statically declared" | The endpoint binds a dynamic request body (map / multipart) | Pass a free-form `body` object; the panel validates and answers 400 with the missing field, which the assistant is told to read |
 | TLS verification fails | Panel is using its self-signed cert | If the MCP host trusts that CA, this works out of the box. If not, deploy a real cert on the panel (panel UI → Settings → SSL) — do not disable TLS verification client-side |
 
 If you are still stuck, open an issue at
@@ -574,7 +628,9 @@ Project layout:
 .
 ├── src/index.ts          # MCP server (stdio transport, HMAC client, live-spec loader)
 ├── src/catalog.ts        # spec → tools generator (shared by runtime and build script)
-├── src/toolsets.ts       # core set, PANELICA_TOOLSETS selection, find/call meta tools
+├── src/toolsets.ts       # core set, PANELICA_TOOLSETS selection, find/describe/call meta tools
+├── src/instructions.ts   # server instructions generated from the catalogue
+├── src/errors.ts         # error explanations + result bounding
 ├── tools/
 │   ├── build-tools.mjs   # Generates tools.json from the API spec
 │   ├── api-spec.json     # Committed snapshot of the live /v1/api-spec
@@ -621,7 +677,10 @@ and training jsonl files are not part of the public repository.
   change only when the panel itself ships a backward-incompatible API change,
   and the package's major version is bumped to match.
 - New endpoints become available the next time we regenerate
-  `tools/tools.json` and publish a release.
+  `tools/tools.json` and publish a release — or immediately, in live mode,
+  from your own panel's `/v1/api-spec`.
+- Response-field lists, id provenance and cleaned descriptions come from the
+  panel's spec; a panel that predates them still works with plainer tools.
 - Panel issues (the API itself, not this client): the Panelica forum at
   [forum.panelica.com](https://forum.panelica.com).
 - Client / packaging issues:
