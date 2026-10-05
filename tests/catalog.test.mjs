@@ -60,6 +60,23 @@ test("redaction strips identifiers, addresses, paths and keys", () => {
     assert.equal(toColonPath("/v1/domains/{id}/dns/{record_id}"), "/v1/domains/:id/dns/:record_id");
 });
 
+test("redaction leaves nothing the CI leak guard would reject", () => {
+    // Same pattern as the "Leak guard on the public snapshot" step in refresh-tools.yml.
+    const guard = /([0-9]{1,3}\.){3}[0-9]{1,3}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|\/opt\/panelica|\/home\/[a-z]|@[a-z0-9-]+\.[a-z]{2,}|\b(pk|sk)_[A-Za-z0-9]{8,}/;
+    const cases = [
+        "e.g., info@domain.com or @domain.com (catch-all)",
+        "e.g., 'spam@evil.com', '@evil.com'",
+        "block @mail.example.co.uk senders",
+        "@domain.com",
+    ];
+    for (const c of cases) {
+        const r = redactStr(c);
+        assert.ok(!guard.test(r), `guard would reject: ${r}`);
+    }
+    assert.equal(redactStr("e.g., info@domain.com or @domain.com (catch-all)"), "e.g., <email> or @<domain> (catch-all)");
+    assert.equal(redactStr("e.g., 'spam@evil.com', '@evil.com'"), "e.g., '<email>', '@<domain>'");
+});
+
 test("id parameters say where their value comes from, even on a spec without descriptions", () => {
     const { tools } = buildTools({ endpoints: [
         { method: "GET", path: "/v1/domains", category: "Domains" },

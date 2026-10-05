@@ -80,6 +80,9 @@ const REDACTORS: { re: RegExp; sub: string }[] = [
     // Any IPv4 (private or public), with an optional :port.
     { re: /\b(?:\d{1,3}\.){3}\d{1,3}(?::\d{2,5})?\b/g, sub: "<ip>" },
     { re: /\b[\w.+-]+@[\w-]+\.[\w.-]+\b/g, sub: "<email>" },
+    // A bare "@domain.tld" (catch-all forwarders, sender block rules) has no local
+    // part, so the rule above leaves it; the CI leak guard still flags it.
+    { re: /(^|[^\w.+-])@[\w-]+\.[\w.-]+\b/g, sub: "$1@<domain>" },
     { re: /\/opt\/panelica[\w/.-]*/g, sub: "<path>" },
     { re: /\/home\/[\w.-]+[\w/.-]*/g, sub: "<path>" },
     { re: /\b(?:pk|sk)_[A-Za-z0-9]{8,}\b/g, sub: "<key>" },
