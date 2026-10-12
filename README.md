@@ -6,7 +6,7 @@
 > [Model Context Protocol](https://modelcontextprotocol.io) client.
 
 [![npm](https://img.shields.io/npm/v/panelica-mcp?color=CB3837&logo=npm)](https://www.npmjs.com/package/panelica-mcp)
-[![Tools](https://img.shields.io/badge/tools-404-blue)](tools/tools.json)
+[![Tools](https://img.shields.io/badge/tools-422-blue)](tools/tools.json)
 [![Scopes](https://img.shields.io/badge/permission%20scopes-50-8A2BE2)](#permission-scopes)
 [![Docker](https://img.shields.io/badge/ghcr.io-panelica%2Fpanelica--mcp-2496ED?logo=docker&logoColor=white)](https://github.com/Panelica/panelica-mcp/pkgs/container/panelica-mcp)
 [![Zero drift](https://img.shields.io/badge/catalogue-auto--generated%20weekly-brightgreen)](#keeping-the-tool-catalogue-current)
@@ -310,7 +310,7 @@ Edit your Claude Desktop config:
 
 Save, fully quit Claude Desktop (not just close the window — *Quit*), and
 re-open it. A new chat will show `panelica` as a connected MCP server with
-"37 tools available" (the core set plus three meta tools; set `PANELICA_TOOLSETS=all` for all 404).
+"37 tools available" (the core set plus three meta tools; set `PANELICA_TOOLSETS=all` for all 422).
 
 ### Cursor
 
@@ -457,7 +457,7 @@ this still works — its tools simply show `{status, data}` without field names.
 
 ## Tool catalogue
 
-**404 tools** are auto-generated from the panel's live `/v1/api-spec`, so they never
+**422 tools** are auto-generated from the panel's live `/v1/api-spec`, so they never
 drift from the API. Each tool carries MCP safety annotations
 (![read-only](https://img.shields.io/badge/-read--only-brightgreen) 181 ·
 ![mutating](https://img.shields.io/badge/-mutating-orange) 177 ·
