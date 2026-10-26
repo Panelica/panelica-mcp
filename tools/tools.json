@@ -557,7 +557,7 @@
   },
   {
     "name": "panelica_accounts_get_v1_accounts_id_domains",
-    "description": "Gets all domains for an account\n\nHTTP: GET /v1/accounts/:id/domains\nCategory: Accounts\nRequired scopes: accounts:read\nReturns: {status, data: array of {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+72 more)}, total}\nRead-only.",
+    "description": "Gets all domains for an account\n\nHTTP: GET /v1/accounts/:id/domains\nCategory: Accounts\nRequired scopes: accounts:read\nReturns: {status, data: array of {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+74 more)}, total}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -656,6 +656,11 @@
             "name": "fastcgi_cache_enabled",
             "type": "boolean",
             "description": "Performance — nginx full-page cache (FastCGI for nginx_only, proxy_cache for nginx_apache)"
+          },
+          {
+            "name": "mail_autoconfig_mode",
+            "type": "string",
+            "description": "— who answers the mail-client auto-configuration addresses on an app-proxied domain (Docker, Node.js, Python): \"auto\" (Panelica when the domain has a mailb…"
           },
           {
             "name": "home_path",
@@ -820,6 +825,11 @@
             "name": "visitors_last_30d",
             "type": "integer",
             "description": "unique visitors (if analytics enabled)"
+          },
+          {
+            "name": "transfer_status",
+            "type": "string",
+            "description": "Queued / running / held while a move of the domain to another account is active (the domain list's badge); not a column"
           },
           {
             "name": "maintenance_mode",
@@ -7897,6 +7907,58 @@
     }
   },
   {
+    "name": "panelica_dns_delete_v1_dns_aliases_alias_id_zone",
+    "description": "Removes the alias's own DNS zone; the alias keeps serving the site.\n\nHTTP: DELETE /v1/dns/aliases/:alias_id/zone\nCategory: DNS\nRequired scopes: dns:delete\nReturns: {status, data: object {alias_id, alias_name, has_zone}, message}\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "alias_id": {
+          "type": "string",
+          "description": "UUID of the alia"
+        }
+      },
+      "required": [
+        "alias_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete the DNS zone of an alias",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/dns/aliases/:alias_id/zone",
+      "category": "DNS",
+      "scopes": [
+        "dns:delete"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "alias_id",
+            "type": "string"
+          },
+          {
+            "name": "alias_name",
+            "type": "string"
+          },
+          {
+            "name": "has_zone",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
     "name": "panelica_dns_delete_v1_dns_records_id",
     "description": "Deletes a DNS record\n\nHTTP: DELETE /v1/dns/records/:id\nCategory: DNS\nRequired scopes: dns:delete\nReturns: {status, message}\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
@@ -7935,6 +7997,77 @@
           }
         ]
       }
+    }
+  },
+  {
+    "name": "panelica_dns_get_v1_dns_aliases",
+    "description": "Aliases of the domains you manage, with whether each has its own web-only DNS zone. An alias id can be used wherever /v1/dns/zones/{domain_id} takes a domain id.\n\nHTTP: GET /v1/dns/aliases\nCategory: DNS\nRequired scopes: dns:read\nReturns: {status, data: array of {id, alias_name, domain_id, domain_name, status, has_zone}, meta}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List domain aliases and their DNS zones",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/dns/aliases",
+      "category": "DNS",
+      "scopes": [
+        "dns:read"
+      ],
+      "response": {
+        "data_type": "array",
+        "keys": [
+          "meta"
+        ],
+        "fields": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "alias_name",
+            "type": "string"
+          },
+          {
+            "name": "domain_id",
+            "type": "string"
+          },
+          {
+            "name": "domain_name",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "name": "has_zone",
+            "type": "boolean"
+          }
+        ]
+      },
+      "shaping": true
     }
   },
   {
@@ -8228,6 +8361,58 @@
     }
   },
   {
+    "name": "panelica_dns_post_v1_dns_aliases_alias_id_zone",
+    "description": "Gives an existing alias its own web-only zone: SOA, NS, and A records for the alias and www pointing at the server. No mail records.\n\nHTTP: POST /v1/dns/aliases/:alias_id/zone\nCategory: DNS\nRequired scopes: dns:write\nReturns: {status, data: object {alias_id, alias_name, has_zone}, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "alias_id": {
+          "type": "string",
+          "description": "UUID of the alia"
+        }
+      },
+      "required": [
+        "alias_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create the DNS zone of an alias",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/dns/aliases/:alias_id/zone",
+      "category": "DNS",
+      "scopes": [
+        "dns:write"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "alias_id",
+            "type": "string"
+          },
+          {
+            "name": "alias_name",
+            "type": "string"
+          },
+          {
+            "name": "has_zone",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
     "name": "panelica_dns_post_v1_dns_zones_domain_id_records",
     "description": "Creates a DNS record\n\nHTTP: POST /v1/dns/zones/:domain_id/records\nCategory: DNS\nRequired scopes: dns:write\nReturns: {status, data: object {id, zone_id, type, name, content, ttl, priority, weight, port, auth, external_record_id, disabled, … (+4 more)}}\nMutating: changes server state.",
     "inputSchema": {
@@ -8442,7 +8627,7 @@
   },
   {
     "name": "panelica_docker_get_v1_docker_containers",
-    "description": "Returns all containers (default: all=true)\n\nHTTP: GET /v1/docker/containers\nCategory: Docker\nRequired scopes: docker:read\nReturns: {status, data: array of {id, name, image, image_id, status, state, created, ports, mounts, networks, labels, restart_policy, … (+9 more)}, success}\nRead-only.",
+    "description": "Returns all containers (default: all=true)\n\nHTTP: GET /v1/docker/containers\nCategory: Docker\nRequired scopes: docker:read\nReturns: {status, data: array of {id, name, image, image_id, status, state, created, ports, mounts, networks, labels, restart_policy, … (+11 more)}, success}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -8551,6 +8736,16 @@
             "name": "panel_internal",
             "type": "boolean",
             "description": "The panel runs it for itself (legacy PHP pools, Laravel workers); the Docker page must not stop or delete it (cleanup_guard.go)"
+          },
+          {
+            "name": "reserved_ports",
+            "type": "array",
+            "description": "The host ports the ledger keeps for this container — shown while it is stopped, when Docker reports no ports (port_ledger.go)"
+          },
+          {
+            "name": "template_update",
+            "type": "object",
+            "description": "Its app template now ships a newer tag of the image it runs (template_image_update.go)"
           },
           {
             "name": "cpu_percent",
@@ -8900,25 +9095,13 @@
   },
   {
     "name": "panelica_docker_get_v1_docker_ports",
-    "description": "Every published host port with the container and account that own it. A port belongs to its container until the container is deleted, also while it is stopped. Optional query user_id limits the list to one account.\n\nHTTP: GET /v1/docker/ports\nCategory: Docker\nRequired scopes: docker:read\nRead-only.",
+    "description": "Every published host port with the container and account that own it. A port belongs to its container until the container is deleted, also while it is stopped. Optional query user_id limits the list to one account.\n\nHTTP: GET /v1/docker/ports\nCategory: Docker\nRequired scopes: docker:read\nReturns: {status, data: any, success}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
         "user_id": {
           "type": "string",
           "description": "ID of the user — obtain it from GET /v1/accounts"
-        },
-        "_limit": {
-          "type": "integer",
-          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
-        },
-        "_fields": {
-          "type": "string",
-          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
-        },
-        "_match": {
-          "type": "string",
-          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
         }
       },
       "required": [],
@@ -8938,7 +9121,12 @@
       "scopes": [
         "docker:read"
       ],
-      "shaping": true
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
     }
   },
   {
@@ -9708,6 +9896,52 @@
     }
   },
   {
+    "name": "panelica_domains_delete_v1_domains_id_aliases_alias_id",
+    "description": "Removes an alias (and its DNS zone, if it has one).\n\nHTTP: DELETE /v1/domains/:id/aliases/:alias_id\nCategory: Domains\nRequired scopes: domains:delete\nReturns: {status, data: object {deleted}}\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        },
+        "alias_id": {
+          "type": "string",
+          "description": "UUID of the alia"
+        }
+      },
+      "required": [
+        "id",
+        "alias_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Remove a domain alias",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/domains/:id/aliases/:alias_id",
+      "category": "Domains",
+      "scopes": [
+        "domains:delete"
+      ],
+      "response": {
+        "data_type": "object",
+        "fields": [
+          {
+            "name": "deleted",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
     "name": "panelica_domains_delete_v1_domains_id_databases",
     "description": "Drops a named database for a domain (its MySQL user, the database itself, and the config row), mirroring the panel's internal delete.\n\nHTTP: DELETE /v1/domains/:id/databases\nCategory: Domains\nRequired scopes: domains:delete\nReturns: {status, message}\nWARNING: destructive — permanently removes the resource.",
     "inputSchema": {
@@ -9754,8 +9988,226 @@
     }
   },
   {
+    "name": "panelica_domains_get_v1_domain_transfers",
+    "description": "The moves of domains to other accounts, newest first, without their reports: active=1 queued, running and held only; domain_id one domain's; limit 1-200 (50). ROOT keys with full access only.\n\nHTTP: GET /v1/domain-transfers\nCategory: Domains\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: any}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List domain moves",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domain-transfers",
+      "category": "Domains",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "any"
+      }
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domain_transfers_tid",
+    "description": "A move with the report it was started on and its final result: outage, files, ownership changes, edited files, re-pointed links, WordPress replacements, suspended FTP accounts, paused cron jobs, the files you must update, HTTP status before and after, errors. ROOT keys with full access only.\n\nHTTP: GET /v1/domain-transfers/:tid\nCategory: Domains\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {id, domain_id, domain_name, from_user_id, to_user_id, from_home, to_home, status, step, error, scenario, choices, … (+11 more)}}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "tid": {
+          "type": "string",
+          "description": "Path parameter: tid"
+        }
+      },
+      "required": [
+        "tid"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "One domain move",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domain-transfers/:tid",
+      "category": "Domains",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "domain_id",
+            "type": "string"
+          },
+          {
+            "name": "domain_name",
+            "type": "string"
+          },
+          {
+            "name": "from_user_id",
+            "type": "string"
+          },
+          {
+            "name": "to_user_id",
+            "type": "string"
+          },
+          {
+            "name": "from_home",
+            "type": "string"
+          },
+          {
+            "name": "to_home",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "name": "step",
+            "type": "string"
+          },
+          {
+            "name": "error",
+            "type": "string"
+          },
+          {
+            "name": "scenario",
+            "type": "string"
+          },
+          {
+            "name": "choices",
+            "type": "string"
+          },
+          {
+            "name": "acknowledged",
+            "type": "string"
+          },
+          {
+            "name": "report",
+            "type": "string"
+          },
+          {
+            "name": "result",
+            "type": "string"
+          },
+          {
+            "name": "progress",
+            "type": "integer"
+          },
+          {
+            "name": "source",
+            "type": "string"
+          },
+          {
+            "name": "created_by",
+            "type": "string"
+          },
+          {
+            "name": "created_at",
+            "type": "string"
+          },
+          {
+            "name": "updated_at",
+            "type": "string"
+          },
+          {
+            "name": "started_at",
+            "type": "string"
+          },
+          {
+            "name": "heartbeat_at",
+            "type": "string"
+          },
+          {
+            "name": "finished_at",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domain_transfers_tid_events",
+    "description": "The move's log, oldest first: step, level (info, success, warning, error), translated message and raw detail. after=<event id> returns only newer events. ROOT keys with full access only.\n\nHTTP: GET /v1/domain-transfers/:tid/events\nCategory: Domains\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: array of items}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "tid": {
+          "type": "string",
+          "description": "Path parameter: tid"
+        },
+        "after": {
+          "type": "integer",
+          "description": "Query parameter: after"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
+      "required": [
+        "tid"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Events of a domain move",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domain-transfers/:tid/events",
+      "category": "Domains",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "array"
+      },
+      "shaping": true
+    }
+  },
+  {
     "name": "panelica_domains_get_v1_domains",
-    "description": "Lists all domains\n\nHTTP: GET /v1/domains\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: array of {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+72 more)}, total}\nRead-only.",
+    "description": "Lists all domains\n\nHTTP: GET /v1/domains\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: array of {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+74 more)}, total}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -9848,6 +10300,11 @@
             "name": "fastcgi_cache_enabled",
             "type": "boolean",
             "description": "Performance — nginx full-page cache (FastCGI for nginx_only, proxy_cache for nginx_apache)"
+          },
+          {
+            "name": "mail_autoconfig_mode",
+            "type": "string",
+            "description": "— who answers the mail-client auto-configuration addresses on an app-proxied domain (Docker, Node.js, Python): \"auto\" (Panelica when the domain has a mailb…"
           },
           {
             "name": "home_path",
@@ -10012,6 +10469,11 @@
             "name": "visitors_last_30d",
             "type": "integer",
             "description": "unique visitors (if analytics enabled)"
+          },
+          {
+            "name": "transfer_status",
+            "type": "string",
+            "description": "Queued / running / held while a move of the domain to another account is active (the domain list's badge); not a column"
           },
           {
             "name": "maintenance_mode",
@@ -10175,7 +10637,7 @@
   },
   {
     "name": "panelica_domains_get_v1_domains_id",
-    "description": "Gets a specific domain\n\nHTTP: GET /v1/domains/:id\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: object {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+72 more)}}\nRead-only.",
+    "description": "Gets a specific domain\n\nHTTP: GET /v1/domains/:id\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: object {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+74 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -10259,6 +10721,11 @@
             "name": "fastcgi_cache_enabled",
             "type": "boolean",
             "description": "Performance — nginx full-page cache (FastCGI for nginx_only, proxy_cache for nginx_apache)"
+          },
+          {
+            "name": "mail_autoconfig_mode",
+            "type": "string",
+            "description": "— who answers the mail-client auto-configuration addresses on an app-proxied domain (Docker, Node.js, Python): \"auto\" (Panelica when the domain has a mailb…"
           },
           {
             "name": "home_path",
@@ -10425,6 +10892,11 @@
             "description": "unique visitors (if analytics enabled)"
           },
           {
+            "name": "transfer_status",
+            "type": "string",
+            "description": "Queued / running / held while a move of the domain to another account is active (the domain list's badge); not a column"
+          },
+          {
             "name": "maintenance_mode",
             "type": "boolean",
             "description": "Maintenance Mode"
@@ -10579,6 +11051,44 @@
             "type": "array",
             "description": "Multiple PHP versions"
           }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_aliases",
+    "description": "Aliases of a domain: mode mirror opens the domain's site under the name, mode redirect forwards every request to redirect_url.\n\nHTTP: GET /v1/domains/:id/aliases\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: any, meta}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List domain aliases",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/aliases",
+      "category": "Domains",
+      "scopes": [
+        "domains:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "meta"
         ]
       }
     }
@@ -10978,6 +11488,63 @@
           {
             "name": "lines",
             "type": "array"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_mail_autoconfig",
+    "description": "Who answers the mail-client auto-configuration addresses (/.well-known/autoconfig/mail/config-v1.1.xml, /autodiscover/autodiscover.xml) on a domain served by a Docker container or a Node.js / Python app: mode auto (Panelica when the domain has a mailbox here), on or off; effective tells what is in force, app_proxy which app serves the site (empty: a PHP site, where Panelica always answers).\n\nHTTP: GET /v1/domains/:id/mail-autoconfig\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: object {mode, effective, app_proxy, has_mailbox}}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Mail auto-configuration on an app-proxied domain",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/mail-autoconfig",
+      "category": "Domains",
+      "scopes": [
+        "domains:read"
+      ],
+      "response": {
+        "data_type": "object",
+        "fields": [
+          {
+            "name": "mode",
+            "type": "string",
+            "description": "auto | on | off"
+          },
+          {
+            "name": "effective",
+            "type": "boolean",
+            "description": "Panelica answers the addresses now"
+          },
+          {
+            "name": "app_proxy",
+            "type": "string",
+            "description": "docker | nodejs | python | vps; \"\" = PHP vhost (always answers)"
+          },
+          {
+            "name": "has_mailbox",
+            "type": "boolean",
+            "description": "what \"auto\" decides by"
           }
         ]
       }
@@ -11446,6 +12013,263 @@
     }
   },
   {
+    "name": "panelica_domains_get_v1_domains_id_transfer",
+    "description": "The domain's latest move to another account: status queued, running, held (its undo could not finish; the site waits on the maintenance page), done, failed, reverted or cancelled, step and progress. ROOT keys with full access only.\n\nHTTP: GET /v1/domains/:id/transfer\nCategory: Domains\nRequired scopes: domains:read, *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {id, domain_id, domain_name, from_user_id, to_user_id, from_home, to_home, status, step, error, scenario, choices, … (+11 more)}}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Latest move of a domain",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/transfer",
+      "category": "Domains",
+      "scopes": [
+        "domains:read",
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "domain_id",
+            "type": "string"
+          },
+          {
+            "name": "domain_name",
+            "type": "string"
+          },
+          {
+            "name": "from_user_id",
+            "type": "string"
+          },
+          {
+            "name": "to_user_id",
+            "type": "string"
+          },
+          {
+            "name": "from_home",
+            "type": "string"
+          },
+          {
+            "name": "to_home",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "name": "step",
+            "type": "string"
+          },
+          {
+            "name": "error",
+            "type": "string"
+          },
+          {
+            "name": "scenario",
+            "type": "string"
+          },
+          {
+            "name": "choices",
+            "type": "string"
+          },
+          {
+            "name": "acknowledged",
+            "type": "string"
+          },
+          {
+            "name": "report",
+            "type": "string"
+          },
+          {
+            "name": "result",
+            "type": "string"
+          },
+          {
+            "name": "progress",
+            "type": "integer"
+          },
+          {
+            "name": "source",
+            "type": "string"
+          },
+          {
+            "name": "created_by",
+            "type": "string"
+          },
+          {
+            "name": "created_at",
+            "type": "string"
+          },
+          {
+            "name": "updated_at",
+            "type": "string"
+          },
+          {
+            "name": "started_at",
+            "type": "string"
+          },
+          {
+            "name": "heartbeat_at",
+            "type": "string"
+          },
+          {
+            "name": "finished_at",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_transfer_plans",
+    "description": "The target account's plan against what the domain brings (target_user_id, scenario same_owner or handover) and the plans the account could be switched to so the domain fits. ROOT keys with full access only.\n\nHTTP: GET /v1/domains/:id/transfer/plans\nCategory: Domains\nRequired scopes: domains:read, *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {plan, options, target_plan_name}}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        },
+        "scenario": {
+          "type": "string",
+          "description": "Query parameter: scenario"
+        },
+        "target_user_id": {
+          "type": "string",
+          "description": "UUID of the target user"
+        }
+      },
+      "required": [
+        "id",
+        "target_user_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Target plan of a domain move",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/transfer/plans",
+      "category": "Domains",
+      "scopes": [
+        "domains:read",
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "fields": [
+          {
+            "name": "plan",
+            "type": "array"
+          },
+          {
+            "name": "options",
+            "type": "array"
+          },
+          {
+            "name": "target_plan_name",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_domains_get_v1_domains_id_transfer_targets",
+    "description": "The active customer accounts other than the domain's owner: id and user name. ROOT keys with full access only.\n\nHTTP: GET /v1/domains/:id/transfer/targets\nCategory: Domains\nRequired scopes: domains:read, *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: array of {id, username}}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        },
+        "_limit": {
+          "type": "integer",
+          "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
+        },
+        "_fields": {
+          "type": "string",
+          "description": "Comma-separated item fields to keep, e.g. \"id,domain_name,php_version\" — trims large items to what you need."
+        },
+        "_match": {
+          "type": "string",
+          "description": "Keep only items whose JSON contains this text (case-insensitive), e.g. a domain name or status."
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Accounts a domain can move to",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/domains/:id/transfer/targets",
+      "category": "Domains",
+      "scopes": [
+        "domains:read",
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "array",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "type": "string"
+          }
+        ]
+      },
+      "shaping": true
+    }
+  },
+  {
     "name": "panelica_domains_get_v1_domains_id_webserver",
     "description": "Returns web server configuration for a domain\n\nHTTP: GET /v1/domains/:id/webserver\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: object {domain_id, domain_name, web_server, options}}\nRead-only.",
     "inputSchema": {
@@ -11500,7 +12324,7 @@
   },
   {
     "name": "panelica_domains_patch_v1_domains_id",
-    "description": "Updates a domain\n\nHTTP: PATCH /v1/domains/:id\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+72 more)}}\nMutating: changes server state.",
+    "description": "Updates a domain\n\nHTTP: PATCH /v1/domains/:id\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+74 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11660,6 +12484,11 @@
             "name": "fastcgi_cache_enabled",
             "type": "boolean",
             "description": "Performance — nginx full-page cache (FastCGI for nginx_only, proxy_cache for nginx_apache)"
+          },
+          {
+            "name": "mail_autoconfig_mode",
+            "type": "string",
+            "description": "— who answers the mail-client auto-configuration addresses on an app-proxied domain (Docker, Node.js, Python): \"auto\" (Panelica when the domain has a mailb…"
           },
           {
             "name": "home_path",
@@ -11824,6 +12653,11 @@
             "name": "visitors_last_30d",
             "type": "integer",
             "description": "unique visitors (if analytics enabled)"
+          },
+          {
+            "name": "transfer_status",
+            "type": "string",
+            "description": "Queued / running / held while a move of the domain to another account is active (the domain list's badge); not a column"
           },
           {
             "name": "maintenance_mode",
@@ -12270,8 +13104,52 @@
     }
   },
   {
+    "name": "panelica_domains_post_v1_domain_transfers_tid_cancel",
+    "description": "Cancels a queued move before it starts; 409 once it has started. Recorded in the audit log. ROOT keys with full access only.\n\nHTTP: POST /v1/domain-transfers/:tid/cancel\nCategory: Domains\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "tid": {
+          "type": "string",
+          "description": "Path parameter: tid"
+        }
+      },
+      "required": [
+        "tid"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Cancel a domain move",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domain-transfers/:tid/cancel",
+      "category": "Domains",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "none",
+        "fields": [
+          {
+            "name": "message",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
     "name": "panelica_domains_post_v1_domains",
-    "description": "Creates a new domain using the full 9-step provisioning service\n\nHTTP: POST /v1/domains\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+72 more)}}\nMutating: changes server state.",
+    "description": "Creates a new domain using the full 9-step provisioning service\n\nHTTP: POST /v1/domains\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_name, user_id, app_template, app_version, web_server, php_version, php_handler, document_root, custom_document_root, ip_address, fastcgi_cache_enabled, … (+74 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -12440,6 +13318,11 @@
             "description": "Performance — nginx full-page cache (FastCGI for nginx_only, proxy_cache for nginx_apache)"
           },
           {
+            "name": "mail_autoconfig_mode",
+            "type": "string",
+            "description": "— who answers the mail-client auto-configuration addresses on an app-proxied domain (Docker, Node.js, Python): \"auto\" (Panelica when the domain has a mailb…"
+          },
+          {
             "name": "home_path",
             "type": "string",
             "description": "<path>"
@@ -12604,6 +13487,11 @@
             "description": "unique visitors (if analytics enabled)"
           },
           {
+            "name": "transfer_status",
+            "type": "string",
+            "description": "Queued / running / held while a move of the domain to another account is active (the domain list's badge); not a column"
+          },
+          {
             "name": "maintenance_mode",
             "type": "boolean",
             "description": "Maintenance Mode"
@@ -12759,6 +13647,71 @@
             "description": "Multiple PHP versions"
           }
         ]
+      }
+    }
+  },
+  {
+    "name": "panelica_domains_post_v1_domains_id_aliases",
+    "description": "Adds an alias that opens the domain's site (mode mirror, default) or forwards every request to another address (mode redirect: redirect_url, redirect_code 301/302/307/308, preserve_path).\n\nHTTP: POST /v1/domains/:id/aliases\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: any}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "alias_name": {
+              "type": "string",
+              "description": "bare hostname, e.g"
+            },
+            "mode": {
+              "type": "string",
+              "description": "mirror (default) or redirect"
+            },
+            "redirect_url": {
+              "type": "string",
+              "description": "redirect: absolute http(s) address; https:// is added when no scheme is given"
+            },
+            "redirect_code": {
+              "type": "integer",
+              "description": "redirect: 301 (default), 302, 307 or 308"
+            },
+            "preserve_path": {
+              "type": "boolean",
+              "description": "redirect: append the visitor's path and query (default true)"
+            }
+          },
+          "required": [
+            "alias_name"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Add a domain alias",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/aliases",
+      "category": "Domains",
+      "scopes": [
+        "domains:write"
+      ],
+      "response": {
+        "data_type": "any"
       }
     }
   },
@@ -13221,7 +14174,7 @@
   },
   {
     "name": "panelica_domains_post_v1_domains_id_redirects",
-    "description": "Creates a new redirect\n\nHTTP: POST /v1/domains/:id/redirects\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, domain_name, source_path, destination_url, redirect_type, match_type, enabled, description, created_at, updated_at, domain}}\nMutating: changes server state.",
+    "description": "Creates a new redirect\n\nHTTP: POST /v1/domains/:id/redirects\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: any}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -13235,19 +14188,25 @@
           "properties": {
             "source_path": {
               "type": "string",
-              "description": ""
+              "description": "path on the domain, e.g"
             },
             "destination_url": {
               "type": "string",
-              "description": ""
+              "description": "absolute address"
             },
             "redirect_type": {
               "type": "string",
-              "description": "\"301\", \"302\", \"307\", \"308\""
+              "description": "default 301",
+              "enum": [
+                "301",
+                "302",
+                "307",
+                "308"
+              ]
             },
             "match_type": {
               "type": "string",
-              "description": "exact, wildcard, regex",
+              "description": "default exact",
               "enum": [
                 "exact",
                 "wildcard",
@@ -13282,59 +14241,7 @@
         "domains:write"
       ],
       "response": {
-        "data_type": "object",
-        "fields": [
-          {
-            "name": "id",
-            "type": "string"
-          },
-          {
-            "name": "domain_id",
-            "type": "string"
-          },
-          {
-            "name": "domain_name",
-            "type": "string"
-          },
-          {
-            "name": "source_path",
-            "type": "string"
-          },
-          {
-            "name": "destination_url",
-            "type": "string"
-          },
-          {
-            "name": "redirect_type",
-            "type": "string",
-            "description": "301, 302, 307, 308"
-          },
-          {
-            "name": "match_type",
-            "type": "string",
-            "description": "exact, wildcard, regex"
-          },
-          {
-            "name": "enabled",
-            "type": "boolean"
-          },
-          {
-            "name": "description",
-            "type": "string"
-          },
-          {
-            "name": "created_at",
-            "type": "string"
-          },
-          {
-            "name": "updated_at",
-            "type": "string"
-          },
-          {
-            "name": "domain",
-            "type": "object"
-          }
-        ]
+        "data_type": "any"
       }
     }
   },
@@ -13541,6 +14448,191 @@
     }
   },
   {
+    "name": "panelica_domains_post_v1_domains_id_transfer",
+    "description": "Queues the move with the decisions: target_user_id, scenario, choices (finding code to option id), acknowledged (ack codes) and the digest of the report the decisions were made on. 202 with the queued move; 409 with the report when something blocks or the report changed; 422 when a choice or an acknowledgement is missing. The panel runs one move at a time and puts a failed move back. ROOT keys with full access only.\n\nHTTP: POST /v1/domains/:id/transfer\nCategory: Domains\nRequired scopes: domains:write, *:*\nRestricted to key owners with role: ROOT\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "target_user_id": {
+              "type": "string",
+              "description": "ID of the target user"
+            },
+            "scenario": {
+              "type": "string",
+              "description": ""
+            },
+            "choices": {
+              "type": "object",
+              "description": ""
+            },
+            "acknowledged": {
+              "type": "array",
+              "description": ""
+            },
+            "digest": {
+              "type": "string",
+              "description": ""
+            }
+          },
+          "required": [
+            "target_user_id"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Move a domain to another account",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/transfer",
+      "category": "Domains",
+      "scopes": [
+        "domains:write",
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ]
+    }
+  },
+  {
+    "name": "panelica_domains_post_v1_domains_id_transfer_check",
+    "description": "Reports what moving the domain to target_user_id would do, with scenario same_owner or handover: every finding with its evidence and options (blocker, choice, warning, ack), what moves, the target's plan table, the scan of the domain directory and the report digest. Nothing changes. ROOT keys with full access only.\n\nHTTP: POST /v1/domains/:id/transfer/check\nCategory: Domains\nRequired scopes: domains:write, *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {domain_id, domain_name, from_user_id, from_username, to_user_id, to_username, scenario, allowed, findings, moves, plan, target_plan_name, … (+3 more)}}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "target_user_id": {
+              "type": "string",
+              "description": "ID of the target user"
+            },
+            "scenario": {
+              "type": "string",
+              "description": ""
+            }
+          },
+          "required": [
+            "target_user_id"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Check moving a domain to another account",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/domains/:id/transfer/check",
+      "category": "Domains",
+      "scopes": [
+        "domains:write",
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "fields": [
+          {
+            "name": "domain_id",
+            "type": "string"
+          },
+          {
+            "name": "domain_name",
+            "type": "string"
+          },
+          {
+            "name": "from_user_id",
+            "type": "string"
+          },
+          {
+            "name": "from_username",
+            "type": "string"
+          },
+          {
+            "name": "to_user_id",
+            "type": "string"
+          },
+          {
+            "name": "to_username",
+            "type": "string"
+          },
+          {
+            "name": "scenario",
+            "type": "string"
+          },
+          {
+            "name": "allowed",
+            "type": "boolean"
+          },
+          {
+            "name": "findings",
+            "type": "array"
+          },
+          {
+            "name": "moves",
+            "type": "array"
+          },
+          {
+            "name": "plan",
+            "type": "array"
+          },
+          {
+            "name": "target_plan_name",
+            "type": "string"
+          },
+          {
+            "name": "path_scan",
+            "type": "object"
+          },
+          {
+            "name": "estimated_seconds",
+            "type": "integer"
+          },
+          {
+            "name": "digest",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
     "name": "panelica_domains_post_v1_domains_id_unsuspend",
     "description": "Unsuspends a domain\n\nHTTP: POST /v1/domains/:id/unsuspend\nCategory: Domains\nRequired scopes: domains:write\nMutating: changes server state.",
     "inputSchema": {
@@ -13570,6 +14662,142 @@
       "scopes": [
         "domains:write"
       ]
+    }
+  },
+  {
+    "name": "panelica_domains_put_v1_domains_id_aliases_alias_id",
+    "description": "Switches an alias between mirror and redirect, or changes the forward's address, code and path handling. The previous behaviour stays when the change cannot be applied.\n\nHTTP: PUT /v1/domains/:id/aliases/:alias_id\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: any}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        },
+        "alias_id": {
+          "type": "string",
+          "description": "UUID of the alia"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "description": "mirror (default) or redirect"
+            },
+            "redirect_url": {
+              "type": "string",
+              "description": "redirect: absolute http(s) address; https:// is added when no scheme is given"
+            },
+            "redirect_code": {
+              "type": "integer",
+              "description": "redirect: 301 (default), 302, 307 or 308"
+            },
+            "preserve_path": {
+              "type": "boolean",
+              "description": "redirect: append the visitor's path and query (default true)"
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id",
+        "alias_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Change how a domain alias behaves",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/domains/:id/aliases/:alias_id",
+      "category": "Domains",
+      "scopes": [
+        "domains:write"
+      ],
+      "response": {
+        "data_type": "any"
+      }
+    }
+  },
+  {
+    "name": "panelica_domains_put_v1_domains_id_mail_autoconfig",
+    "description": "Sets mode to auto, on or off; the app's proxy vhost is re-rendered when what Panelica answers changes. Returns the same object as the GET.\n\nHTTP: PUT /v1/domains/:id/mail-autoconfig\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {mode, effective, app_proxy, has_mailbox}, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the domain — obtain it from GET /v1/domains"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "description": "auto, on or off"
+            }
+          },
+          "required": [
+            "mode"
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Set mail auto-configuration on an app-proxied domain",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/domains/:id/mail-autoconfig",
+      "category": "Domains",
+      "scopes": [
+        "domains:write"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "mode",
+            "type": "string",
+            "description": "auto | on | off"
+          },
+          {
+            "name": "effective",
+            "type": "boolean",
+            "description": "Panelica answers the addresses now"
+          },
+          {
+            "name": "app_proxy",
+            "type": "string",
+            "description": "docker | nodejs | python | vps; \"\" = PHP vhost (always answers)"
+          },
+          {
+            "name": "has_mailbox",
+            "type": "boolean",
+            "description": "what \"auto\" decides by"
+          }
+        ]
+      }
     }
   },
   {
@@ -15177,7 +16405,7 @@
           },
           {
             "name": "new_path",
-            "type": "any"
+            "type": "string"
           }
         ]
       }
@@ -15832,7 +17060,7 @@
   },
   {
     "name": "panelica_ftp_get_v1_ftp_accounts",
-    "description": "Lists all FTP accounts\n\nHTTP: GET /v1/ftp-accounts\nCategory: FTP\nRequired scopes: ftp:read\nReturns: {status, data: array of {id, user_id, ftp_username, home_directory, uid, gid, shell, quota_mb, used_mb, status, created_by, server_id, … (+4 more)}, total}\nRead-only.",
+    "description": "Lists all FTP accounts\n\nHTTP: GET /v1/ftp-accounts\nCategory: FTP\nRequired scopes: ftp:read\nReturns: {status, data: array of {id, user_id, ftp_username, home_directory, uid, gid, shell, quota_mb, used_mb, usage_updated_at, usage_pending, status, … (+6 more)}, total}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -15913,6 +17141,15 @@
             "description": "Runtime field, populated from quota_tallies (not in DB)"
           },
           {
+            "name": "usage_updated_at",
+            "type": "string",
+            "description": "Runtime: when UsedMB was measured; UsagePending = not measured yet (a new account the background refresh has not reached)"
+          },
+          {
+            "name": "usage_pending",
+            "type": "boolean"
+          },
+          {
             "name": "status",
             "type": "string"
           },
@@ -15950,7 +17187,7 @@
   },
   {
     "name": "panelica_ftp_get_v1_ftp_accounts_id",
-    "description": "Gets a specific FTP account\n\nHTTP: GET /v1/ftp-accounts/:id\nCategory: FTP\nRequired scopes: ftp:read\nReturns: {status, data: object {id, user_id, ftp_username, home_directory, uid, gid, shell, quota_mb, used_mb, status, created_by, server_id, … (+4 more)}}\nRead-only.",
+    "description": "Gets a specific FTP account\n\nHTTP: GET /v1/ftp-accounts/:id\nCategory: FTP\nRequired scopes: ftp:read\nReturns: {status, data: object {id, user_id, ftp_username, home_directory, uid, gid, shell, quota_mb, used_mb, usage_updated_at, usage_pending, status, … (+6 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -16022,6 +17259,15 @@
             "description": "Runtime field, populated from quota_tallies (not in DB)"
           },
           {
+            "name": "usage_updated_at",
+            "type": "string",
+            "description": "Runtime: when UsedMB was measured; UsagePending = not measured yet (a new account the background refresh has not reached)"
+          },
+          {
+            "name": "usage_pending",
+            "type": "boolean"
+          },
+          {
             "name": "status",
             "type": "string"
           },
@@ -16058,7 +17304,7 @@
   },
   {
     "name": "panelica_ftp_patch_v1_ftp_accounts_id",
-    "description": "Updates an FTP account\n\nHTTP: PATCH /v1/ftp-accounts/:id\nCategory: FTP\nRequired scopes: ftp:write\nReturns: {status, data: object {id, user_id, ftp_username, home_directory, uid, gid, shell, quota_mb, used_mb, status, created_by, server_id, … (+4 more)}}\nMutating: changes server state.",
+    "description": "Updates an FTP account\n\nHTTP: PATCH /v1/ftp-accounts/:id\nCategory: FTP\nRequired scopes: ftp:write\nReturns: {status, data: object {id, user_id, ftp_username, home_directory, uid, gid, shell, quota_mb, used_mb, usage_updated_at, usage_pending, status, … (+6 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -16159,6 +17405,15 @@
             "name": "used_mb",
             "type": "integer",
             "description": "Runtime field, populated from quota_tallies (not in DB)"
+          },
+          {
+            "name": "usage_updated_at",
+            "type": "string",
+            "description": "Runtime: when UsedMB was measured; UsagePending = not measured yet (a new account the background refresh has not reached)"
+          },
+          {
+            "name": "usage_pending",
+            "type": "boolean"
           },
           {
             "name": "status",
@@ -20796,7 +22051,7 @@
   },
   {
     "name": "panelica_ip_addresses_get_v1_ip_addresses",
-    "description": "Lists all IP addresses\n\nHTTP: GET /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: server:read\nReturns: {status, data: array of {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+6 more)}, total}\nRead-only.",
+    "description": "Lists all IP addresses\n\nHTTP: GET /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: server:read\nReturns: {status, data: array of {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+7 more)}, total}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -20913,6 +22168,11 @@
             "name": "allocation",
             "type": "string",
             "description": "\"dedicated\" when one account holds it, otherwise \"shared\""
+          },
+          {
+            "name": "holder_count",
+            "type": "integer",
+            "description": "How many accounts use the address"
           }
         ]
       },
@@ -20921,7 +22181,7 @@
   },
   {
     "name": "panelica_ip_addresses_get_v1_ip_addresses_available",
-    "description": "Gets available (unassigned) IP addresses\n\nHTTP: GET /v1/ip-addresses/available\nCategory: IP Addresses\nRequired scopes: server:read\nReturns: {status, data: array of {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+6 more)}}\nRead-only.",
+    "description": "Gets available (unassigned) IP addresses\n\nHTTP: GET /v1/ip-addresses/available\nCategory: IP Addresses\nRequired scopes: server:read\nReturns: {status, data: array of {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+7 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -21035,6 +22295,11 @@
             "name": "allocation",
             "type": "string",
             "description": "\"dedicated\" when one account holds it, otherwise \"shared\""
+          },
+          {
+            "name": "holder_count",
+            "type": "integer",
+            "description": "How many accounts use the address"
           }
         ]
       },
@@ -21043,7 +22308,7 @@
   },
   {
     "name": "panelica_ip_addresses_get_v1_ip_addresses_id",
-    "description": "Gets an IP address by ID\n\nHTTP: GET /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: server:read\nReturns: {status, data: object {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+6 more)}}\nRead-only.",
+    "description": "Gets an IP address by ID\n\nHTTP: GET /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: server:read\nReturns: {status, data: object {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+7 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -21151,6 +22416,11 @@
             "name": "allocation",
             "type": "string",
             "description": "\"dedicated\" when one account holds it, otherwise \"shared\""
+          },
+          {
+            "name": "holder_count",
+            "type": "integer",
+            "description": "How many accounts use the address"
           }
         ]
       }
@@ -21158,7 +22428,7 @@
   },
   {
     "name": "panelica_ip_addresses_get_v1_ip_addresses_primary",
-    "description": "Gets the primary IP address\n\nHTTP: GET /v1/ip-addresses/primary\nCategory: IP Addresses\nRequired scopes: server:read\nReturns: {status, data: object {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+6 more)}}\nRead-only.",
+    "description": "Gets the primary IP address\n\nHTTP: GET /v1/ip-addresses/primary\nCategory: IP Addresses\nRequired scopes: server:read\nReturns: {status, data: object {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+7 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -21259,6 +22529,11 @@
             "name": "allocation",
             "type": "string",
             "description": "\"dedicated\" when one account holds it, otherwise \"shared\""
+          },
+          {
+            "name": "holder_count",
+            "type": "integer",
+            "description": "How many accounts use the address"
           }
         ]
       }
@@ -21266,7 +22541,7 @@
   },
   {
     "name": "panelica_ip_addresses_patch_v1_ip_addresses_id",
-    "description": "Updates an IP address\n\nHTTP: PATCH /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: server:write\nReturns: {status, data: object {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+6 more)}}\nMutating: changes server state.",
+    "description": "Updates an IP address\n\nHTTP: PATCH /v1/ip-addresses/:id\nCategory: IP Addresses\nRequired scopes: server:write\nReturns: {status, data: object {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+7 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -21379,6 +22654,11 @@
             "name": "allocation",
             "type": "string",
             "description": "\"dedicated\" when one account holds it, otherwise \"shared\""
+          },
+          {
+            "name": "holder_count",
+            "type": "integer",
+            "description": "How many accounts use the address"
           }
         ]
       }
@@ -21386,7 +22666,7 @@
   },
   {
     "name": "panelica_ip_addresses_post_v1_ip_addresses",
-    "description": "Creates a new IP address\n\nHTTP: POST /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: server:write\nReturns: {status, data: object {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+6 more)}}\nMutating: changes server state.",
+    "description": "Creates a new IP address\n\nHTTP: POST /v1/ip-addresses\nCategory: IP Addresses\nRequired scopes: server:write\nReturns: {status, data: object {id, ip_address, ip_type, is_primary, owner_id, assigned_to_user_id, status, interface_name, netmask, gateway, notes, auto_detected, … (+7 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -21523,6 +22803,11 @@
             "name": "allocation",
             "type": "string",
             "description": "\"dedicated\" when one account holds it, otherwise \"shared\""
+          },
+          {
+            "name": "holder_count",
+            "type": "integer",
+            "description": "How many accounts use the address"
           }
         ]
       }
@@ -26912,7 +28197,7 @@
   },
   {
     "name": "panelica_mysql_users_post_v1_mysql_users",
-    "description": "Creates a new MySQL user\n\nHTTP: POST /v1/mysql-users\nCategory: MySQL Users\nRequired scopes: databases:write\nReturns: {status, data: object {id, username, domain_id, role, created_by, owner_id, status, created_at, updated_at, is_primary, warnings, database_name, … (+5 more)}}\nMutating: changes server state.",
+    "description": "Creates a MySQL user for the domain's database and grants it the privileges of the chosen role.\n\nHTTP: POST /v1/mysql-users\nCategory: MySQL Users\nRequired scopes: databases:write\nReturns: {status, data: any}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -26920,27 +28205,34 @@
           "type": "object",
           "description": "Request body (application/json)",
           "properties": {
-            "domain_id": {
-              "type": "string",
-              "description": "ID of the domain — obtain it from GET /v1/domains"
-            },
             "username": {
               "type": "string",
-              "description": ""
+              "description": "MySQL user name to create (unique on the server)"
             },
             "password": {
               "type": "string",
-              "description": ""
+              "description": "Of the MySQL user"
+            },
+            "domain_id": {
+              "type": "string",
+              "description": "UUID of the domain whose database the user is granted on — obtain it from GET /v1/domains"
             },
             "role": {
               "type": "string",
-              "description": ""
+              "description": "read, readWrite, dbAdmin, dbOwner (default: readWrite)",
+              "enum": [
+                "read",
+                "readWrite",
+                "dbAdmin",
+                "dbOwner"
+              ],
+              "default": "readWrite"
             }
           },
           "required": [
-            "domain_id",
             "username",
-            "password"
+            "password",
+            "domain_id"
           ]
         }
       },
@@ -26964,84 +28256,7 @@
         "databases:write"
       ],
       "response": {
-        "data_type": "object",
-        "fields": [
-          {
-            "name": "id",
-            "type": "string"
-          },
-          {
-            "name": "username",
-            "type": "string"
-          },
-          {
-            "name": "domain_id",
-            "type": "string"
-          },
-          {
-            "name": "role",
-            "type": "string",
-            "description": "read, readWrite, dbAdmin, dbOwner"
-          },
-          {
-            "name": "created_by",
-            "type": "string"
-          },
-          {
-            "name": "owner_id",
-            "type": "string",
-            "description": "NULL = system-wide (ROOT/ADMIN)"
-          },
-          {
-            "name": "status",
-            "type": "string"
-          },
-          {
-            "name": "created_at",
-            "type": "string"
-          },
-          {
-            "name": "updated_at",
-            "type": "string"
-          },
-          {
-            "name": "is_primary",
-            "type": "boolean",
-            "description": "Marks the account that was created together with the database itself"
-          },
-          {
-            "name": "warnings",
-            "type": "array",
-            "description": "Things the caller should know after a create (e.g"
-          },
-          {
-            "name": "database_name",
-            "type": "string",
-            "description": "Set only for primary accounts: it says which database the account belongs to, which is the one thing that identifies it"
-          },
-          {
-            "name": "privileges",
-            "type": "array",
-            "description": "What the account actually holds in MySQL, read at list time for primary accounts"
-          },
-          {
-            "name": "domain",
-            "type": "object",
-            "description": "Relations (Eager loading)"
-          },
-          {
-            "name": "created_by_user",
-            "type": "object"
-          },
-          {
-            "name": "owner_user",
-            "type": "object"
-          },
-          {
-            "name": "remote_host_access",
-            "type": "array"
-          }
-        ]
+        "data_type": "any"
       }
     }
   },
@@ -29178,7 +30393,7 @@
   },
   {
     "name": "panelica_plans_get_v1_plans",
-    "description": "Lists all plans\n\nHTTP: GET /v1/plans\nCategory: Plans\nRequired scopes: plans:read\nReturns: {status, data: array of {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+45 more)}, total}\nRead-only.",
+    "description": "Lists all plans\n\nHTTP: GET /v1/plans\nCategory: Plans\nRequired scopes: plans:read\nReturns: {status, data: array of {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+56 more)}, total}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -29321,6 +30536,52 @@
           },
           {
             "name": "max_laravel_apps",
+            "type": "integer"
+          },
+          {
+            "name": "max_isolated_envs",
+            "type": "integer",
+            "description": "=== Isolated environments (Incus system containers, migration 000623) === Count semantics follow max_containers: 0 = disabled, -1 = unlimited"
+          },
+          {
+            "name": "isolated_cpu_limit_percent",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_memory_mb",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_disk_gb",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_max_dedicated_ips",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_allow_nesting",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_allow_smtp",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_allow_full_server",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_max_snapshots",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_bandwidth_mbps",
+            "type": "integer",
+            "description": "0 = unlimited"
+          },
+          {
+            "name": "isolated_processes",
             "type": "integer"
           },
           {
@@ -29486,7 +30747,7 @@
   },
   {
     "name": "panelica_plans_get_v1_plans_id",
-    "description": "Gets a specific plan\n\nHTTP: GET /v1/plans/:id\nCategory: Plans\nRequired scopes: plans:read\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+45 more)}}\nRead-only.",
+    "description": "Gets a specific plan\n\nHTTP: GET /v1/plans/:id\nCategory: Plans\nRequired scopes: plans:read\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+56 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -29620,6 +30881,52 @@
           },
           {
             "name": "max_laravel_apps",
+            "type": "integer"
+          },
+          {
+            "name": "max_isolated_envs",
+            "type": "integer",
+            "description": "=== Isolated environments (Incus system containers, migration 000623) === Count semantics follow max_containers: 0 = disabled, -1 = unlimited"
+          },
+          {
+            "name": "isolated_cpu_limit_percent",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_memory_mb",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_disk_gb",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_max_dedicated_ips",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_allow_nesting",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_allow_smtp",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_allow_full_server",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_max_snapshots",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_bandwidth_mbps",
+            "type": "integer",
+            "description": "0 = unlimited"
+          },
+          {
+            "name": "isolated_processes",
             "type": "integer"
           },
           {
@@ -29784,7 +31091,7 @@
   },
   {
     "name": "panelica_plans_patch_v1_plans_id",
-    "description": "Updates a plan\n\nHTTP: PATCH /v1/plans/:id\nCategory: Plans\nRequired scopes: plans:write\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+45 more)}}\nMutating: changes server state.",
+    "description": "Updates a plan\n\nHTTP: PATCH /v1/plans/:id\nCategory: Plans\nRequired scopes: plans:write\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+56 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -29923,6 +31230,52 @@
           },
           {
             "name": "max_laravel_apps",
+            "type": "integer"
+          },
+          {
+            "name": "max_isolated_envs",
+            "type": "integer",
+            "description": "=== Isolated environments (Incus system containers, migration 000623) === Count semantics follow max_containers: 0 = disabled, -1 = unlimited"
+          },
+          {
+            "name": "isolated_cpu_limit_percent",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_memory_mb",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_disk_gb",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_max_dedicated_ips",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_allow_nesting",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_allow_smtp",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_allow_full_server",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_max_snapshots",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_bandwidth_mbps",
+            "type": "integer",
+            "description": "0 = unlimited"
+          },
+          {
+            "name": "isolated_processes",
             "type": "integer"
           },
           {
@@ -30087,7 +31440,7 @@
   },
   {
     "name": "panelica_plans_post_v1_plans",
-    "description": "Creates a new plan\n\nHTTP: POST /v1/plans\nCategory: Plans\nRequired scopes: plans:write\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+45 more)}}\nMutating: changes server state.",
+    "description": "Creates a new plan\n\nHTTP: POST /v1/plans\nCategory: Plans\nRequired scopes: plans:write\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+56 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -30315,6 +31668,52 @@
           },
           {
             "name": "max_laravel_apps",
+            "type": "integer"
+          },
+          {
+            "name": "max_isolated_envs",
+            "type": "integer",
+            "description": "=== Isolated environments (Incus system containers, migration 000623) === Count semantics follow max_containers: 0 = disabled, -1 = unlimited"
+          },
+          {
+            "name": "isolated_cpu_limit_percent",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_memory_mb",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_disk_gb",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_max_dedicated_ips",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_allow_nesting",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_allow_smtp",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_allow_full_server",
+            "type": "boolean"
+          },
+          {
+            "name": "isolated_max_snapshots",
+            "type": "integer"
+          },
+          {
+            "name": "isolated_bandwidth_mbps",
+            "type": "integer",
+            "description": "0 = unlimited"
+          },
+          {
+            "name": "isolated_processes",
             "type": "integer"
           },
           {
@@ -33013,6 +34412,238 @@
     }
   },
   {
+    "name": "panelica_security_get_v1_apparmor_observations",
+    "description": "Accesses outside a user's profile, counted per user, operation, path and permission. Query: user_id, decision (pending, allowed, ignored), outcome (allowed = learning, denied = blocked), risk, search, page, per_page. ROOT key with full access.\n\nHTTP: GET /v1/apparmor/observations\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {items, total, page, per_page}, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "description": "Query parameter: decision"
+        },
+        "outcome": {
+          "type": "string",
+          "description": "Query parameter: outcome"
+        },
+        "risk": {
+          "type": "string",
+          "description": "Query parameter: risk"
+        },
+        "search": {
+          "type": "string",
+          "description": "Query parameter: search"
+        },
+        "user_id": {
+          "type": "string",
+          "description": "UUID of the user — obtain it from GET /v1/accounts"
+        }
+      },
+      "required": [
+        "user_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List AppArmor PHP observations",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/apparmor/observations",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success"
+        ],
+        "fields": [
+          {
+            "name": "items",
+            "type": "array"
+          },
+          {
+            "name": "total",
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "name": "per_page",
+            "type": "integer"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_apparmor_overview",
+    "description": "AppArmor status of the server (available, parser version, event source) and how many hosting users run their PHP off, learning or protected, with pending observations. ROOT key with full access, licence feature apparmor.\n\nHTTP: GET /v1/apparmor/overview\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {available, reason, os, parser_version, event_source, last_read, last_read_error, users, pending, denied_24h, trend, new_user_mode, … (+2 more)}, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "AppArmor PHP confinement summary",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/apparmor/overview",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success"
+        ],
+        "fields": [
+          {
+            "name": "available",
+            "type": "boolean"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "os",
+            "type": "string"
+          },
+          {
+            "name": "parser_version",
+            "type": "string"
+          },
+          {
+            "name": "event_source",
+            "type": "string"
+          },
+          {
+            "name": "last_read",
+            "type": "string"
+          },
+          {
+            "name": "last_read_error",
+            "type": "string"
+          },
+          {
+            "name": "users",
+            "type": "object"
+          },
+          {
+            "name": "pending",
+            "type": "integer"
+          },
+          {
+            "name": "denied_24h",
+            "type": "integer"
+          },
+          {
+            "name": "trend",
+            "type": "array"
+          },
+          {
+            "name": "new_user_mode",
+            "type": "string"
+          },
+          {
+            "name": "php_versions",
+            "type": "array"
+          },
+          {
+            "name": "other_profiles",
+            "type": "object"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_apparmor_users",
+    "description": "Each hosting user's mode (off, learning, enforce), live status (protected, learning, off, restart_needed, not_loaded, no_php), running PHP-FPM units and pending observations. Query: search, mode, status, page, per_page (max 200). ROOT key with full access.\n\nHTTP: GET /v1/apparmor/users\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {users, total, page, per_page}, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "description": "Query parameter: mode"
+        },
+        "search": {
+          "type": "string",
+          "description": "Query parameter: search"
+        },
+        "status": {
+          "type": "string",
+          "description": "Query parameter: status"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List hosting users with their AppArmor PHP mode",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/apparmor/users",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success"
+        ],
+        "fields": [
+          {
+            "name": "users",
+            "type": "array"
+          },
+          {
+            "name": "total",
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "name": "per_page",
+            "type": "integer"
+          }
+        ]
+      }
+    }
+  },
+  {
     "name": "panelica_security_get_v1_security_advisor",
     "description": "Run security advisor checks\n\nHTTP: GET /v1/security/advisor\nCategory: Security\nRequired scopes: security:read\nRestricted to key owners with role: ADMIN, ROOT\nReturns: {status, data: any, success}\nRead-only.",
     "inputSchema": {
@@ -33247,10 +34878,34 @@
   },
   {
     "name": "panelica_security_get_v1_security_login_history",
-    "description": "Gets login history\n\nHTTP: GET /v1/security/login-history\nCategory: Security\nRequired scopes: accounts:read\nReturns: {status, data: array of {id, username, email, ip_address, success, failure_reason, user_agent, attempted_at}, total}\nRead-only.",
+    "description": "Gets login history\n\nHTTP: GET /v1/security/login-history\nCategory: Security\nRequired scopes: accounts:read\nReturns: {status, data: array of {id, username, email, ip_address, success, failure_reason, user_agent, attempted_at}, total, page, per_page}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
+        "hours": {
+          "type": "integer",
+          "description": "Query parameter: hours"
+        },
+        "ip": {
+          "type": "string",
+          "description": "Query parameter: ip"
+        },
+        "page": {
+          "type": "integer",
+          "description": "Query parameter: page"
+        },
+        "per_page": {
+          "type": "integer",
+          "description": "page size, default 100, at most 200"
+        },
+        "result": {
+          "type": "string",
+          "description": "Query parameter: result"
+        },
+        "username": {
+          "type": "string",
+          "description": "Query parameter: username"
+        },
         "_limit": {
           "type": "integer",
           "description": "Keep only the first N items of the returned list (applied by this MCP server, not the panel). Use on large lists."
@@ -33284,7 +34939,9 @@
       "response": {
         "data_type": "array",
         "keys": [
-          "total"
+          "total",
+          "page",
+          "per_page"
         ],
         "fields": [
           {
@@ -33324,6 +34981,395 @@
         ]
       },
       "shaping": true
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_selinux_php_observations",
+    "description": "Denials counted per account, target type, class, permissions and path; other_account marks a target carrying another account's categories. Query: user_id, decision (pending, ignored), outcome (allowed = learning, denied = blocked), risk, search, page, per_page. Licence feature selinux. ROOT key with full access.\n\nHTTP: GET /v1/selinux/php/observations\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {items, total, page, per_page}, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "description": "Query parameter: decision"
+        },
+        "outcome": {
+          "type": "string",
+          "description": "Query parameter: outcome"
+        },
+        "risk": {
+          "type": "string",
+          "description": "Query parameter: risk"
+        },
+        "search": {
+          "type": "string",
+          "description": "Query parameter: search"
+        },
+        "user_id": {
+          "type": "string",
+          "description": "UUID of the user — obtain it from GET /v1/accounts"
+        }
+      },
+      "required": [
+        "user_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List SELinux denials of the accounts' PHP",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/selinux/php/observations",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success"
+        ],
+        "fields": [
+          {
+            "name": "items",
+            "type": "array"
+          },
+          {
+            "name": "total",
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "name": "per_page",
+            "type": "integer"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_selinux_php_overview",
+    "description": "Whether hosting accounts' PHP can be protected here and why not (off, relabel, not_prepared, module), the preparation job, how many accounts run off, learning or protected, and pending denials (those touching another account counted apart). ROOT key with full access.\n\nHTTP: GET /v1/selinux/php/overview\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {available, reason, runtime_mode, labels, module, types_loaded, can_prepare, users, pending, denied_24h, other_account, new_user_mode, … (+3 more)}, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "SELinux account protection summary (AlmaLinux / Rocky)",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/selinux/php/overview",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success"
+        ],
+        "fields": [
+          {
+            "name": "available",
+            "type": "boolean"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "runtime_mode",
+            "type": "string"
+          },
+          {
+            "name": "labels",
+            "type": "object"
+          },
+          {
+            "name": "module",
+            "type": "object"
+          },
+          {
+            "name": "types_loaded",
+            "type": "boolean"
+          },
+          {
+            "name": "can_prepare",
+            "type": "boolean"
+          },
+          {
+            "name": "users",
+            "type": "object"
+          },
+          {
+            "name": "pending",
+            "type": "integer"
+          },
+          {
+            "name": "denied_24h",
+            "type": "integer"
+          },
+          {
+            "name": "other_account",
+            "type": "integer"
+          },
+          {
+            "name": "new_user_mode",
+            "type": "string"
+          },
+          {
+            "name": "php_versions",
+            "type": "array"
+          },
+          {
+            "name": "last_read",
+            "type": "string"
+          },
+          {
+            "name": "last_read_error",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_selinux_php_users",
+    "description": "Each account's mode (off, learning, enforce), MCS category pair, live status (protected, learning, off, restart_needed, not_enforced, unlabelled, no_php, php_failed), PHP-FPM units with their SELinux context and pending denials. Query: search, mode, status, page, per_page (max 200). ROOT key with full access.\n\nHTTP: GET /v1/selinux/php/users\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {users, total, page, per_page}, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "description": "Query parameter: mode"
+        },
+        "search": {
+          "type": "string",
+          "description": "Query parameter: search"
+        },
+        "status": {
+          "type": "string",
+          "description": "Query parameter: status"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List hosting accounts with their SELinux PHP mode",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/selinux/php/users",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success"
+        ],
+        "fields": [
+          {
+            "name": "users",
+            "type": "array"
+          },
+          {
+            "name": "total",
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "type": "integer"
+          },
+          {
+            "name": "per_page",
+            "type": "integer"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_get_v1_selinux_status",
+    "description": "Kernel mode and next-boot mode, policy version, the Panelica SELinux module, the relabel and enforcing jobs, what blocks turning SELinux on, and the denials since the relabel (the last 24 hours before one), grouped, those concerning Panelica first. ROOT key with full access.\n\nHTTP: GET /v1/selinux/status\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {rhel, runtime_mode, config_mode, reboot_needed, policy_version, module, module_error, relabel, enforce, blockers, docker, denials, … (+2 more)}, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "SELinux state (AlmaLinux / Rocky)",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/selinux/status",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success"
+        ],
+        "fields": [
+          {
+            "name": "rhel",
+            "type": "boolean"
+          },
+          {
+            "name": "runtime_mode",
+            "type": "string"
+          },
+          {
+            "name": "config_mode",
+            "type": "string"
+          },
+          {
+            "name": "reboot_needed",
+            "type": "boolean"
+          },
+          {
+            "name": "policy_version",
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "type": "object"
+          },
+          {
+            "name": "module_error",
+            "type": "string"
+          },
+          {
+            "name": "relabel",
+            "type": "object"
+          },
+          {
+            "name": "enforce",
+            "type": "object"
+          },
+          {
+            "name": "blockers",
+            "type": "array"
+          },
+          {
+            "name": "docker",
+            "type": "boolean"
+          },
+          {
+            "name": "denials",
+            "type": "array"
+          },
+          {
+            "name": "panelica_denials",
+            "type": "integer",
+            "description": "Counts denials concerning Panelica since the relabel finished (what blocks the switch to enforcing)"
+          },
+          {
+            "name": "can_enforce",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_post_v1_modsecurity_sites_mode",
+    "description": "Switches every site that runs through Apache with ModSecurity on to mode On (blocks attacks) or DetectionOnly (logs only), in the background (202 with the number of sites); each site is tested and put back on failure, the operator is notified when done. 409 while a switch is running. ROOT key with full access.\n\nHTTP: POST /v1/modsecurity/sites/mode\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {started, sites}, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "description": "On or DetectionOnly"
+            }
+          },
+          "required": [
+            "mode"
+          ]
+        }
+      },
+      "required": [
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Switch every site's ModSecurity mode",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/modsecurity/sites/mode",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "started",
+            "type": "boolean"
+          },
+          {
+            "name": "sites",
+            "type": "integer"
+          }
+        ]
+      }
     }
   },
   {
@@ -33567,6 +35613,703 @@
           {
             "name": "creator",
             "type": "object"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_post_v1_selinux_disable",
+    "description": "Off from the next boot (permissive until then); turning it on again relabels again. Works without the licence feature. ROOT key with full access.\n\nHTTP: POST /v1/selinux/disable\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {rhel, runtime_mode, config_mode, reboot_needed, policy_version, module, module_error, relabel, enforce, blockers, docker, denials, … (+2 more)}, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Turn SELinux off",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/selinux/disable",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "rhel",
+            "type": "boolean"
+          },
+          {
+            "name": "runtime_mode",
+            "type": "string"
+          },
+          {
+            "name": "config_mode",
+            "type": "string"
+          },
+          {
+            "name": "reboot_needed",
+            "type": "boolean"
+          },
+          {
+            "name": "policy_version",
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "type": "object"
+          },
+          {
+            "name": "module_error",
+            "type": "string"
+          },
+          {
+            "name": "relabel",
+            "type": "object"
+          },
+          {
+            "name": "enforce",
+            "type": "object"
+          },
+          {
+            "name": "blockers",
+            "type": "array"
+          },
+          {
+            "name": "docker",
+            "type": "boolean"
+          },
+          {
+            "name": "denials",
+            "type": "array"
+          },
+          {
+            "name": "panelica_denials",
+            "type": "integer",
+            "description": "Counts denials concerning Panelica since the relabel finished (what blocks the switch to enforcing)"
+          },
+          {
+            "name": "can_enforce",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_post_v1_selinux_enable",
+    "description": "Installs the Panelica module and sets the next boot to permissive; the whole system is relabelled online once SELinux runs (after the reboot, or at once if it already runs). Refused while the VPS Manager is installed. Licence feature selinux. ROOT key with full access.\n\nHTTP: POST /v1/selinux/enable\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {rhel, runtime_mode, config_mode, reboot_needed, policy_version, module, module_error, relabel, enforce, blockers, docker, denials, … (+2 more)}, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Turn SELinux on in permissive mode",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/selinux/enable",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "rhel",
+            "type": "boolean"
+          },
+          {
+            "name": "runtime_mode",
+            "type": "string"
+          },
+          {
+            "name": "config_mode",
+            "type": "string"
+          },
+          {
+            "name": "reboot_needed",
+            "type": "boolean"
+          },
+          {
+            "name": "policy_version",
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "type": "object"
+          },
+          {
+            "name": "module_error",
+            "type": "string"
+          },
+          {
+            "name": "relabel",
+            "type": "object"
+          },
+          {
+            "name": "enforce",
+            "type": "object"
+          },
+          {
+            "name": "blockers",
+            "type": "array"
+          },
+          {
+            "name": "docker",
+            "type": "boolean"
+          },
+          {
+            "name": "denials",
+            "type": "array"
+          },
+          {
+            "name": "panelica_denials",
+            "type": "integer",
+            "description": "Counts denials concerning Panelica since the relabel finished (what blocks the switch to enforcing)"
+          },
+          {
+            "name": "can_enforce",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_post_v1_selinux_enforce",
+    "description": "Only from permissive, after the relabel finished and with no denial concerning Panelica since. Background job: the confined daemons are restarted and watched; on any trouble the server goes back to permissive and the job reports why. Licence feature selinux. ROOT key with full access.\n\nHTTP: POST /v1/selinux/enforce\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {rhel, runtime_mode, config_mode, reboot_needed, policy_version, module, module_error, relabel, enforce, blockers, docker, denials, … (+2 more)}, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Switch SELinux to enforcing",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/selinux/enforce",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "rhel",
+            "type": "boolean"
+          },
+          {
+            "name": "runtime_mode",
+            "type": "string"
+          },
+          {
+            "name": "config_mode",
+            "type": "string"
+          },
+          {
+            "name": "reboot_needed",
+            "type": "boolean"
+          },
+          {
+            "name": "policy_version",
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "type": "object"
+          },
+          {
+            "name": "module_error",
+            "type": "string"
+          },
+          {
+            "name": "relabel",
+            "type": "object"
+          },
+          {
+            "name": "enforce",
+            "type": "object"
+          },
+          {
+            "name": "blockers",
+            "type": "array"
+          },
+          {
+            "name": "docker",
+            "type": "boolean"
+          },
+          {
+            "name": "denials",
+            "type": "array"
+          },
+          {
+            "name": "panelica_denials",
+            "type": "integer",
+            "description": "Counts denials concerning Panelica since the relabel finished (what blocks the switch to enforcing)"
+          },
+          {
+            "name": "can_enforce",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_post_v1_selinux_permissive",
+    "description": "Permissive now and from the next boot. Works without the licence feature. ROOT key with full access.\n\nHTTP: POST /v1/selinux/permissive\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {rhel, runtime_mode, config_mode, reboot_needed, policy_version, module, module_error, relabel, enforce, blockers, docker, denials, … (+2 more)}, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Stop enforcing SELinux",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/selinux/permissive",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "rhel",
+            "type": "boolean"
+          },
+          {
+            "name": "runtime_mode",
+            "type": "string"
+          },
+          {
+            "name": "config_mode",
+            "type": "string"
+          },
+          {
+            "name": "reboot_needed",
+            "type": "boolean"
+          },
+          {
+            "name": "policy_version",
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "type": "object"
+          },
+          {
+            "name": "module_error",
+            "type": "string"
+          },
+          {
+            "name": "relabel",
+            "type": "object"
+          },
+          {
+            "name": "enforce",
+            "type": "object"
+          },
+          {
+            "name": "blockers",
+            "type": "array"
+          },
+          {
+            "name": "docker",
+            "type": "boolean"
+          },
+          {
+            "name": "denials",
+            "type": "array"
+          },
+          {
+            "name": "panelica_denials",
+            "type": "integer",
+            "description": "Counts denials concerning Panelica since the relabel finished (what blocks the switch to enforcing)"
+          },
+          {
+            "name": "can_enforce",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_post_v1_selinux_relabel",
+    "description": "Runs the online relabel again (background job, see status). Licence feature selinux. ROOT key with full access.\n\nHTTP: POST /v1/selinux/relabel\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {rhel, runtime_mode, config_mode, reboot_needed, policy_version, module, module_error, relabel, enforce, blockers, docker, denials, … (+2 more)}, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Relabel the whole system again",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/selinux/relabel",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "rhel",
+            "type": "boolean"
+          },
+          {
+            "name": "runtime_mode",
+            "type": "string"
+          },
+          {
+            "name": "config_mode",
+            "type": "string"
+          },
+          {
+            "name": "reboot_needed",
+            "type": "boolean"
+          },
+          {
+            "name": "policy_version",
+            "type": "string"
+          },
+          {
+            "name": "module",
+            "type": "object"
+          },
+          {
+            "name": "module_error",
+            "type": "string"
+          },
+          {
+            "name": "relabel",
+            "type": "object"
+          },
+          {
+            "name": "enforce",
+            "type": "object"
+          },
+          {
+            "name": "blockers",
+            "type": "array"
+          },
+          {
+            "name": "docker",
+            "type": "boolean"
+          },
+          {
+            "name": "denials",
+            "type": "array"
+          },
+          {
+            "name": "panelica_denials",
+            "type": "integer",
+            "description": "Counts denials concerning Panelica since the relabel finished (what blocks the switch to enforcing)"
+          },
+          {
+            "name": "can_enforce",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_put_v1_apparmor_users_id_mode",
+    "description": "off, learning (nothing is blocked, accesses outside the profile are recorded) or enforce (blocked). Turning it on restarts that user's PHP-FPM units so the profile is bound; learning to enforce needs no restart. ROOT key with full access.\n\nHTTP: PUT /v1/apparmor/users/:id/mode\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {id, username, account_status, mode, status, units, pending, denied, last_seen, migrated_from, updated_at, valid}, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the user — obtain it from GET /v1/accounts"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "description": "off, learning or enforce"
+            }
+          },
+          "required": [
+            "mode"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Set a hosting user's AppArmor PHP mode",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/apparmor/users/:id/mode",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "type": "string"
+          },
+          {
+            "name": "account_status",
+            "type": "string"
+          },
+          {
+            "name": "mode",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "name": "units",
+            "type": "array"
+          },
+          {
+            "name": "pending",
+            "type": "integer"
+          },
+          {
+            "name": "denied",
+            "type": "integer"
+          },
+          {
+            "name": "last_seen",
+            "type": "string"
+          },
+          {
+            "name": "migrated_from",
+            "type": "string"
+          },
+          {
+            "name": "updated_at",
+            "type": "string"
+          },
+          {
+            "name": "valid",
+            "type": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_security_put_v1_selinux_php_users_id_mode",
+    "description": "off, learning (nothing is blocked, denials are recorded) or enforce (blocked; only from learning and while SELinux enforces). The account's PHP-FPM units are restarted and checked; when PHP does not answer the change is undone (409 with the mode it ended in). Needs a prepared server; turning off works without the licence feature. ROOT key with full access.\n\nHTTP: PUT /v1/selinux/php/users/:id/mode\nCategory: Security\nRequired scopes: *:*\nRestricted to key owners with role: ROOT\nReturns: {status, data: object {id, username, account_status, mode, status, level, units, pending, denied, other_account, last_seen, labelled_at, … (+2 more)}, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "UUID of the user — obtain it from GET /v1/accounts"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "description": "off, learning or enforce"
+            }
+          },
+          "required": [
+            "mode"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Set a hosting account's SELinux PHP mode",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/selinux/php/users/:id/mode",
+      "category": "Security",
+      "scopes": [
+        "*:*"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "type": "string"
+          },
+          {
+            "name": "account_status",
+            "type": "string"
+          },
+          {
+            "name": "mode",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "name": "level",
+            "type": "string"
+          },
+          {
+            "name": "units",
+            "type": "array"
+          },
+          {
+            "name": "pending",
+            "type": "integer"
+          },
+          {
+            "name": "denied",
+            "type": "integer"
+          },
+          {
+            "name": "other_account",
+            "type": "integer"
+          },
+          {
+            "name": "last_seen",
+            "type": "string"
+          },
+          {
+            "name": "labelled_at",
+            "type": "string"
+          },
+          {
+            "name": "updated_at",
+            "type": "string"
+          },
+          {
+            "name": "valid",
+            "type": "boolean"
           }
         ]
       }
@@ -33903,6 +36646,109 @@
             "name": "output",
             "type": "any"
           }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_server_resources_get_v1_host_resources",
+    "description": "Every host port, IP address and UID block held by Docker containers, VPSs and the server's own services.\n\nHTTP: GET /v1/host-resources\nCategory: Server Resources\nRequired scopes: host_resources:read\nRestricted to key owners with role: ROOT\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "type": "string",
+          "description": "docker, isolated, system — one or several, comma-separated"
+        },
+        "kind": {
+          "type": "string",
+          "description": "tcp, udp, sctp, ipv4, ipv6, private_ip, uid_block — one or several, comma-separated"
+        },
+        "state": {
+          "type": "string",
+          "description": "reserved, bound, stopped, cooldown, released; open = all but released, all = with history",
+          "default": "open"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Only this account's resources"
+        },
+        "page": {
+          "type": "integer",
+          "description": "Query parameter: page",
+          "default": "1"
+        },
+        "per_page": {
+          "type": "integer",
+          "description": "Query parameter: per_page",
+          "default": "50"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List server resources",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/host-resources",
+      "category": "Server Resources",
+      "scopes": [
+        "host_resources:read"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_server_resources_post_v1_host_resources_id_release",
+    "description": "Puts a held resource into cooldown; nobody can take it until the cooldown ends.\n\nHTTP: POST /v1/host-resources/:id/release\nCategory: Server Resources\nRequired scopes: host_resources:write\nRestricted to key owners with role: ROOT\nReturns: {status, data: any, success}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Resource ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Release a server resource",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/host-resources/:id/release",
+      "category": "Server Resources",
+      "scopes": [
+        "host_resources:write"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
         ]
       }
     }
@@ -36584,7 +39430,7 @@
   },
   {
     "name": "panelica_ssl_post_v1_ssl_domains_domain_id_issue",
-    "description": "Issues a Let's Encrypt SSL certificate for a domain.\n\nHTTP: POST /v1/ssl/domains/:domain_id/issue\nCategory: SSL\nRequired scopes: ssl:write\nReturns: {status, data: object {domain_id, domain_name, issuer, valid_until}, message}\nMutating: changes server state.",
+    "description": "Issues a Let's Encrypt SSL certificate for a domain.\n\nHTTP: POST /v1/ssl/domains/:domain_id/issue\nCategory: SSL\nRequired scopes: ssl:write\nReturns: {status, data: object {domain_id, domain_name, issuer, valid_until, uncovered_subdomains}, message}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -36633,6 +39479,10 @@
           {
             "name": "valid_until",
             "type": "string"
+          },
+          {
+            "name": "uncovered_subdomains",
+            "type": "array"
           }
         ]
       }
@@ -36678,7 +39528,7 @@
   },
   {
     "name": "panelica_ssl_post_v1_ssl_domains_domain_id_renew",
-    "description": "Renews an SSL certificate\n\nHTTP: POST /v1/ssl/domains/:domain_id/renew\nCategory: SSL\nRequired scopes: ssl:write\nReturns: {status, data: object {domain_id, domain_name, new_valid_until}, message}\nMutating: changes server state.",
+    "description": "Renews an SSL certificate\n\nHTTP: POST /v1/ssl/domains/:domain_id/renew\nCategory: SSL\nRequired scopes: ssl:write\nReturns: {status, data: object {domain_id, domain_name, new_valid_until, uncovered_subdomains}, message}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -36723,6 +39573,10 @@
           {
             "name": "new_valid_until",
             "type": "string"
+          },
+          {
+            "name": "uncovered_subdomains",
+            "type": "array"
           }
         ]
       }
@@ -37607,6 +40461,1537 @@
             "name": "websocket_endpoint",
             "type": "string"
           }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_delete_v1_isolated_environments_id",
+    "description": "Deletes the VPS in the background; its ports and addresses cool down before reuse.\n\nHTTP: DELETE /v1/isolated/environments/:id\nCategory: VPS Manager\nRequired scopes: isolated:delete\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Delete VPS",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/isolated/environments/:id",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:delete"
+      ]
+    }
+  },
+  {
+    "name": "panelica_vps_manager_delete_v1_isolated_environments_id_600744f1",
+    "description": "The host port cools down before reuse.\n\nHTTP: DELETE /v1/isolated/environments/:id/ports/:pid\nCategory: VPS Manager\nRequired scopes: isolated:delete\nReturns: {status, success, code, message}\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "pid": {
+          "type": "string",
+          "description": "Port forward ID"
+        }
+      },
+      "required": [
+        "id",
+        "pid"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Remove a port forward",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/isolated/environments/:id/ports/:pid",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:delete"
+      ],
+      "response": {
+        "data_type": "none",
+        "fields": [
+          {
+            "name": "success",
+            "type": "boolean"
+          },
+          {
+            "name": "code",
+            "type": "string"
+          },
+          {
+            "name": "message",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_delete_v1_isolated_environments_id_a81fbef2",
+    "description": "The domain (or subdomain) is served from its own web folder again.\n\nHTTP: DELETE /v1/isolated/environments/:id/domains/:lid\nCategory: VPS Manager\nRequired scopes: isolated:delete\nReturns: {status, success, code, message}\nWARNING: destructive — permanently removes the resource.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "lid": {
+          "type": "string",
+          "description": "Domain link ID"
+        }
+      },
+      "required": [
+        "id",
+        "lid"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Unlink a domain",
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "DELETE",
+      "path": "/v1/isolated/environments/:id/domains/:lid",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:delete"
+      ],
+      "response": {
+        "data_type": "none",
+        "fields": [
+          {
+            "name": "success",
+            "type": "boolean"
+          },
+          {
+            "name": "code",
+            "type": "string"
+          },
+          {
+            "name": "message",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_assignable_ips",
+    "description": "Server addresses a VPS can get as its dedicated IP. Query owner_id (optional, the VPS owner): an address given to that account alone counts as free. Cooling-down ones are listed with cooldown_until, the others that cannot be given with blocked (a reason key) and blocked_params; neither can be chosen.\n\nHTTP: GET /v1/isolated/assignable-ips\nCategory: VPS Manager\nRequired scopes: isolated:read\nRestricted to key owners with role: ADMIN, ROOT\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "owner_id": {
+          "type": "string",
+          "description": "ID of the owner"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List assignable IP addresses",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/assignable-ips",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "roles": [
+        "ADMIN",
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_budget",
+    "description": "The account limits of the owner's plan (CPU, memory, swap, disk, processes) that the owner's VPS together cannot pass, what they hold, what is left (-1 = no limit), the per-VPS network cap, and over: the resources already above a lowered plan. Query owner_id (required except for a USER key, which gets its own).\n\nHTTP: GET /v1/isolated/budget\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "owner_id": {
+          "type": "string",
+          "description": "ID of the owner"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get an account's VPS budget",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/budget",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_capacity",
+    "description": "Memory, disk, private addresses and ports the server can still give to VPSs.\n\nHTTP: GET /v1/isolated/capacity\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Server capacity",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/capacity",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_domain_links",
+    "description": "The VPS links of a domain and its subdomains whose VPS the key's owner may see.\n\nHTTP: GET /v1/isolated/domain-links\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "domain_id": {
+          "type": "string",
+          "description": "Domain ID"
+        }
+      },
+      "required": [
+        "domain_id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "VPS links of a domain",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/domain-links",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_environments",
+    "description": "The VPSs the key owner can see (ROOT all, ADMIN its accounts, RESELLER its customers, USER its own).\n\nHTTP: GET /v1/isolated/environments\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "owner_id": {
+          "type": "string",
+          "description": "Only this account's VPSs"
+        },
+        "status": {
+          "type": "string",
+          "description": "Query parameter: status",
+          "enum": [
+            "creating",
+            "running",
+            "stopped",
+            "error",
+            "deleting",
+            "suspended"
+          ]
+        },
+        "search": {
+          "type": "string",
+          "description": "Part of the name"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List VPSs",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/environments",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_environments_id",
+    "description": "Get VPS\n\nHTTP: GET /v1/isolated/environments/:id\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get VPS",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/environments/:id",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_environments_id_do_d4d98691",
+    "description": "The VPS owner's domains and subdomains, each with whether it can be linked now and why not (linkedHere, linkedOther, servedByApp, inactive, moving).\n\nHTTP: GET /v1/isolated/environments/:id/domains/candidates\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Domains that can be linked",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/environments/:id/domains/candidates",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_environments_id_domains",
+    "description": "Domains and subdomains this VPS serves through the panel's web server, with the address and port each is sent to.\n\nHTTP: GET /v1/isolated/environments/:id/domains\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List linked domains",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/environments/:id/domains",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_environments_id_metrics",
+    "description": "CPU, memory, disk, processes and network counters now.\n\nHTTP: GET /v1/isolated/environments/:id/metrics\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "VPS metrics",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/environments/:id/metrics",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_environments_id_ports",
+    "description": "List port forwards\n\nHTTP: GET /v1/isolated/environments/:id/ports\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List port forwards",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/environments/:id/ports",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_environments_id_ssh",
+    "description": "SSH state (none, setting_up, ready, failed and why), whether root may log in with a password, and root's public keys.\n\nHTTP: GET /v1/isolated/environments/:id/ssh\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get SSH access",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/environments/:id/ssh",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_images",
+    "description": "The operating system images a VPS can be made from.\n\nHTTP: GET /v1/isolated/images\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "List images",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/images",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_jobs_id",
+    "description": "A background job: status (queued, running, done, failed, cancelled), step, progress, error, result.\n\nHTTP: GET /v1/isolated/jobs/:id\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Job ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get job",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/jobs/:id",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_settings",
+    "description": "The server-wide VPS settings (ROOT keys only).\n\nHTTP: GET /v1/isolated/settings\nCategory: VPS Manager\nRequired scopes: isolated:read\nRestricted to key owners with role: ROOT\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Get VPS Manager settings",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/settings",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_get_v1_isolated_status",
+    "description": "Whether VPS Manager is installed and usable on this server. ROOT keys also get the host details (kernel, storage pool, units, last install job). Installing and removing VPS Manager is done in the panel.\n\nHTTP: GET /v1/isolated/status\nCategory: VPS Manager\nRequired scopes: isolated:read\nReturns: {status, data: any, success}\nRead-only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "VPS Manager status",
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "GET",
+      "path": "/v1/isolated/status",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:read"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_patch_v1_isolated_environments_id",
+    "description": "Renames or resizes a VPS; changes apply live where possible. Omitted fields stay.\n\nHTTP: PATCH /v1/isolated/environments/:id\nCategory: VPS Manager\nRequired scopes: isolated:write\nReturns: {status, data: any, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "New display name"
+            },
+            "cpu_limit_percent": {
+              "type": "integer",
+              "description": "CPU limit, percent of one core (100 = one core); omitted = the owner's plan"
+            },
+            "memory_mb": {
+              "type": "integer",
+              "description": "Memory limit in MB; omitted = the owner's plan"
+            },
+            "swap_mb": {
+              "type": "integer",
+              "description": "Swap limit in MB"
+            },
+            "disk_gb": {
+              "type": "integer",
+              "description": "Disk size in GB (can only grow)"
+            },
+            "processes": {
+              "type": "integer",
+              "description": "Process limit"
+            },
+            "bandwidth_mbps": {
+              "type": "integer",
+              "description": "Network bandwidth limit in Mbit/s (0 = unlimited)"
+            },
+            "autostart": {
+              "type": "string",
+              "description": "What the VPS does when the server boots",
+              "enum": [
+                "last-state",
+                "always",
+                "never"
+              ],
+              "default": "last-state"
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update VPS",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PATCH",
+      "path": "/v1/isolated/environments/:id",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_post_v1_isolated_environments",
+    "description": "Creates a VPS for a USER account in the background, within the owner's plan and the server's capacity. data.environment is the new VPS (status creating), data.job the job.\n\nHTTP: POST /v1/isolated/environments\nCategory: VPS Manager\nRequired scopes: isolated:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Display name, unique per owner"
+            },
+            "owner_id": {
+              "type": "string",
+              "description": "The USER account that owns it; omitted = the key owner (a USER)"
+            },
+            "image": {
+              "type": "string",
+              "description": "An image alias from GET /v1/isolated/images"
+            },
+            "template": {
+              "type": "string",
+              "description": "Template; empty = a blank system"
+            },
+            "cpu_limit_percent": {
+              "type": "integer",
+              "description": "CPU limit, percent of one core (100 = one core); omitted = the owner's plan"
+            },
+            "memory_mb": {
+              "type": "integer",
+              "description": "Memory limit in MB; omitted = the owner's plan"
+            },
+            "swap_mb": {
+              "type": "integer",
+              "description": "Swap limit in MB"
+            },
+            "disk_gb": {
+              "type": "integer",
+              "description": "Disk size in GB (can only grow)"
+            },
+            "processes": {
+              "type": "integer",
+              "description": "Process limit"
+            },
+            "bandwidth_mbps": {
+              "type": "integer",
+              "description": "Network bandwidth limit in Mbit/s (0 = unlimited)"
+            },
+            "network_mode": {
+              "type": "string",
+              "description": "private: a pool address with forwarded host ports; dedicated: a server IP from GET /v1/isolated/assignable-ips",
+              "enum": [
+                "private",
+                "dedicated"
+              ],
+              "default": "private"
+            },
+            "dedicated_ip_id": {
+              "type": "string",
+              "description": "Required for network_mode=dedicated"
+            },
+            "ssh_public_key": {
+              "type": "string",
+              "description": "Public key for the VPS's root account"
+            },
+            "nesting": {
+              "type": "boolean",
+              "description": "Allow containers inside (Docker); needs the owner's plan permission"
+            },
+            "smtp_allowed": {
+              "type": "boolean",
+              "description": "Allow outgoing mail on port 25; needs the owner's plan permission and a ROOT or ADMIN key"
+            },
+            "private_network": {
+              "type": "boolean",
+              "description": "Let the owner's VPSs reach each other"
+            },
+            "autostart": {
+              "type": "string",
+              "description": "What the VPS does when the server boots",
+              "enum": [
+                "last-state",
+                "always",
+                "never"
+              ],
+              "default": "last-state"
+            }
+          },
+          "required": [
+            "name",
+            "image"
+          ]
+        }
+      },
+      "required": [
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Create VPS",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/isolated/environments",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_vps_manager_post_v1_isolated_environments_id_a_b80b0123",
+    "description": "Starts, stops, restarts or reinstalls the VPS in the background; any other action is refused.\n\nHTTP: POST /v1/isolated/environments/:id/actions/:action\nCategory: VPS Manager\nRequired scopes: isolated:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "action": {
+          "type": "string",
+          "description": "Path parameter: action",
+          "enum": [
+            "start",
+            "stop",
+            "restart",
+            "reinstall"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Start, stop, restart or reinstall",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/isolated/environments/:id/actions/:action",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_vps_manager_post_v1_isolated_environments_id_domains",
+    "description": "The panel's web server sends the domain's (or subdomain's) requests to a port of the VPS; the VPS's web port need not be forwarded. The domain must belong to the VPS's owner and not be served by Docker, Node.js, Python or Laravel. SSL stays the panel's.\n\nHTTP: POST /v1/isolated/environments/:id/domains\nCategory: VPS Manager\nRequired scopes: isolated:write\nReturns: {status, data: any, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "domain_id": {
+              "type": "string",
+              "description": "UUID of the domain — obtain it from GET /v1/domains"
+            },
+            "subdomain_id": {
+              "type": "string",
+              "description": "Link this subdomain of the domain instead of the domain itself"
+            },
+            "port": {
+              "type": "integer",
+              "description": "Port inside the VPS, 1-65535"
+            },
+            "scheme": {
+              "type": "string",
+              "description": "How the panel talks to the VPS; empty = detected",
+              "enum": [
+                "http",
+                "https"
+              ]
+            }
+          },
+          "required": [
+            "domain_id",
+            "port"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Link a domain to the VPS",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/isolated/environments/:id/domains",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_post_v1_isolated_environments_id_ports",
+    "description": "Forwards a port of the server to a port of the VPS; host_port 0 takes the next free port of the module's range.\n\nHTTP: POST /v1/isolated/environments/:id/ports\nCategory: VPS Manager\nRequired scopes: isolated:write\nReturns: {status, data: any, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "protocol": {
+              "type": "string",
+              "description": "",
+              "enum": [
+                "tcp",
+                "udp"
+              ]
+            },
+            "host_port": {
+              "type": "integer",
+              "description": "0 = the next free port of the module's range",
+              "default": "0"
+            },
+            "container_port": {
+              "type": "integer",
+              "description": ""
+            },
+            "description": {
+              "type": "string",
+              "description": ""
+            }
+          },
+          "required": [
+            "protocol",
+            "container_port"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Forward a host port",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/isolated/environments/:id/ports",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_post_v1_isolated_environments_id_r_dc0ac039",
+    "description": "Sets root's password in the running VPS: the one given (8-128 characters) or a new one. The reply carries it once; it is not stored.\n\nHTTP: POST /v1/isolated/environments/:id/root-password\nCategory: VPS Manager\nRequired scopes: isolated:write\nReturns: {status, data: object {root_password}, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "password": {
+              "type": "string",
+              "description": "Empty: the panel makes one"
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Set the root password",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/isolated/environments/:id/root-password",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ],
+        "fields": [
+          {
+            "name": "root_password",
+            "type": "any"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_post_v1_isolated_environments_id_reinstall",
+    "description": "Rebuilds the VPS from its own image or another one the settings offer; everything inside is erased, the name, addresses, ports and root's keys stay. Root's password is the one given (8-128 characters) or a new one; the reply carries it once, it is not stored.\n\nHTTP: POST /v1/isolated/environments/:id/reinstall\nCategory: VPS Manager\nRequired scopes: isolated:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "image": {
+              "type": "string",
+              "description": "Empty: the VPS's own image"
+            },
+            "root_password": {
+              "type": "string",
+              "description": "Empty: the panel makes one"
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Reinstall with a new root password",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/isolated/environments/:id/reinstall",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_vps_manager_post_v1_isolated_environments_id_ssh_setup",
+    "description": "Installs and configures the SSH server again (after a failure, e.g. no network at the first boot); root's keys and the password choice are applied, the password is left as it is.\n\nHTTP: POST /v1/isolated/environments/:id/ssh/setup\nCategory: VPS Manager\nRequired scopes: isolated:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Set SSH up again",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/isolated/environments/:id/ssh/setup",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_vps_manager_post_v1_isolated_jobs_id_cancel",
+    "description": "Asks the process running the job to stop it.\n\nHTTP: POST /v1/isolated/jobs/:id/cancel\nCategory: VPS Manager\nRequired scopes: isolated:write\nReturns: {status, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Job ID"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Cancel job",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/isolated/jobs/:id/cancel",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ],
+      "response": {
+        "data_type": "none",
+        "fields": [
+          {
+            "name": "success",
+            "type": "boolean"
+          },
+          {
+            "name": "code",
+            "type": "string"
+          },
+          {
+            "name": "message",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_put_v1_isolated_environments_id_network",
+    "description": "Switches between a private address and a dedicated server IP; the VPS restarts.\n\nHTTP: PUT /v1/isolated/environments/:id/network\nCategory: VPS Manager\nRequired scopes: isolated:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "network_mode": {
+              "type": "string",
+              "description": "",
+              "enum": [
+                "private",
+                "dedicated"
+              ]
+            },
+            "dedicated_ip_id": {
+              "type": "string",
+              "description": "Required for dedicated"
+            }
+          },
+          "required": [
+            "network_mode"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Change network mode",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/isolated/environments/:id/network",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ]
+    }
+  },
+  {
+    "name": "panelica_vps_manager_put_v1_isolated_environments_id_security",
+    "description": "Outgoing mail (port 25), nesting and private network. Each needs the owner's plan permission; by default only ROOT and ADMIN keys hold isolated.security.manage.\n\nHTTP: PUT /v1/isolated/environments/:id/security\nCategory: VPS Manager\nRequired scopes: isolated:write\nReturns: {status, data: any, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "smtp_allowed": {
+              "type": "boolean",
+              "description": ""
+            },
+            "nesting": {
+              "type": "boolean",
+              "description": ""
+            },
+            "private_network": {
+              "type": "boolean",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Change security options",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/isolated/environments/:id/security",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_put_v1_isolated_environments_id_ssh",
+    "description": "Replaces root's public keys (the whole list) and/or turns password login on or off, in the running VPS.\n\nHTTP: PUT /v1/isolated/environments/:id/ssh\nCategory: VPS Manager\nRequired scopes: isolated:write\nReturns: {status, data: any, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "VPS ID"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "keys": {
+              "type": "array",
+              "description": "OpenSSH public keys, one per item (at most 50)"
+            },
+            "password_login": {
+              "type": "boolean",
+              "description": ""
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "id",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Change SSH access",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/isolated/environments/:id/ssh",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success",
+          "code",
+          "message"
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_vps_manager_put_v1_isolated_settings",
+    "description": "Replaces the whole settings object (send what GET returned, changed).\n\nHTTP: PUT /v1/isolated/settings\nCategory: VPS Manager\nRequired scopes: isolated:write\nRestricted to key owners with role: ROOT\nReturns: {status, data: any, success, code, message}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json)",
+          "properties": {
+            "private_cidr": {
+              "type": "string",
+              "description": "Private address pool of the VPSs, e.g. <ip>/16"
+            },
+            "resolvers": {
+              "type": "array",
+              "description": "DNS resolvers given to VPSs"
+            },
+            "port_range_start": {
+              "type": "integer",
+              "description": "First host port forwarded to VPSs"
+            },
+            "port_range_end": {
+              "type": "integer",
+              "description": "Last host port forwarded to VPSs"
+            },
+            "host_reserve_mb": {
+              "type": "integer",
+              "description": "Memory kept for the server (0 = max(2048, 20 % of RAM))"
+            },
+            "disk_overcommit": {
+              "type": "number",
+              "description": "Disk overcommit factor (1.0 = none)"
+            },
+            "cooldown_port_hours": {
+              "type": "integer",
+              "description": "Hours a released port waits before reuse"
+            },
+            "cooldown_ip_hours": {
+              "type": "integer",
+              "description": "Hours a released IP address waits before reuse"
+            },
+            "cooldown_uid_days": {
+              "type": "integer",
+              "description": "Days a released UID block waits before reuse"
+            },
+            "egress_allow_cidrs": {
+              "type": "array",
+              "description": "Networks VPSs may reach besides the internet"
+            },
+            "allow_host_web": {
+              "type": "boolean",
+              "description": "Let VPSs reach this server's web ports"
+            },
+            "autostart_delay_seconds": {
+              "type": "integer",
+              "description": "Seconds between VPSs starting at server boot"
+            },
+            "shutdown_timeout_seconds": {
+              "type": "integer",
+              "description": "Seconds a VPS gets to shut down cleanly when the server stops"
+            },
+            "images": {
+              "type": "array",
+              "description": "Image aliases VPSs may be made from"
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Save VPS Manager settings",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "PUT",
+      "path": "/v1/isolated/settings",
+      "category": "VPS Manager",
+      "scopes": [
+        "isolated:write"
+      ],
+      "roles": [
+        "ROOT"
+      ],
+      "response": {
+        "data_type": "any",
+        "keys": [
+          "success",
+          "code",
+          "message"
         ]
       }
     }
