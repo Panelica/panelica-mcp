@@ -143,7 +143,16 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ -z "$NODE_AUTH_TOKEN" ]; then echo "::error::NPM_TOKEN secret missing"; exit 1; fi
-          npm publish --access public --ignore-scripts
+          VERSION=$(node -p "require('./package.json').version")
+          # A version npm already has is the state this step wants, not a
+          # failure: npm refuses to publish it again, and that used to stop the
+          # job here - so a run that got past npm and then failed later (the
+          # registry step, the image) could never be finished by re-running it.
+          if curl -sf -o /dev/null "https://registry.npmjs.org/panelica-mcp/${VERSION}"; then
+            echo "panelica-mcp@${VERSION} is already on npm - nothing to publish."
+          else
+            npm publish --access public --ignore-scripts
+          fi
 
       - name: Tag the published version (manual re-release of an untagged main)
         run: |
@@ -185,7 +194,20 @@ jobs:
           curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
           ./mcp-publisher login github-oidc
           ./mcp-publisher validate
-          # The registry verifies the version against npm; give the registry a
-          # minute to see the fresh publish before giving up.
+          VERSION=$(node -p "require('./package.json').version")
+          # The registry validates the version against npm's public index, and
+          # that index lags a successful publish by minutes: 0.5.3 was
+          # published at 13:06 and first served at 13:11, by which time the old
+          # two-minute loop had given up and failed the run - while npm and
+          # ghcr already had the release and only the registry entry was
+          # missing. Wait for npm to actually serve it, up to ten minutes.
+          for i in $(seq 1 40); do
+            if curl -sf -o /dev/null "https://registry.npmjs.org/panelica-mcp/${VERSION}"; then
+              echo "npm serves ${VERSION} after $((i * 15))s."
+              break
+            fi
+            echo "npm does not serve ${VERSION} yet (check $i of 40)…"
+            sleep 15
+          done
           for i in 1 2 3 4 5 6; do ./mcp-publisher publish && exit 0; echo "registry not ready yet (attempt $i), retrying…"; sleep 20; done
           exit 1
