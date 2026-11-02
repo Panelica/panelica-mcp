@@ -29613,7 +29613,7 @@
   },
   {
     "name": "panelica_node_js_apps_post_v1_nodejs_versions_install",
-    "description": "Downloads and installs a Node.js major version.\n\nHTTP: POST /v1/nodejs/versions/install\nCategory: Node.js Apps\nRequired scopes: apps:write\nReturns: {status, data: object {major, full, path, node_bin, npm_bin, size_mb, is_default}, success}\nMutating: changes server state.",
+    "description": "Downloads and installs a Node.js major version.\n\nHTTP: POST /v1/nodejs/versions/install\nCategory: Node.js Apps\nRequired scopes: apps:write\nReturns: {status, data: object {major, full, path, node_bin, npm_bin, size_mb, is_default, latest}, success}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -29690,6 +29690,11 @@
             "name": "is_default",
             "type": "boolean",
             "description": "highest installed"
+          },
+          {
+            "name": "latest",
+            "type": "string",
+            "description": "The newer release of this line nodejs.org offers, set only when there is one (MarkUpdates)"
           }
         ]
       }
@@ -29734,6 +29739,70 @@
           {
             "name": "default",
             "type": "any"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "panelica_node_js_apps_post_v1_nodejs_versions_major_update",
+    "description": "Moves an installed Node.js line to its newest release, then restarts the running apps on that line so they run the new binary.\n\nHTTP: POST /v1/nodejs/versions/:major/update\nCategory: Node.js Apps\nRequired scopes: apps:write\nReturns: {status, data: object {major, from, to, updated, restarted, restart_failed}, success}\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "string",
+          "description": "Path parameter: major"
+        }
+      },
+      "required": [
+        "major"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update Node.js version to its newest release",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/nodejs/versions/:major/update",
+      "category": "Node.js Apps",
+      "scopes": [
+        "apps:write"
+      ],
+      "response": {
+        "data_type": "object",
+        "keys": [
+          "success"
+        ],
+        "fields": [
+          {
+            "name": "major",
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "name": "to",
+            "type": "string"
+          },
+          {
+            "name": "updated",
+            "type": "boolean"
+          },
+          {
+            "name": "restarted",
+            "type": "array"
+          },
+          {
+            "name": "restart_failed",
+            "type": "array"
           }
         ]
       }

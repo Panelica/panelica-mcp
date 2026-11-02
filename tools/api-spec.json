@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "panel_version": "1.0.567",
+  "panel_version": "1.0.576",
   "title": "Panelica External API",
   "description": "HMAC-SHA256 authenticated REST API for server management and integrations",
   "base_url": "https://<your-panel>:8443/api/external/v1",
@@ -198,7 +198,7 @@
       "name": "Node.js Apps",
       "description": "Node.js Apps management endpoints",
       "icon": "ri-checkbox-blank-circle-line",
-      "count": 18
+      "count": 19
     },
     {
       "name": "Notifications",
@@ -46315,6 +46315,109 @@
     },
     {
       "method": "POST",
+      "path": "/v1/nodejs/versions/{major}/update",
+      "category": "Node.js Apps",
+      "summary": "Update Node.js version to its newest release",
+      "description": "Moves an installed Node.js line to its newest release, then restarts the running apps on that line so they run the new binary.",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "apps:write"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "major",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "body": {
+          "content_type": "none",
+          "required": false
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "data_type": "object",
+        "fields": [
+          {
+            "name": "major",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "from",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "to",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "updated",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "restarted",
+            "type": "array",
+            "required": false
+          },
+          {
+            "name": "restart_failed",
+            "type": "array",
+            "required": false
+          }
+        ],
+        "keys": [
+          "success"
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "POST",
       "path": "/v1/nodejs/versions/install",
       "category": "Node.js Apps",
       "summary": "Install Node.js version",
@@ -46384,6 +46487,12 @@
             "type": "boolean",
             "required": false,
             "description": "highest installed"
+          },
+          {
+            "name": "latest",
+            "type": "string",
+            "required": false,
+            "description": "The newer release of this line nodejs.org offers, set only when there is one (MarkUpdates)"
           }
         ],
         "keys": [
@@ -62382,5 +62491,5 @@
       ]
     }
   ],
-  "total_count": 492
+  "total_count": 493
 }
