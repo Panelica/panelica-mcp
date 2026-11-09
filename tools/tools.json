@@ -11859,7 +11859,7 @@
   },
   {
     "name": "panelica_domains_get_v1_domains_id_subdomains",
-    "description": "Lists all subdomains for a domain\n\nHTTP: GET /v1/domains/:id/subdomains\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: array of {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+11 more)}, total}\nRead-only.",
+    "description": "Lists all subdomains for a domain\n\nHTTP: GET /v1/domains/:id/subdomains\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: array of {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+12 more)}, total}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11969,6 +11969,11 @@
           {
             "name": "ssl_renewal_failures",
             "type": "integer"
+          },
+          {
+            "name": "ssl_coverage",
+            "type": "string",
+            "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
           },
           {
             "name": "force_https",
@@ -14247,7 +14252,7 @@
   },
   {
     "name": "panelica_domains_post_v1_domains_id_subdomains",
-    "description": "Creates a new subdomain\n\nHTTP: POST /v1/domains/:id/subdomains\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+11 more)}}\nMutating: changes server state.",
+    "description": "Creates a new subdomain\n\nHTTP: POST /v1/domains/:id/subdomains\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+12 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -14373,6 +14378,11 @@
           {
             "name": "ssl_renewal_failures",
             "type": "integer"
+          },
+          {
+            "name": "ssl_coverage",
+            "type": "string",
+            "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
           },
           {
             "name": "force_https",
@@ -39773,7 +39783,7 @@
   },
   {
     "name": "panelica_subdomains_get_v1_subdomains_id",
-    "description": "Gets a subdomain by ID\n\nHTTP: GET /v1/subdomains/:id\nCategory: Subdomains\nRequired scopes: domains:read\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+11 more)}}\nRead-only.",
+    "description": "Gets a subdomain by ID\n\nHTTP: GET /v1/subdomains/:id\nCategory: Subdomains\nRequired scopes: domains:read\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+12 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -39870,6 +39880,11 @@
             "type": "integer"
           },
           {
+            "name": "ssl_coverage",
+            "type": "string",
+            "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
+          },
+          {
             "name": "force_https",
             "type": "boolean",
             "description": "Controls the HTTP->HTTPS 301 redirect for THIS subdomain"
@@ -39912,7 +39927,7 @@
   },
   {
     "name": "panelica_subdomains_patch_v1_subdomains_id",
-    "description": "Updates a subdomain\n\nHTTP: PATCH /v1/subdomains/:id\nCategory: Subdomains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+11 more)}}\nMutating: changes server state.",
+    "description": "Updates a subdomain\n\nHTTP: PATCH /v1/subdomains/:id\nCategory: Subdomains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+12 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -40042,6 +40057,11 @@
           {
             "name": "ssl_renewal_failures",
             "type": "integer"
+          },
+          {
+            "name": "ssl_coverage",
+            "type": "string",
+            "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
           },
           {
             "name": "force_https",

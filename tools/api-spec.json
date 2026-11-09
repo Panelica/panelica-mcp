@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "panel_version": "1.0.576",
+  "panel_version": "1.0.586",
   "title": "Panelica External API",
   "description": "HMAC-SHA256 authenticated REST API for server management and integrations",
   "base_url": "https://<your-panel>:8443/api/external/v1",
@@ -20396,6 +20396,12 @@
             "required": false
           },
           {
+            "name": "ssl_coverage",
+            "type": "string",
+            "required": false,
+            "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
+          },
+          {
             "name": "force_https",
             "type": "boolean",
             "required": false,
@@ -20631,6 +20637,12 @@
             "name": "ssl_renewal_failures",
             "type": "integer",
             "required": false
+          },
+          {
+            "name": "ssl_coverage",
+            "type": "string",
+            "required": false,
+            "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
           },
           {
             "name": "force_https",
@@ -59797,6 +59809,12 @@
             "required": false
           },
           {
+            "name": "ssl_coverage",
+            "type": "string",
+            "required": false,
+            "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
+          },
+          {
             "name": "force_https",
             "type": "boolean",
             "required": false,
@@ -60033,6 +60051,12 @@
             "name": "ssl_renewal_failures",
             "type": "integer",
             "required": false
+          },
+          {
+            "name": "ssl_coverage",
+            "type": "string",
+            "required": false,
+            "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
           },
           {
             "name": "force_https",
