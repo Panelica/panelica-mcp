@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "panel_version": "1.0.586",
+  "panel_version": "1.0.607",
   "title": "Panelica External API",
   "description": "HMAC-SHA256 authenticated REST API for server management and integrations",
   "base_url": "https://<your-panel>:8443/api/external/v1",
@@ -228,7 +228,7 @@
       "name": "Python Apps",
       "description": "Python Apps management endpoints",
       "icon": "ri-checkbox-blank-circle-line",
-      "count": 19
+      "count": 20
     },
     {
       "name": "Redirects",
@@ -3810,6 +3810,22 @@
             "required": false
           },
           {
+            "name": "user_id",
+            "type": "uuid",
+            "required": false,
+            "description": "The account the key belongs to"
+          },
+          {
+            "name": "owner_username",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "owner_role",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "name",
             "type": "string",
             "required": false
@@ -4176,6 +4192,22 @@
             "required": false
           },
           {
+            "name": "user_id",
+            "type": "uuid",
+            "required": false,
+            "description": "The account the key belongs to"
+          },
+          {
+            "name": "owner_username",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "owner_role",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "name",
             "type": "string",
             "required": false
@@ -4346,6 +4378,22 @@
           {
             "name": "id",
             "type": "uuid",
+            "required": false
+          },
+          {
+            "name": "user_id",
+            "type": "uuid",
+            "required": false,
+            "description": "The account the key belongs to"
+          },
+          {
+            "name": "owner_username",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "owner_role",
+            "type": "string",
             "required": false
           },
           {
@@ -14337,6 +14385,11 @@
             "required": false
           },
           {
+            "name": "image_digest",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "categories",
             "type": "string",
             "required": false
@@ -20402,6 +20455,12 @@
             "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
           },
           {
+            "name": "runtime_link",
+            "type": "string",
+            "required": false,
+            "description": "Computed at read time, never stored: which link owns the vhost the web server actually serves for this subdomain"
+          },
+          {
             "name": "force_https",
             "type": "boolean",
             "required": false,
@@ -20643,6 +20702,12 @@
             "type": "string",
             "required": false,
             "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
+          },
+          {
+            "name": "runtime_link",
+            "type": "string",
+            "required": false,
+            "description": "Computed at read time, never stored: which link owns the vhost the web server actually serves for this subdomain"
           },
           {
             "name": "force_https",
@@ -40733,7 +40798,7 @@
       "path": "/v1/logs/rotation-settings",
       "category": "Logs",
       "summary": "Rotation settings",
-      "description": "Returns current rotation settings from panel_settings",
+      "description": "Returns current rotation settings from panel_settings GetRotationSettings reports how long logs are kept and what the policy on disk actually does.  This used to return invented constants (7/500/5/30/30/14 and \"04:00\") that nothing read and nothing wrote — a fourth answer to a question the page already answered three different ways. It now reads the one setting the operator edits and MEASURES the installed policy next to it, so a drifted policy is visible instead of hidden behind a plausible number.",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -40750,44 +40815,32 @@
         "data_type": "object",
         "fields": [
           {
-            "name": "mysql_expire_days",
+            "name": "retention_days",
             "type": "integer",
-            "required": false
+            "required": false,
+            "description": "The operator's setting (logs.retention_days)"
           },
           {
-            "name": "backend_max_size_mb",
-            "type": "integer",
-            "required": false
+            "name": "policy_path",
+            "type": "string",
+            "required": false,
+            "description": "PolicyPath, PolicyFrequency and PolicyRotate are measured from /etc/logrotate.d/panelica: what logrotate will actually do tonight"
           },
           {
-            "name": "backend_keep_files",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "nginx_retention_days",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "apache_retention_days",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "php_retention_days",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "auto_cleanup_enabled",
-            "type": "boolean",
-            "required": false
-          },
-          {
-            "name": "auto_cleanup_schedule",
+            "name": "policy_frequency",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "policy_rotate",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "policy_matches_setting",
+            "type": "boolean",
+            "required": false,
+            "description": "False when the file on disk disagrees with the setting — the state the page must never present as fine"
           }
         ],
         "keys": [
@@ -40867,6 +40920,16 @@
           },
           {
             "name": "total_size_human",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "rotated_size",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "rotated_size_human",
             "type": "string",
             "required": false
           }
@@ -41124,7 +41187,6 @@
       "path": "/v1/logs/sources",
       "category": "Logs",
       "summary": "List log sources",
-      "description": "Returns all available log sources",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -47222,7 +47284,7 @@
       "path": "/v1/plans",
       "category": "Plans",
       "summary": "List plans",
-      "description": "Lists all plans",
+      "description": "Plans this key may see. A RESELLER also sees the global plans (owner_id null), so each plan carries \"assignable\": whether an account can actually be created with it by this key. ROOT and ADMIN assign any plan; everyone else only their own. Creating an account with a plan marked assignable:false answers 400 with code PLAN_NOT_OWNED.",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -47608,6 +47670,12 @@
             "name": "updated_at",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "assignable",
+            "type": "boolean",
+            "required": false,
+            "description": "Answers \"can the caller create an account with this plan?\" and is computed per request, never stored"
           }
         ],
         "keys": [
@@ -48161,6 +48229,12 @@
             "name": "updated_at",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "assignable",
+            "type": "boolean",
+            "required": false,
+            "description": "Answers \"can the caller create an account with this plan?\" and is computed per request, never stored"
           }
         ]
       },
@@ -48276,7 +48350,7 @@
       "path": "/v1/plans/{id}",
       "category": "Plans",
       "summary": "Get plan",
-      "description": "Gets a specific plan",
+      "description": "One plan, with the same \"assignable\" flag the listing returns.",
       "auth": {
         "required": true,
         "type": "hmac",
@@ -48672,6 +48746,12 @@
             "name": "updated_at",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "assignable",
+            "type": "boolean",
+            "required": false,
+            "description": "Answers \"can the caller create an account with this plan?\" and is computed per request, never stored"
           }
         ]
       },
@@ -49114,6 +49194,12 @@
             "name": "updated_at",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "assignable",
+            "type": "boolean",
+            "required": false,
+            "description": "Answers \"can the caller create an account with this plan?\" and is computed per request, never stored"
           }
         ]
       },
@@ -51667,6 +51753,65 @@
     },
     {
       "method": "POST",
+      "path": "/v1/python/versions/{major}/update",
+      "category": "Python Apps",
+      "summary": "Update Python series to its newest patch",
+      "auth": {
+        "required": true,
+        "type": "hmac",
+        "scopes": [
+          "apps:write"
+        ]
+      },
+      "request": {
+        "path_params": [
+          {
+            "name": "major",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      "errors": [
+        {
+          "status_code": 400,
+          "code": "BAD_REQUEST",
+          "description": "Invalid request parameters or body"
+        },
+        {
+          "status_code": 401,
+          "code": "UNAUTHORIZED",
+          "description": "Missing or invalid API key"
+        },
+        {
+          "status_code": 403,
+          "code": "FORBIDDEN",
+          "description": "Insufficient scope or permissions"
+        },
+        {
+          "status_code": 404,
+          "code": "NOT_FOUND",
+          "description": "Resource not found"
+        },
+        {
+          "status_code": 409,
+          "code": "CONFLICT",
+          "description": "Resource conflict (e.g., already exists)"
+        },
+        {
+          "status_code": 429,
+          "code": "TOO_MANY_REQUESTS",
+          "description": "Rate limit exceeded"
+        },
+        {
+          "status_code": 500,
+          "code": "INTERNAL_ERROR",
+          "description": "Internal server error"
+        }
+      ]
+    },
+    {
+      "method": "POST",
       "path": "/v1/python/versions/install",
       "category": "Python Apps",
       "summary": "Install Python version",
@@ -51735,6 +51880,12 @@
             "type": "boolean",
             "required": false,
             "description": "newest installed"
+          },
+          {
+            "name": "latest",
+            "type": "string",
+            "required": false,
+            "description": "The newer patch release upstream has for THIS series, set only when there is one (\"3.12.16\" while 3.12.13 is installed)"
           }
         ],
         "keys": [
@@ -59815,6 +59966,12 @@
             "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
           },
           {
+            "name": "runtime_link",
+            "type": "string",
+            "required": false,
+            "description": "Computed at read time, never stored: which link owns the vhost the web server actually serves for this subdomain"
+          },
+          {
             "name": "force_https",
             "type": "boolean",
             "required": false,
@@ -60057,6 +60214,12 @@
             "type": "string",
             "required": false,
             "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
+          },
+          {
+            "name": "runtime_link",
+            "type": "string",
+            "required": false,
+            "description": "Computed at read time, never stored: which link owns the vhost the web server actually serves for this subdomain"
           },
           {
             "name": "force_https",
@@ -62515,5 +62678,5 @@
       ]
     }
   ],
-  "total_count": 493
+  "total_count": 494
 }

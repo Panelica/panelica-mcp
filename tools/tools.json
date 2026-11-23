@@ -2300,7 +2300,7 @@
   },
   {
     "name": "panelica_api_keys_get_v1_api_keys",
-    "description": "Lists all API keys for the authenticated user\n\nHTTP: GET /v1/api-keys\nCategory: API Keys\nRequired scopes: *:*\nReturns: {status, data: array of {id, name, description, key_prefix, scopes, rate_limit_tier, ip_whitelist, status, expires_at, last_used_at, last_used_ip, request_count, … (+2 more)}}\nRead-only.",
+    "description": "Lists all API keys for the authenticated user\n\nHTTP: GET /v1/api-keys\nCategory: API Keys\nRequired scopes: *:*\nReturns: {status, data: array of {id, user_id, owner_username, owner_role, name, description, key_prefix, scopes, rate_limit_tier, ip_whitelist, status, expires_at, … (+5 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2339,6 +2339,19 @@
         "fields": [
           {
             "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "user_id",
+            "type": "string",
+            "description": "The account the key belongs to"
+          },
+          {
+            "name": "owner_username",
+            "type": "string"
+          },
+          {
+            "name": "owner_role",
             "type": "string"
           },
           {
@@ -2400,7 +2413,7 @@
   },
   {
     "name": "panelica_api_keys_get_v1_api_keys_key_id",
-    "description": "Gets a specific API key\n\nHTTP: GET /v1/api-keys/:key_id\nCategory: API Keys\nRequired scopes: *:*\nReturns: {status, data: object {id, name, description, key_prefix, scopes, rate_limit_tier, ip_whitelist, status, expires_at, last_used_at, last_used_ip, request_count, … (+2 more)}}\nRead-only.",
+    "description": "Gets a specific API key\n\nHTTP: GET /v1/api-keys/:key_id\nCategory: API Keys\nRequired scopes: *:*\nReturns: {status, data: object {id, user_id, owner_username, owner_role, name, description, key_prefix, scopes, rate_limit_tier, ip_whitelist, status, expires_at, … (+5 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2433,6 +2446,19 @@
         "fields": [
           {
             "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "user_id",
+            "type": "string",
+            "description": "The account the key belongs to"
+          },
+          {
+            "name": "owner_username",
+            "type": "string"
+          },
+          {
+            "name": "owner_role",
             "type": "string"
           },
           {
@@ -2493,7 +2519,7 @@
   },
   {
     "name": "panelica_api_keys_patch_v1_api_keys_key_id",
-    "description": "Updates an API key\n\nHTTP: PATCH /v1/api-keys/:key_id\nCategory: API Keys\nRequired scopes: *:*\nReturns: {status, data: object {id, name, description, key_prefix, scopes, rate_limit_tier, ip_whitelist, status, expires_at, last_used_at, last_used_ip, request_count, … (+2 more)}}\nMutating: changes server state.",
+    "description": "Updates an API key\n\nHTTP: PATCH /v1/api-keys/:key_id\nCategory: API Keys\nRequired scopes: *:*\nReturns: {status, data: object {id, user_id, owner_username, owner_role, name, description, key_prefix, scopes, rate_limit_tier, ip_whitelist, status, expires_at, … (+5 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -2557,6 +2583,19 @@
         "fields": [
           {
             "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "user_id",
+            "type": "string",
+            "description": "The account the key belongs to"
+          },
+          {
+            "name": "owner_username",
+            "type": "string"
+          },
+          {
+            "name": "owner_role",
             "type": "string"
           },
           {
@@ -9185,7 +9224,7 @@
   },
   {
     "name": "panelica_docker_get_v1_docker_templates_slug",
-    "description": "Returns a single template by slug with full details\n\nHTTP: GET /v1/docker/templates/:slug\nCategory: Docker\nRequired scopes: docker:read\nReturns: {status, data: object {id, slug, name, description, logo_url, image, default_tag, categories, ports, env_vars, volumes, linked_services, … (+21 more)}, success}\nRead-only.",
+    "description": "Returns a single template by slug with full details\n\nHTTP: GET /v1/docker/templates/:slug\nCategory: Docker\nRequired scopes: docker:read\nReturns: {status, data: object {id, slug, name, description, logo_url, image, default_tag, image_digest, categories, ports, env_vars, volumes, … (+22 more)}, success}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -9245,6 +9284,10 @@
           },
           {
             "name": "default_tag",
+            "type": "string"
+          },
+          {
+            "name": "image_digest",
             "type": "string"
           },
           {
@@ -11859,7 +11902,7 @@
   },
   {
     "name": "panelica_domains_get_v1_domains_id_subdomains",
-    "description": "Lists all subdomains for a domain\n\nHTTP: GET /v1/domains/:id/subdomains\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: array of {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+12 more)}, total}\nRead-only.",
+    "description": "Lists all subdomains for a domain\n\nHTTP: GET /v1/domains/:id/subdomains\nCategory: Domains\nRequired scopes: domains:read\nReturns: {status, data: array of {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+13 more)}, total}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -11974,6 +12017,11 @@
             "name": "ssl_coverage",
             "type": "string",
             "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
+          },
+          {
+            "name": "runtime_link",
+            "type": "string",
+            "description": "Computed at read time, never stored: which link owns the vhost the web server actually serves for this subdomain"
           },
           {
             "name": "force_https",
@@ -14252,7 +14300,7 @@
   },
   {
     "name": "panelica_domains_post_v1_domains_id_subdomains",
-    "description": "Creates a new subdomain\n\nHTTP: POST /v1/domains/:id/subdomains\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+12 more)}}\nMutating: changes server state.",
+    "description": "Creates a new subdomain\n\nHTTP: POST /v1/domains/:id/subdomains\nCategory: Domains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+13 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -14383,6 +14431,11 @@
             "name": "ssl_coverage",
             "type": "string",
             "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
+          },
+          {
+            "name": "runtime_link",
+            "type": "string",
+            "description": "Computed at read time, never stored: which link owns the vhost the web server actually serves for this subdomain"
           },
           {
             "name": "force_https",
@@ -25771,7 +25824,7 @@
   },
   {
     "name": "panelica_logs_get_v1_logs_rotation_settings",
-    "description": "Returns current rotation settings from panel_settings\n\nHTTP: GET /v1/logs/rotation-settings\nCategory: Logs\nRequired scopes: logs:read\nRestricted to key owners with role: ADMIN, ROOT\nReturns: {status, data: object {mysql_expire_days, backend_max_size_mb, backend_keep_files, nginx_retention_days, apache_retention_days, php_retention_days, auto_cleanup_enabled, auto_cleanup_schedule}, success, code, message}\nRead-only.",
+    "description": "Returns current rotation settings from panel_settings GetRotationSettings reports how long logs are kept and what the policy on disk actually does.  This used to return invented constants (7/500/5/30/30/14 and \"04:00\") that nothing read and nothing wrote — a fourth answer to a question the page already answered three different ways. It now reads the one setting the operator edits and MEASURES the installed policy next to it, so a drifted policy is visible instead of hidden behind a plausible number.\n\nHTTP: GET /v1/logs/rotation-settings\nCategory: Logs\nRequired scopes: logs:read\nRestricted to key owners with role: ADMIN, ROOT\nReturns: {status, data: object {retention_days, policy_path, policy_frequency, policy_rotate, policy_matches_setting}, success, code, message}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -25805,36 +25858,27 @@
         ],
         "fields": [
           {
-            "name": "mysql_expire_days",
-            "type": "integer"
+            "name": "retention_days",
+            "type": "integer",
+            "description": "The operator's setting (logs.retention_days)"
           },
           {
-            "name": "backend_max_size_mb",
-            "type": "integer"
+            "name": "policy_path",
+            "type": "string",
+            "description": "PolicyPath, PolicyFrequency and PolicyRotate are measured from /etc/logrotate.d/panelica: what logrotate will actually do tonight"
           },
           {
-            "name": "backend_keep_files",
-            "type": "integer"
-          },
-          {
-            "name": "nginx_retention_days",
-            "type": "integer"
-          },
-          {
-            "name": "apache_retention_days",
-            "type": "integer"
-          },
-          {
-            "name": "php_retention_days",
-            "type": "integer"
-          },
-          {
-            "name": "auto_cleanup_enabled",
-            "type": "boolean"
-          },
-          {
-            "name": "auto_cleanup_schedule",
+            "name": "policy_frequency",
             "type": "string"
+          },
+          {
+            "name": "policy_rotate",
+            "type": "integer"
+          },
+          {
+            "name": "policy_matches_setting",
+            "type": "boolean",
+            "description": "False when the file on disk disagrees with the setting — the state the page must never present as fine"
           }
         ]
       }
@@ -25842,7 +25886,7 @@
   },
   {
     "name": "panelica_logs_get_v1_logs_sites",
-    "description": "Returns the per-domain log files (size + path) for every domain the requester is allowed to see.\n\nHTTP: GET /v1/logs/sites\nCategory: Logs\nRequired scopes: logs:read\nRestricted to key owners with role: ADMIN, ROOT\nReturns: {status, data: object {sites, total_size, total_size_human}, success}\nRead-only.",
+    "description": "Returns the per-domain log files (size + path) for every domain the requester is allowed to see.\n\nHTTP: GET /v1/logs/sites\nCategory: Logs\nRequired scopes: logs:read\nRestricted to key owners with role: ADMIN, ROOT\nReturns: {status, data: object {sites, total_size, total_size_human, rotated_size, rotated_size_human}, success}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {},
@@ -25883,6 +25927,14 @@
           },
           {
             "name": "total_size_human",
+            "type": "string"
+          },
+          {
+            "name": "rotated_size",
+            "type": "integer"
+          },
+          {
+            "name": "rotated_size_human",
             "type": "string"
           }
         ]
@@ -25959,7 +26011,7 @@
   },
   {
     "name": "panelica_logs_get_v1_logs_sources",
-    "description": "Returns all available log sources\n\nHTTP: GET /v1/logs/sources\nCategory: Logs\nRequired scopes: logs:read\nRestricted to key owners with role: ADMIN, ROOT\nReturns: {status, data: array of {name, path, type, service, size, last_modified, readable}, success}\nRead-only.",
+    "description": "List log sources\n\nHTTP: GET /v1/logs/sources\nCategory: Logs\nRequired scopes: logs:read\nRestricted to key owners with role: ADMIN, ROOT\nReturns: {status, data: array of {name, path, type, service, size, last_modified, readable}, success}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -30472,7 +30524,7 @@
   },
   {
     "name": "panelica_plans_get_v1_plans",
-    "description": "Lists all plans\n\nHTTP: GET /v1/plans\nCategory: Plans\nRequired scopes: plans:read\nReturns: {status, data: array of {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+56 more)}, total}\nRead-only.",
+    "description": "Plans this key may see. A RESELLER also sees the global plans (owner_id null), so each plan carries \"assignable\": whether an account can actually be created with it by this key. ROOT and ADMIN assign any plan; everyone else only their own. Creating an account with a plan marked assignable:false answers 400 with code PLAN_NOT_OWNED.\n\nHTTP: GET /v1/plans\nCategory: Plans\nRequired scopes: plans:read\nReturns: {status, data: array of {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+57 more)}, total}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -30818,6 +30870,11 @@
           {
             "name": "updated_at",
             "type": "string"
+          },
+          {
+            "name": "assignable",
+            "type": "boolean",
+            "description": "Answers \"can the caller create an account with this plan?\" and is computed per request, never stored"
           }
         ]
       },
@@ -30826,7 +30883,7 @@
   },
   {
     "name": "panelica_plans_get_v1_plans_id",
-    "description": "Gets a specific plan\n\nHTTP: GET /v1/plans/:id\nCategory: Plans\nRequired scopes: plans:read\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+56 more)}}\nRead-only.",
+    "description": "One plan, with the same \"assignable\" flag the listing returns.\n\nHTTP: GET /v1/plans/:id\nCategory: Plans\nRequired scopes: plans:read\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+57 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -31163,6 +31220,11 @@
           {
             "name": "updated_at",
             "type": "string"
+          },
+          {
+            "name": "assignable",
+            "type": "boolean",
+            "description": "Answers \"can the caller create an account with this plan?\" and is computed per request, never stored"
           }
         ]
       }
@@ -31170,7 +31232,7 @@
   },
   {
     "name": "panelica_plans_patch_v1_plans_id",
-    "description": "Updates a plan\n\nHTTP: PATCH /v1/plans/:id\nCategory: Plans\nRequired scopes: plans:write\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+56 more)}}\nMutating: changes server state.",
+    "description": "Updates a plan\n\nHTTP: PATCH /v1/plans/:id\nCategory: Plans\nRequired scopes: plans:write\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+57 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -31512,6 +31574,11 @@
           {
             "name": "updated_at",
             "type": "string"
+          },
+          {
+            "name": "assignable",
+            "type": "boolean",
+            "description": "Answers \"can the caller create an account with this plan?\" and is computed per request, never stored"
           }
         ]
       }
@@ -31519,7 +31586,7 @@
   },
   {
     "name": "panelica_plans_post_v1_plans",
-    "description": "Creates a new plan\n\nHTTP: POST /v1/plans\nCategory: Plans\nRequired scopes: plans:write\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+56 more)}}\nMutating: changes server state.",
+    "description": "Creates a new plan\n\nHTTP: POST /v1/plans\nCategory: Plans\nRequired scopes: plans:write\nReturns: {status, data: object {id, name, slug, description, max_domains, disk_quota_mb, monthly_bandwidth_mb, inode_quota, max_subdomains, max_email_accounts, email_send_hourly, email_send_daily, … (+57 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -31950,6 +32017,11 @@
           {
             "name": "updated_at",
             "type": "string"
+          },
+          {
+            "name": "assignable",
+            "type": "boolean",
+            "description": "Answers \"can the caller create an account with this plan?\" and is computed per request, never stored"
           }
         ]
       }
@@ -33480,7 +33552,7 @@
   },
   {
     "name": "panelica_python_apps_post_v1_python_versions_install",
-    "description": "Downloads and installs a Python series.\n\nHTTP: POST /v1/python/versions/install\nCategory: Python Apps\nRequired scopes: apps:write\nReturns: {status, data: object {major, full, path, python_bin, pip_bin, size_mb, is_default}, success}\nMutating: changes server state.",
+    "description": "Downloads and installs a Python series.\n\nHTTP: POST /v1/python/versions/install\nCategory: Python Apps\nRequired scopes: apps:write\nReturns: {status, data: object {major, full, path, python_bin, pip_bin, size_mb, is_default, latest}, success}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -33556,6 +33628,11 @@
             "name": "is_default",
             "type": "boolean",
             "description": "newest installed"
+          },
+          {
+            "name": "latest",
+            "type": "string",
+            "description": "The newer patch release upstream has for THIS series, set only when there is one (\"3.12.16\" while 3.12.13 is installed)"
           }
         ]
       }
@@ -33603,6 +33680,43 @@
           }
         ]
       }
+    }
+  },
+  {
+    "name": "panelica_python_apps_post_v1_python_versions_major_update",
+    "description": "Update Python series to its newest patch\n\nHTTP: POST /v1/python/versions/:major/update\nCategory: Python Apps\nRequired scopes: apps:write\nMutating: changes server state.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "string",
+          "description": "Path parameter: major"
+        },
+        "body": {
+          "type": "object",
+          "description": "Request body (application/json). Schema not statically declared — see API docs.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "major"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "title": "Update Python series to its newest patch",
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    },
+    "metadata": {
+      "method": "POST",
+      "path": "/v1/python/versions/:major/update",
+      "category": "Python Apps",
+      "scopes": [
+        "apps:write"
+      ]
     }
   },
   {
@@ -39783,7 +39897,7 @@
   },
   {
     "name": "panelica_subdomains_get_v1_subdomains_id",
-    "description": "Gets a subdomain by ID\n\nHTTP: GET /v1/subdomains/:id\nCategory: Subdomains\nRequired scopes: domains:read\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+12 more)}}\nRead-only.",
+    "description": "Gets a subdomain by ID\n\nHTTP: GET /v1/subdomains/:id\nCategory: Subdomains\nRequired scopes: domains:read\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+13 more)}}\nRead-only.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -39885,6 +39999,11 @@
             "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
           },
           {
+            "name": "runtime_link",
+            "type": "string",
+            "description": "Computed at read time, never stored: which link owns the vhost the web server actually serves for this subdomain"
+          },
+          {
             "name": "force_https",
             "type": "boolean",
             "description": "Controls the HTTP->HTTPS 301 redirect for THIS subdomain"
@@ -39927,7 +40046,7 @@
   },
   {
     "name": "panelica_subdomains_patch_v1_subdomains_id",
-    "description": "Updates a subdomain\n\nHTTP: PATCH /v1/subdomains/:id\nCategory: Subdomains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+12 more)}}\nMutating: changes server state.",
+    "description": "Updates a subdomain\n\nHTTP: PATCH /v1/subdomains/:id\nCategory: Subdomains\nRequired scopes: domains:write\nReturns: {status, data: object {id, domain_id, subdomain_name, full_name, document_root, php_version, php_handler, ssl_enabled, ssl_provider, ssl_mode, ssl_cert_path, ssl_key_path, … (+13 more)}}\nMutating: changes server state.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -40062,6 +40181,11 @@
             "name": "ssl_coverage",
             "type": "string",
             "description": "Computed at read time, never stored: does the certificate this subdomain is actually served by name this host?   \"covered\"   — the served certificate lists…"
+          },
+          {
+            "name": "runtime_link",
+            "type": "string",
+            "description": "Computed at read time, never stored: which link owns the vhost the web server actually serves for this subdomain"
           },
           {
             "name": "force_https",
